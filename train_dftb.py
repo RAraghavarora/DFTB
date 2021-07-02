@@ -233,10 +233,10 @@ def save_plot(n_val):
     lines = f.readlines()
     x = []
     y = []
-    mini = float(lines[0].split('       ')[1])
-    maxi = float(lines[0].split('       ')[1])
+    mini = float(lines[0].split()[1])
+    maxi = float(lines[0].split()[1])
     for line in lines:
-        _, x1, y1, z1 = line.split('       ')
+        x1, y1, z1 = line.split()
         x.append(float(x1)) 
         y.append(float(y1))
         if float(x1) < mini:
@@ -269,7 +269,10 @@ for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
     chdir(current_dir)
     os.chdir(current_dir + '/withdft/')
-    os.mkdir(str(train_set[ii]))
+    try:
+        os.mkdir(str(train_set[ii]))
+    except:
+        pass
     os.chdir(current_dir + '/withdft/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':

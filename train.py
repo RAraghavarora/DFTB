@@ -233,10 +233,10 @@ def save_plot(n_val):
     lines = f.readlines()
     x = []
     y = []
-    mini = float(lines[0].split('       ')[1])
-    maxi = float(lines[0].split('       ')[1])
+    mini = float(lines[0].split()[1])
+    maxi = float(lines[0].split()[1])
     for line in lines:
-        _, x1, y1, z1 = line.split('       ')
+        x1, y1, z1 = line.split()
         x.append(float(x1)) 
         y.append(float(y1))
         if float(x1) < mini:
