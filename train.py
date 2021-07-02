@@ -253,7 +253,7 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['2000', '4000', '8000', '10000', '20000', '30000']
+train_set = ['1000', '2000', '4000', '8000', '10000', '20000', '30000']
 n_val = 1000
 n_test = 10000
 op = sys.argv[1]
@@ -268,7 +268,10 @@ current_dir = os.getcwd()
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
     chdir(current_dir)
-    os.mkdir(str(train_set[ii]))
+    try:
+        os.mkdir(str(train_set[ii]))
+    except:
+        pass
     os.chdir(current_dir + '/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
