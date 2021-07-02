@@ -229,7 +229,7 @@ def load_nnmodel(idir):
 
 def save_plot(n_val):
     import matplotlib.pyplot as plt
-    f = open("comp-test.dat" % n_val, 'r')
+    f = open("comp-test.dat", 'r')
     lines = f.readlines()
     x = []
     y = []
@@ -268,6 +268,7 @@ current_dir = os.getcwd()
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
     chdir(current_dir)
+    os.chdir(current_dir + '/withdft/')
     os.mkdir(str(train_set[ii]))
     os.chdir(current_dir + '/withdft/' + str(train_set[ii]))
 

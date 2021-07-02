@@ -229,7 +229,7 @@ def load_nnmodel(idir):
 
 def save_plot(n_val):
     import matplotlib.pyplot as plt
-    f = open("comp-test.dat" % n_val, 'r')
+    f = open("comp-test.dat", 'r')
     lines = f.readlines()
     x = []
     y = []
