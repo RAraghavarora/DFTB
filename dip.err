@@ -2,16 +2,15 @@ The following modules were not unloaded:
   (Use "module --force purge" to unload all):
 
   1) modenv/scs5
+The following modules were not unloaded:
+  (Use "module --force purge" to unload all):
+
+  1) modenv/scs5
+Module Python/3.6.4-intel-2018a and 18 dependencies loaded.
 Module Python/3.6.4-intel-2018a and 18 dependencies loaded.
 Module cuDNN/8.0.4.30-CUDA-11.1.1 and 1 dependency loaded.
-2021-07-02 06:57:16.078506: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
-Traceback (most recent call last):
-  File "/scratch/ws/1/medranos-DFTB/raghav/codes//train.py", line 263, in <module>
-    iX, iY = prepare_data(op)
-  File "/scratch/ws/1/medranos-DFTB/raghav/codes//train.py", line 76, in prepare_data
-    dataset = spk.data.AtomsData(data_dir + 'totgdb7x_pbe0.db', load_only=properties)
-  File "/home/h3/medranos/vdftb20/lib/python3.6/site-packages/schnetpack/data/atoms.py", line 85, in __init__
-    self.available_properties = self.get_available_properties(available_properties)
-  File "/home/h3/medranos/vdftb20/lib/python3.6/site-packages/schnetpack/data/atoms.py", line 109, in get_available_properties
-    "Please define available_properties or set "
-schnetpack.data.atoms.AtomsDataError: Please define available_properties or set db_path to an existing database!
+Module cuDNN/8.0.4.30-CUDA-11.1.1 and 1 dependency loaded.
+2021-07-02 07:03:41.226393: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-07-02 07:03:41.225494: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+slurmstepd: error: *** JOB 17990400 ON taurusi2094 CANCELLED AT 2021-07-02T07:03:56 ***
+slurmstepd: error: *** JOB 17990399 ON taurusi2047 CANCELLED AT 2021-07-02T07:06:04 ***
