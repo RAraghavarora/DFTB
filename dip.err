@@ -30,3 +30,4 @@ To enable them in other operations, rebuild TensorFlow with the appropriate comp
 2021-07-02 15:59:50.766319: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1267]      
 2021-07-02 15:59:51.539961: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
 2021-07-02 15:59:51.604326: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 2500135000 Hz
+slurmstepd: error: *** JOB 17995679 ON taurusi2099 CANCELLED AT 2021-07-03T15:28:49 DUE TO TIME LIMIT ***
