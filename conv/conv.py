@@ -219,7 +219,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     history = model.fit({"input_1": trainX1, "input_2": trainX2}, trainy, validation_data=([valX1, valX2], valy), 
                         batch_size=32, epochs=20000, verbose=2, callbacks=[rlrp, lrm])
 
-    return model, lrm.lrates, history.history['loss'], history.history['mae'], testX, testy
+    return model, lrm.lrates, history.history['loss'], history.history['mae'], [testX1, testX2], testy
 
 
 def plotting_results(model, testX, testy):
@@ -326,5 +326,8 @@ for ii in range(len(train_set)):
         model = load_nnmodel(current_dir + '/NNmodel')
 
     # Saving results
-    plotting_results(model, testX, testy)
-    save_plot(n_val)
+    try:
+        plotting_results(model, testX, testy)
+        save_plot(n_val)
+    except:
+        pass
