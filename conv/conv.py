@@ -191,6 +191,8 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     out1 = Dense(units=64, activation='relu')(hidden3)
 
     # 2nd model
+    n_input = int(len(iX[1][0]))
+    n_inout = n_input + n_output
 
     visible2 = Input(shape=(n_input,))
     hidden21 = Dense(n_inout, activation='tanh', 
