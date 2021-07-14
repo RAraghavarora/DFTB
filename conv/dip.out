@@ -1,0 +1,27 @@
+Starting Program
+training starts
+*** JOB 'nn-dftb-ra' (ID: 18326176) ***
+*** taurusi2095: 1 node(s),  8 core(s) in total ***
+*** Submitted in: /lustre/scratch2/ws/1/medranos-DFTB/raghav/codes/conv ***
+
+*** [TIMING] start Jul 14, 18:55:26 ***
+*** [TIMING] walltime 1-23:59:39 [47:59:39] ends Jul 16, 18:55:05 ***
+
+
+
+JOB OUTPUT:
+###########################################################################
+
+training starts
+41537
+Trainset= 2000
+Perfoming training
+Perfoming training
+Epoch 1/20000
+training is over :-)
+
+###########################################################################
+
+*** [TIMING] end Jul 14, 19:05:44 ***
+*** [TIMING] duration 10:39[0:10:18] ***
+

@@ -20,6 +20,7 @@ from tensorflow.keras.optimizers import SGD, Adam
 from tensorflow.keras.utils import to_categorical, plot_model
 from tensorflow.keras.callbacks import Callback
 from tensorflow.keras.callbacks import ReduceLROnPlateau
+from tensorflow.keras import Model
 from tensorflow.keras import backend
 from tensorflow.keras.models import model_from_json
 from tensorflow.keras.models import load_model
@@ -200,12 +201,12 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     hidden23 = Dense(units=64, activation='tanh')(hidden22)
     out2 = Dense(units=64, activation='relu')(hidden23)
 
-    hidden4 = Add([out1, out2])
+    hidden4 = Add()([out1, out2])
     out = Dense(n_output, activation='linear')(hidden4)
 
     model = Model(inputs=[visible, visible2], outputs=[out])
 
-    plot_model(model, to_file='combined_NN.png')
+#    plot_model(model, to_file='combined_NN.png')
 
     # compile model
     opt = Adam(learning_rate=0.01)
@@ -213,7 +214,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     # fit model
     rlrp = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=patience, min_delta=1E-5, min_lr=1E-6)
     lrm = LearningRateMonitor()
-    history = model.fit({"desc": trainX1, "dftb": trainX2}, trainy, validation_data=([valX1, valX2], valy), 
+    history = model.fit({"input_1": trainX1, "input_2": trainX2}, trainy, validation_data=([valX1, valX2], valy), 
                         batch_size=32, epochs=20000, verbose=2, callbacks=[rlrp, lrm])
 
     return model, lrm.lrates, history.history['loss'], history.history['mae'], testX, testy
