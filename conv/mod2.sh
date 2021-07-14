@@ -57,7 +57,7 @@ echo "training starts"
 #export DFTB_PREFIX='/home/medranos/SK-files/3ob-3-1/'
 
 work=/scratch/ws/1/medranos-DFTB/raghav/codes/
-python3 $work/train.py EAT fit
+python3 $work/conv.py EAT fit
 
 echo "training is over :-)"
 
