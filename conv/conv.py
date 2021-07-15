@@ -216,7 +216,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     # fit model
     rlrp = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=patience, min_delta=1E-5, min_lr=1E-6)
     lrm = LearningRateMonitor()
-    history = model.fit({"input_1": trainX1, "input_2": trainX2}, trainy, validation_data=([valX1, valX2], valy), 
+    history = model.fit([trainX1, trainX2], trainy, validation_data=([valX1, valX2], valy), 
                         batch_size=32, epochs=20000, verbose=2, callbacks=[rlrp, lrm])
 
     return model, lrm.lrates, history.history['loss'], history.history['mae'], [testX1, testX2], testy
@@ -287,7 +287,7 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['1000', '2000', '4000', '8000', '10000', '20000', '30000']
+train_set = ['2000', '4000', '8000', '10000', '20000', '30000']
 n_val = 1000
 n_test = 10000
 op = sys.argv[1]
