@@ -250,10 +250,11 @@ def save_plot(n_val):
     plt.xlabel("True EAT")
     plt.ylabel("Predicted EAT")
     plt.savefig(str(n_val) + '.png')
+    plt.close()
 
 
 # prepare dataset
-train_set = ['2000', '4000', '8000', '10000', '20000', '30000']
+train_set = ['30000']
 n_val = 1000
 n_test = 10000
 op = sys.argv[1]
