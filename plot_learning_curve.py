@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-train_set = [int(i) for i in ['1000', '2000', '4000', '8000', '10000', '20000']]
+train_set = [int(i) for i in ['1000', '2000', '4000', '8000', '10000', '20000', '30000']]
 
 y1 = []
 for i in train_set:
@@ -30,14 +30,15 @@ print(y2)
 plt.plot(train_set, y1, 'go-', label = 'Without dftb')
 plt.plot(train_set, y2, 'bo-', label = 'With dftb')
 
-plt.annotate('(%s, %s)' % (20000, y1[-1]), xy=(20000, y1[-1]), textcoords = 'data') 
-plt.annotate('(%s, %s)' % (10000, y1[-2]), xy=(10000, y1[-2]), textcoords = 'data') 
+plt.annotate('(%s, %s)' % (30000, y1[-1]), xy=(30000, y1[-1]), textcoords = 'data') 
+plt.annotate('(%s, %s)' % (20000, y1[-2]), xy=(20000, y1[-2]), textcoords = 'data') 
 
-plt.annotate('(%s, %s)' % (20000, y2[-1]), xy=(20000, y2[-1]), textcoords = 'data') 
-plt.annotate('(%s, %s)' % (10000, y2[-2]), xy=(10000, y2[-2]), textcoords = 'data') 
+plt.annotate('(%s, %s)' % (30000, y2[-1]), xy=(30000, y2[-1]), textcoords = 'data') 
+plt.annotate('(%s, %s)' % (20000, y2[-2]), xy=(20000, y2[-2]), textcoords = 'data') 
 
 
 plt.xlabel('Training size')
-plt.ylabel('MAE (kcal/mol)')
+plt.ylabel('MAE (eV)')
 plt.title('Learning Curve of simple Sequential network')
 plt.legend()
+plt.show()
