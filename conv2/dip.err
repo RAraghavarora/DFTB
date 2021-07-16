@@ -1,0 +1,17 @@
+The following modules were not unloaded:
+  (Use "module --force purge" to unload all):
+
+  1) modenv/scs5
+Module Python/3.6.4-intel-2018a and 18 dependencies loaded.
+2021-07-16 08:18:11.317202: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /sw/installed/Python/3.6.4-intel-2018a/lib/python3.6/site-packages/numpy-1.14.0-py3.6-linux-x86_64.egg/numpy/core/lib:/sw/installed/Python/3.6.4-intel-2018a/lib:/sw/installed/libffi/3.2.1-GCCcore-6.4.0/lib64:/sw/installed/libffi/3.2.1-GCCcore-6.4.0/lib:/sw/installed/GMP/6.1.2-GCCcore-6.4.0/lib:/sw/installed/XZ/5.2.3-GCCcore-6.4.0/lib:/sw/installed/SQLite/3.21.0-GCCcore-6.4.0/lib:/sw/installed/Tcl/8.6.8-GCCcore-6.4.0/lib:/sw/installed/libreadline/7.0-GCCcore-6.4.0/lib:/sw/installed/ncurses/6.0-GCCcore-6.4.0/lib:/sw/installed/zlib/1.2.11-GCCcore-6.4.0/lib:/sw/installed/bzip2/1.0.6-GCCcore-6.4.0/lib:/sw/installed/imkl/2018.1.163-iimpi-2018a/mkl/lib/intel64:/sw/installed/imkl/2018.1.163-iimpi-2018a/lib/intel64:/sw/installed/impi/2018.1.163-iccifort-2018.1.163-GCC-6.4.0-2.28/lib64:/sw/installed/ifort/2018.1.163-GCC-6.4.0-2.28/debugger_2018/libipt/intel64/lib:/sw/installed/ifort/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/compiler/lib/intel64:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/debugger_2018/libipt/intel64/lib:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/tbb/lib/intel64/gcc4.4:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/compiler/lib/intel64:/sw/installed/binutils/2.28-GCCcore-6.4.0/lib:/sw/installed/GCCcore/6.4.0/lib64:/sw/installed/GCCcore/6.4.0/lib
+2021-07-16 08:18:11.317866: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+Traceback (most recent call last):
+  File "/scratch/ws/1/medranos-DFTB/raghav/codes/conv2/conv2.py", line 397, in <module>
+    iX, iY = prepare_data(op)
+  File "/scratch/ws/1/medranos-DFTB/raghav/codes/conv2/conv2.py", line 79, in prepare_data
+    dataset = spk.data.AtomsData(data_dir + 'totgdb7x_pbe0.db', load_only=properties)
+  File "/home/h3/medranos/vdftb20/lib/python3.6/site-packages/schnetpack/data/atoms.py", line 85, in __init__
+    self.available_properties = self.get_available_properties(available_properties)
+  File "/home/h3/medranos/vdftb20/lib/python3.6/site-packages/schnetpack/data/atoms.py", line 109, in get_available_properties
+    "Please define available_properties or set "
+schnetpack.data.atoms.AtomsDataError: Please define available_properties or set db_path to an existing database!

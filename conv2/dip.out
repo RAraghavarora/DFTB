@@ -1,0 +1,22 @@
+Starting Program
+training starts
+*** JOB 'nn-dftb-kt-ra' (ID: 18340988) ***
+*** taurusi2063: 1 node(s),  4 core(s) in total ***
+*** Submitted in: /lustre/scratch2/ws/1/medranos-DFTB/raghav/codes ***
+
+*** [TIMING] start Jul 16, 08:17:28 ***
+*** [TIMING] walltime 3:59:51 [3:59:51] ends Jul 16, 12:17:19 ***
+
+
+
+JOB OUTPUT:
+###########################################################################
+
+training starts
+training is over :-)
+
+###########################################################################
+
+*** [TIMING] end Jul 16, 08:19:14 ***
+*** [TIMING] duration 1:55[0:01:46] ***
+
