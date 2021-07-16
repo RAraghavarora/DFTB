@@ -1,6 +1,7 @@
 # NN model
 import sys
 import os
+import pdb
 from os import path, mkdir, chdir
 import warnings
 import numpy as np
@@ -66,7 +67,9 @@ def complete_array(Aprop):
 
 def prepare_data(op):
     #  # read dataset
-    data_dir = '/scratch/ws/1/medranos-DFTB/props/dftb/data/n1-2/'
+    # data_dir = '/scratch/ws/1/medranos-DFTB/props/dftb/data/n1-2/'
+    data_dir = '../'
+
     properties = ['RMSD', 'EAT', 'EMBD', 'EGAP', 'KSE', 'FermiEne', 'BandEne', 'NumElec', 'h0Ene', 'sccEne', '3rdEne', 'RepEne', 'mbdEne', 'TBdip', 'TBeig', 'TBchg']
 
     # data preparation
@@ -191,7 +194,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
 
 def plotting_results(model, testX, testy):
     # applying nn model
-    y_test = model.predict(testX)
+    y_test = model.predict(testX)  # in eV
     #y_test = y_scaler.inverse_transform(y_test)
     MAE_PROP = float(mean_absolute_error(testy, y_test))
     MSE_PROP = float(mean_squared_error(testy, y_test))
@@ -253,7 +256,7 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['2000', '30000']
+train_set = ['20000', '30000']
 n_val = 1000
 n_test = 10000
 op = sys.argv[1]
@@ -288,7 +291,8 @@ for ii in range(len(train_set)):
     else:
         cfile = 'ncomp-test.dat'
         # to evaluate new test
-        model = load_nnmodel(current_dir + '/NNmodel')
+        model = load_nnmodel(current_dir + '/' + str(train_set[ii]))
+        pdb.set_trace()
 
     # Saving results
     plotting_results(model, testX, testy)

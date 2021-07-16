@@ -2,7 +2,7 @@
 #SBATCH --time=48:00:00
 #SBATCH --partition=gpu2                        # specify ml partition or gpu2 partition
 #SBATCH --gres=gpu:2                      # use 1 GPU per node (i.e. use one GPU per task)
-#SBATCH --nodes=3                        # request 1 node
+#SBATCH --nodes=1                        # request 1 node
 #SBATCH --ntasks=8
 #SBATCH -J nn-dftb-ra-3
 #SBATCH --output=dip.out

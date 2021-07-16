@@ -223,7 +223,6 @@ def save_nnmodel(model):
 def load_nnmodel(idir):
     model = load_model(idir + '/model.h5')
     print("Loaded model from disk")
-
     return model
 
 
@@ -290,7 +289,7 @@ for ii in range(len(train_set)):
     else:
         cfile = 'ncomp-test.dat'
         # to evaluate new test
-        model = load_nnmodel(current_dir + '/NNmodel')
+        model = load_nnmodel(current_dir + '/%s' % train_set[ii])
 
     # Saving results
     plotting_results(model, testX, testy)
