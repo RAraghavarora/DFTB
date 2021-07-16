@@ -123,7 +123,7 @@ def prepare_data(op):
     return reps2, TPROP2, atoms_data
 
 
-n_train = 20000
+n_train = 30000
 n_test = 10000
 n_val = 1000
 
@@ -137,4 +137,16 @@ Y_test = Y_test.reshape(-1, 1)
 x_scaler = StandardScaler().fit(X_train)
 y_scaler = StandardScaler().fit(Y_train)
 
-pdb.set_trace()
+atoms_data = atoms_data[-n_test:]
+model = load_model('withdft/30000' + '/model.h5')
+y_test = model.predict(X_test)  # in eV
+
+dtest = np.absolute(np.array(Y_test - y_test))
+
+# Sort data according to the mae
+indexes = list(range(len(dtest)))
+indexes.sort(key=dtest.__getitem__)
+
+with open("atoms_data.txt", 'w') as f:
+    for i in indexes:
+        f.write(str(atoms_data[i]) + '\t' + str(dtest[i]) + '\n')
