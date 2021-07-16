@@ -279,13 +279,13 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
             Overriding the run_trial method to change the batchsize and the number of epochs
             '''
             kwargs['batch_size'] = trial.hyperparameters.Int('batch_size', 32, 64, step=32)
-            kwargs['epochs'] = trial.hyperparameters.Int('epochs', 20, 50)
+            kwargs['epochs'] = trial.hyperparameters.Int('epochs', 20, 500)
             super(MyTuner, self).run_trial(trial, *args, **kwargs)
 
     tuner = MyTuner(
         build_model,
         objective='val_mae',
-        max_trials=2,
+        max_trials=500,
         project_name='Functional_tuner',
         directory='./Logs2/')
 
@@ -389,7 +389,7 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['1000','2000', '4000', '8000', '10000', '20000', '30000']
+train_set = ['1000', '2000', '4000', '8000', '10000', '20000', '30000']
 n_val = 1000
 n_test = 10000
 op = sys.argv[1]
@@ -409,7 +409,7 @@ for ii in range(len(train_set)):
         os.mkdir(str(train_set[ii]))
     except:
         pass
-    os.chdir(current_dir +'/'+ str(train_set[ii]))
+    os.chdir(current_dir + '/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 
