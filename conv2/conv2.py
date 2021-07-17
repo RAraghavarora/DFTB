@@ -389,7 +389,7 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['1000', '2000', '4000', '8000', '10000', '20000', '30000']
+train_set = ['8000']
 n_val = 1000
 n_test = 10000
 op = sys.argv[1]
@@ -399,7 +399,7 @@ iX, iY = prepare_data(op)
 # fit model and plot learning curves for a patience
 patience = 100 
 
-current_dir = os.getcwd()
+current_dir = os.getcwd() + '/conv2'
 
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
