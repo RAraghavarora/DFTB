@@ -1,0 +1,10 @@
+    The hyperparameter search is complete. 
+    256 --- relu 
+    32 --- relu 
+    224 --- 
+    64 --- relu 
+
+    192 --- relu 
+    32 --- sigmoid 
+    192 --- 
+    64 --- relu 
