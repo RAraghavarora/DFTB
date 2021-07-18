@@ -13,21 +13,17 @@ from torch.autograd import Variable
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error, make_scorer, mean_absolute_error
 
-from kerastuner.tuners import BayesianOptimization
-
 from tensorflow.keras.layers import Dense, Input, Add
 from tensorflow.keras.models import Sequential
 from tensorflow.keras import regularizers
 from tensorflow.keras.optimizers import SGD, Adam
 from tensorflow.keras.utils import to_categorical, plot_model
-from tensorflow.keras.callbacks import Callback, EarlyStopping
+from tensorflow.keras.callbacks import Callback
 from tensorflow.keras.callbacks import ReduceLROnPlateau
 from tensorflow.keras import Model
 from tensorflow.keras import backend
 from tensorflow.keras.models import model_from_json
 from tensorflow.keras.models import load_model
-from qml.representations import generate_coulomb_matrix
-from qml.representations import generate_bob
 
 import logging
 import schnetpack as spk
@@ -36,6 +32,9 @@ from ase.db import connect
 from ase.atoms import Atoms
 from ase.calculators.dftb import Dftb
 from ase.units import Hartree, Bohr
+
+from qml.representations import generate_coulomb_matrix
+
 
 # monitor the learning rate
 
@@ -70,8 +69,7 @@ def complete_array(Aprop):
 
 def prepare_data(op):
     #  # read dataset
-    data_dir = '/scratch/ws/1/medranos-DFTB/props/dftb/data/n1-2/'
-
+    data_dir = 'C:/raghav/DFTB/'
     properties = ['RMSD', 'EAT', 'EMBD', 'EGAP', 'KSE', 'FermiEne', 'BandEne', 'NumElec', 'h0Ene', 'sccEne', '3rdEne', 'RepEne', 'mbdEne', 'TBdip', 'TBeig', 'TBchg']
 
     # data preparation
@@ -167,97 +165,6 @@ def split_data(n_train, n_val, n_test, Repre, Target):
 # fit a model and plot learning curve
 
 
-def build_model(hp):
-    '''
-    Building model for Hyper parameter tuning
-    '''
-
-    # Define the NN model
-
-    n_input = 276
-    n_output = 1
-    n_inout = n_input + n_output
-
-    # 1st Model (Keras Functional API)
-    visible = Input(shape=(n_input,))
-
-    # Add one hidden layer with nodes between 32 and 256
-    hp_units = hp.Int('unit1', min_value=32, max_value=256, step=32)
-    hp_activation = hp.Choice('activation',
-                              values=['relu', 'tanh', 'sigmoid'],
-                              default='relu'
-                              )
-    hidden1 = Dense(hp_units, activation=hp_activation, 
-                    kernel_initializer='he_uniform',
-                    kernel_regularizer=regularizers.l2(0.01),
-                    activity_regularizer=regularizers.l1(0.01))(visible)
-
-    # 2nd Hidden Layer
-    hp_units = hp.Int('unit2', min_value=32, max_value=256, step=32)
-    hp_activation = hp.Choice('activation2',
-                              values=['relu', 'tanh', 'sigmoid'],
-                              default='relu'
-                              )
-    hidden2 = Dense(hp_units, activation=hp_activation)(hidden1)
-
-    # 3rd Hidden Layer
-    hp_units = hp.Int('unit3', min_value=32, max_value=256, step=32)
-    hidden3 = Dense(units=hp_units, activation='tanh')(hidden2)
-
-    # Output layer of 1st model
-    hp_activation = hp.Choice('activation3',
-                              values=['relu', 'tanh', 'sigmoid'],
-                              default='relu'
-                              )
-    out_units = hp.Int('unit_out', min_value=32, max_value=256, step=32)
-    out1 = Dense(units=out_units, activation=hp_activation)(hidden3)
-
-    # 2nd Model
-    n_input = 40
-    n_inout = n_input + n_output
-
-    visible2 = Input(shape=(n_input,))
-
-    hp_units = hp.Int('unit5', min_value=32, max_value=256, step=32)
-    hp_activation = hp.Choice('activation4',
-                              values=['relu', 'tanh', 'sigmoid'],
-                              default='relu'
-                              )
-    hidden21 = Dense(hp_units, activation=hp_activation, 
-                     kernel_initializer='he_uniform',
-                     kernel_regularizer=regularizers.l2(0.01),
-                     activity_regularizer=regularizers.l1(0.01))(visible2)
-
-    hp_units = hp.Int('unit6', min_value=32, max_value=256, step=32)
-    hp_activation = hp.Choice('activation5',
-                              values=['relu', 'tanh', 'sigmoid'],
-                              default='relu'
-                              )
-    hidden22 = Dense(hp_units, activation=hp_activation)(hidden21)
-
-    hp_units = hp.Int('unit7', min_value=32, max_value=256, step=32)
-    hidden23 = Dense(units=hp_units, activation='tanh')(hidden22)
-
-    hp_activation = hp.Choice('activation6',
-                              values=['relu', 'tanh', 'sigmoid'],
-                              default='relu'
-                              )
-    out2 = Dense(units=out_units, activation=hp_activation)(hidden23)
-
-    # Add the layers
-    hidden4 = Add()([out1, out2])
-    # Final output layer
-    out = Dense(n_output, activation='linear')(hidden4)
-
-    # Define the model
-    model = Model(inputs=[visible, visible2], outputs=[out])
-
-    opt = Adam(learning_rate=0.01)
-    model.compile(loss='mse', optimizer=opt, metrics=['mae'])
-
-    return model
-
-
 def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
 
     desc = iX[0]
@@ -270,47 +177,38 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     n_output = int(1)
 
     n_inout = n_input + n_output
+    # define model
 
-    print("Before Tuner")
+    # 1st model
 
-    class MyTuner(BayesianOptimization):
-        def run_trial(self, trial, *args, **kwargs):
-            '''
-            Overriding the run_trial method to change the batchsize and the number of epochs
-            '''
-            kwargs['batch_size'] = trial.hyperparameters.Int('batch_size', 32, 64, step=32)
-            kwargs['epochs'] = trial.hyperparameters.Int('epochs', 20, 500)
-            super(MyTuner, self).run_trial(trial, *args, **kwargs)
+    visible = Input(shape=(n_input,))
+    hidden1 = Dense(256, activation='relu', 
+                    kernel_initializer='he_uniform',
+                    kernel_regularizer=regularizers.l2(0.01),
+                    activity_regularizer=regularizers.l1(0.01))(visible)
+    hidden2 = Dense(units=32, activation='sigmoid')(hidden1)
+    hidden3 = Dense(units=160, activation='tanh')(hidden2)
+    out1 = Dense(units=128, activation='relu')(hidden3)
 
-    tuner = MyTuner(
-        build_model,
-        objective='val_mae',
-        max_trials=500,
-        project_name='Functional_tuner',
-        directory='./Logs2/')
+    # 2nd model
+    n_input = int(len(iX[1][0]))
+    n_inout = n_input + n_output
 
-    # If the mae does not improve over a span of 30 epochs, stop the training.
-    stop_early = EarlyStopping(monitor='val_mae', patience=30)
+    visible2 = Input(shape=(n_input,))
+    hidden21 = Dense(160, activation='relu', 
+                     kernel_initializer='he_uniform',
+                     kernel_regularizer=regularizers.l2(0.01),
+                     activity_regularizer=regularizers.l1(0.01))(visible2)
+    hidden22 = Dense(units=32, activation='sigmoid')(hidden21)
+    hidden23 = Dense(units=256, activation='tanh')(hidden22)
+    out2 = Dense(units=128, activation='relu')(hidden23)
 
-    # Search for optimal hyperparameters
-    print("Tuning Started")
-    tuner.search([trainX1, trainX2], trainy, validation_data=([valX1, valX2], valy), shuffle=True, callbacks=[stop_early])
-    best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
-    print(f"""
-    The hyperparameter search is complete. 
-    {best_hps.get('unit1')} --- {best_hps.get('activation')} 
-    {best_hps.get('unit2')} --- {best_hps.get('activation2')} 
-    {best_hps.get('unit3')} --- 
-    {best_hps.get('unit_out')} --- {best_hps.get('activation3')} 
+    hidden4 = Add()([out1, out2])
+    out = Dense(n_output, activation='linear')(hidden4)
 
-    {best_hps.get('unit5')} --- {best_hps.get('activation4')} 
-    {best_hps.get('unit6')} --- {best_hps.get('activation5')} 
-    {best_hps.get('unit7')} --- 
-    {best_hps.get('unit_out')} --- {best_hps.get('activation6')} 
-    """)
+    model = Model(inputs=[visible, visible2], outputs=[out])
 
-    # Build the model
-    model = tuner.hypermodel.build(best_hps)
+#    plot_model(model, to_file='combined_NN.png')
 
     # compile model
     opt = Adam(learning_rate=0.01)
@@ -389,7 +287,7 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['8000']
+train_set = ['1000', '2000', '4000', '10000', '20000', '30000']
 n_val = 1000
 n_test = 10000
 op = sys.argv[1]
@@ -399,17 +297,17 @@ iX, iY = prepare_data(op)
 # fit model and plot learning curves for a patience
 patience = 100 
 
-current_dir = os.getcwd() + '/conv2'
+current_dir = os.getcwd()
 
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
     chdir(current_dir)
-    os.chdir(current_dir)
+    os.chdir(current_dir + '/withdft/')
     try:
         os.mkdir(str(train_set[ii]))
     except:
         pass
-    os.chdir(current_dir + '/' + str(train_set[ii]))
+    os.chdir(current_dir + '/withdft/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 
