@@ -2,7 +2,7 @@
 #SBATCH --time=48:00:00
 #SBATCH --partition=gpu2 
 #SBATCH --gres=gpu:4
-#SBATCH --nodes=1
+#SBATCH --nodes=2
 #SBATCH --ntasks=8
 #SBATCH -J nn-dftb-kt-ra
 #SBATCH --output=conv2/dip.out
