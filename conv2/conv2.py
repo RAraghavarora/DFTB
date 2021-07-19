@@ -69,7 +69,8 @@ def complete_array(Aprop):
 
 def prepare_data(op):
     #  # read dataset
-    data_dir = 'C:/raghav/DFTB/'
+    data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/'
+
     properties = ['RMSD', 'EAT', 'EMBD', 'EGAP', 'KSE', 'FermiEne', 'BandEne', 'NumElec', 'h0Ene', 'sccEne', '3rdEne', 'RepEne', 'mbdEne', 'TBdip', 'TBeig', 'TBchg']
 
     # data preparation
@@ -282,7 +283,7 @@ def save_plot(n_val):
     plt.plot(temp, temp)
     plt.xlabel("True EAT")
     plt.ylabel("Predicted EAT")
-    plt.savefig(str(n_val) + '.png')
+    plt.savefig('result.png')
     plt.close()
 
 
@@ -297,17 +298,17 @@ iX, iY = prepare_data(op)
 # fit model and plot learning curves for a patience
 patience = 100 
 
-current_dir = os.getcwd()
+current_dir = '/scratch/ws/1/medranos-DFTB/raghav/codes/conv2'
 
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
     chdir(current_dir)
-    os.chdir(current_dir + '/withdft/')
+    os.chdir(current_dir)
     try:
         os.mkdir(str(train_set[ii]))
     except:
         pass
-    os.chdir(current_dir + '/withdft/' + str(train_set[ii]))
+    os.chdir(current_dir + '/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 
