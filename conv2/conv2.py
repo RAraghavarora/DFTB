@@ -188,8 +188,8 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
                     kernel_regularizer=regularizers.l2(0.01),
                     activity_regularizer=regularizers.l1(0.01))(visible)
     hidden2 = Dense(units=32, activation='sigmoid')(hidden1)
-    hidden3 = Dense(units=160, activation='tanh')(hidden2)
-    out1 = Dense(units=128, activation='relu')(hidden3)
+    # hidden3 = Dense(units=160, activation='tanh')(hidden2)
+    out1 = Dense(units=128, activation='relu')(hidden2)
 
     # 2nd model
     n_input = int(len(iX[1][0]))
@@ -201,11 +201,12 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
                      kernel_regularizer=regularizers.l2(0.01),
                      activity_regularizer=regularizers.l1(0.01))(visible2)
     hidden22 = Dense(units=32, activation='sigmoid')(hidden21)
-    hidden23 = Dense(units=256, activation='tanh')(hidden22)
-    out2 = Dense(units=128, activation='relu')(hidden23)
+    # hidden23 = Dense(units=256, activation='tanh')(hidden22)
+    out2 = Dense(units=128, activation='relu')(hidden22)
 
     hidden4 = Add()([out1, out2])
-    out = Dense(n_output, activation='linear')(hidden4)
+    hidden5 = Dense(160, activation='relu')(hidden4)
+    out = Dense(n_output, activation='linear')(hidden5)
 
     model = Model(inputs=[visible, visible2], outputs=[out])
 
@@ -288,7 +289,7 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['1000', '2000', '4000', '10000', '20000', '30000']
+train_set = ['1000', '2000', '4000', '8000', '10000', '20000', '30000']
 n_val = 1000
 n_test = 10000
 op = sys.argv[1]
@@ -298,7 +299,7 @@ iX, iY = prepare_data(op)
 # fit model and plot learning curves for a patience
 patience = 100 
 
-current_dir = '/scratch/ws/1/medranos-DFTB/raghav/codes/conv2'
+current_dir = '/scratch/ws/1/medranos-DFTB/raghav/codes/conv2/new'
 
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
@@ -317,7 +318,7 @@ for ii in range(len(train_set)):
         lhis = open('learning-history.dat', 'w')
         for ii in range(0, len(lr)):
             lhis.write('{:8d}'.format(ii) + '{:16f}'.format(lr[ii]) + '{:16f}'.format(loss[ii]) + '{:16f}'.format(acc[ii]) + '\n')
-        lhis.close
+        lhis.close()
 
         # Saving NN model
         save_nnmodel(model)
