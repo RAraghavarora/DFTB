@@ -2,18 +2,18 @@
 #SBATCH --time=48:00:00
 #SBATCH --partition=gpu2 
 #SBATCH --gres=gpu:4
-#SBATCH --nodes=2
+#SBATCH --nodes=1
 #SBATCH --ntasks=8
-#SBATCH -J nn-dftb-kt-ra
-#SBATCH --output=conv2/dip.out
-#SBATCH --error=conv2/dip.err
+#SBATCH -J nn-dftb-ra
+#SBATCH --output=conv2/new/dip.out
+#SBATCH --error=conv2/new/dip.err
 #SBATCH -A p_phononics
 #SBATCH -N 1       # request 2 nodes                                                       
 #SBATCH -n 4   # allocate one task per node  
 #SBATCH --ntasks-per-node=4
 #SBATCH --mail-type=all
 #SBATCH    --mail-user=leonardo.medrano@nano.tu-dresden.de
-#SBATCH --mem-per-cpu=2500MB
+#SBATCH --mem-per-cpu=4096MB
 
 
 ulimit -s unlimited
