@@ -10,7 +10,7 @@ from matplotlib import pyplot
 import torch
 from torch.autograd import Variable
 
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.metrics import mean_squared_error, make_scorer, mean_absolute_error
 
 from tensorflow.keras.layers import Dense, Input, Add, Conv2D, MaxPooling2D, Dot, Concatenate, GlobalMaxPooling2D
@@ -160,10 +160,11 @@ def split_data(n_train, n_val, n_test, Repre, Target):
     Y_val = Y_val.reshape(-1, 1)
     Y_test = Y_test.reshape(-1, 1)
 
-    x_scaler = StandardScaler().fit(X_train)
-    y_scaler = StandardScaler().fit(Y_train)
+    # Normalize the training data
+    X_train_scaled = MinMaxScaler.fit_transform(X_train)
+    X_val_scaled = MinMaxScaler.fit_transform(X_val)
 
-    return X_train, Y_train, X_val, Y_val, X_test, Y_test, x_scaler, y_scaler
+    return X_train_scaled, Y_train, X_val_scaled, Y_val, X_test, Y_test, x_scaler, y_scaler
 
 # fit a model and plot learning curve
 
