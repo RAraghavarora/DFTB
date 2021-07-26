@@ -161,8 +161,10 @@ def split_data(n_train, n_val, n_test, Repre, Target):
     Y_test = Y_test.reshape(-1, 1)
 
     # Normalize the training data
-    X_train_scaled = MinMaxScaler.fit_transform(X_train)
-    X_val_scaled = MinMaxScaler.fit_transform(X_val)
+    sc = MinMaxScaler()
+    X_train_scaled = sc.fit_transform(X_train)
+    sc2 = MinMaxScaler()
+    X_val_scaled = sc2.fit_transform(X_val)
 
     return X_train_scaled, Y_train, X_val_scaled, Y_val, X_test, Y_test, x_scaler, y_scaler
 
