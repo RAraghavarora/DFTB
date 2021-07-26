@@ -4,9 +4,9 @@
 #SBATCH --gres=gpu:4
 #SBATCH --nodes=1
 #SBATCH --ntasks=8
-#SBATCH -J nn-dftb-ra
-#SBATCH --output=conv2/new/dip.out
-#SBATCH --error=conv2/new/dip.err
+#SBATCH -J cnn-dftb-ra
+#SBATCH --output=cnn/new/dip.out
+#SBATCH --error=cnn/new/dip.err
 #SBATCH -A p_phononics
 #SBATCH -N 1       # request 2 nodes                                                       
 #SBATCH -n 4   # allocate one task per node  
