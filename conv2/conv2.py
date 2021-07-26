@@ -165,6 +165,8 @@ def split_data(n_train, n_val, n_test, Repre, Target):
     X_train_scaled = sc.fit_transform(X_train)
     sc2 = MinMaxScaler()
     X_val_scaled = sc2.fit_transform(X_val)
+    x_scaler = StandardScaler().fit(X_train)
+    y_scaler = StandardScaler().fit(Y_train)
 
     return X_train_scaled, Y_train, X_val_scaled, Y_val, X_test, Y_test, x_scaler, y_scaler
 

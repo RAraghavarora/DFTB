@@ -8,7 +8,7 @@
 #SBATCH --output=cnn/new/dip.out
 #SBATCH --error=cnn/new/dip.err
 #SBATCH -A p_phononics
-#SBATCH -N 1       # request 2 nodes                                                       
+#SBATCH -N 2       # request 2 nodes                                                       
 #SBATCH -n 4   # allocate one task per node  
 #SBATCH --ntasks-per-node=4
 #SBATCH --mail-type=all
