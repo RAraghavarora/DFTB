@@ -69,9 +69,9 @@ def complete_array(Aprop):
 
 def prepare_data(op):
     #  # read dataset
-    data_dir = '../'
+    # data_dir = '../'
 
-    # data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/'
+    data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/'
 
     properties = ['RMSD', 'EAT', 'EMBD', 'EGAP', 'KSE', 'FermiEne', 'BandEne', 'NumElec', 'h0Ene', 'sccEne', '3rdEne', 'RepEne', 'mbdEne', 'TBdip', 'TBeig', 'TBchg']
 
@@ -303,12 +303,17 @@ iX, iY = prepare_data(op)
 # fit model and plot learning curves for a patience
 patience = 100 
 
-current_dir = '/Users/davinderkumar/Essentials/Thesis/code/cnn'
+current_dir = '/scratch/ws/1/medranos-DFTB/raghav/codes/cnn/new'
 
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
-    chdir(current_dir)
-    os.chdir(current_dir)
+    try:
+        chdir(current_dir)
+        os.chdir(current_dir)
+    except:
+        os.mkdir(current_dir)
+        chdir(current_dir)
+        os.chdir(current_dir)
     try:
         os.mkdir(str(train_set[ii]))
     except:
