@@ -2,7 +2,7 @@
 #SBATCH --time=48:00:00
 #SBATCH --partition=gpu2 
 #SBATCH --gres=gpu:4
-#SBATCH --nodes=1
+#SBATCH --nodes=2
 #SBATCH --ntasks=8
 #SBATCH -J cnn-dftb-ra
 #SBATCH --output=cnn/new/dip.out
@@ -60,7 +60,7 @@ echo "training starts"
 #export DFTB_COMMAND='mpiexec -n 1 /home/medranos/vdftb20/dftb/bin/dftb+'
 #export DFTB_PREFIX='/home/medranos/SK-files/3ob-3-1/'
 
-work=/scratch/ws/1/medranos-DFTB/raghav/codes/conv2
+work=/scratch/ws/1/medranos-DFTB/raghav/code/conv2
 python3 $work/conv2.py EAT fit
 
 echo "training is over :-)"
