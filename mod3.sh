@@ -1,16 +1,20 @@
 #!/bin/bash
-#SBATCH --time=24:00:00
-#SBATCH --partition=gpu2                        # specify ml partition or gpu2 partition
-#SBATCH --gres=gpu:2                      # use 1 GPU per node (i.e. use one GPU per task)
-#SBATCH --nodes=1                        # request 1 node
+#SBATCH --time=48:00:00
+#SBATCH --partition=gpu2 
+#SBATCH --gres=gpu:4
+#SBATCH --nodes=2
 #SBATCH --ntasks=8
-#SBATCH -J nn-dftb-ra-2
-#SBATCH --output=withdft/dip.out
-#SBATCH --error=withdft/dip.err
-#SBATCH -A p_biomolecules
+#SBATCH -J nn-dftb-ra
+#SBATCH --output=conv/withdft/new/dip.out
+#SBATCH --error=conv/withdft/new/dip.err
+#SBATCH -A p_phononics
+#SBATCH -N 2       # request 2 nodes                                                       
+#SBATCH -n 4   # allocate one task per node  
+#SBATCH --ntasks-per-node=4
 #SBATCH --mail-type=all
-#SBATCH        --mail-user=leonardo.medrano@nano.tu-dresden.de
-#SBATCH --mem-per-cpu=4000MB
+#SBATCH    --mail-user=leonardo.medrano@nano.tu-dresden.de
+#SBATCH --mem-per-cpu=4096MB
+
 
 ulimit -s unlimited
 
@@ -19,7 +23,7 @@ module purge                                 # purge if you already have modules
 module load modenv/scs5
 module load Python/3.6.4-intel-2018a
 . /home/medranos/vdftb20/bin/activate
-module load cuDNN/8.0.4.30-CUDA-11.1.1
+#module load cuDNN/8.0.4.30-CUDA-11.1.1
 
 echo "training starts"
 
@@ -56,8 +60,8 @@ echo "training starts"
 #export DFTB_COMMAND='mpiexec -n 1 /home/medranos/vdftb20/dftb/bin/dftb+'
 #export DFTB_PREFIX='/home/medranos/SK-files/3ob-3-1/'
 
-work=/scratch/ws/1/medranos-DFTB/raghav/codes/
-python3 $work/train_dftb.py EAT fit
+work=/scratch/ws/1/medranos-DFTB/raghav/code/conv
+python3 $work/conv.py EAT fit
 
 echo "training is over :-)"
 
