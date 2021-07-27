@@ -10,7 +10,7 @@ from matplotlib import pyplot
 import torch
 from torch.autograd import Variable
 
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.metrics import mean_squared_error, make_scorer, mean_absolute_error
 
 from tensorflow.keras.layers import Dense, Input, Add
@@ -68,7 +68,7 @@ def complete_array(Aprop):
 
 def prepare_data(op):
     #  # read dataset
-    data_dir = '/scratch/ws/1/medranos-DFTB/props/dftb/data/n1-2/'
+    data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/'
     # data_dir = '../'
     properties = ['RMSD', 'EAT', 'EMBD', 'EGAP', 'KSE', 'FermiEne', 'BandEne', 'NumElec', 'h0Ene', 'sccEne', '3rdEne', 'RepEne', 'mbdEne', 'TBdip', 'TBeig', 'TBchg']
 
@@ -156,6 +156,11 @@ def split_data(n_train, n_val, n_test, Repre, Target):
     Y_train = Y_train.reshape(-1, 1)
     Y_val = Y_val.reshape(-1, 1)
     Y_test = Y_test.reshape(-1, 1)
+
+    sc = MinMaxScaler()
+    X_train_scaled = sc.fit_transform(X_train)
+    sc2 = MinMaxScaler()
+    X_val_scaled = sc2.fit_transform(X_val)
 
     x_scaler = StandardScaler().fit(X_train)
     y_scaler = StandardScaler().fit(Y_train)
@@ -302,12 +307,12 @@ current_dir = os.getcwd()
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
     chdir(current_dir)
-    os.chdir(current_dir + '/withdft/')
+    os.chdir(current_dir + '/withdft/new/')
     try:
         os.mkdir(str(train_set[ii]))
     except:
         pass
-    os.chdir(current_dir + '/withdft/' + str(train_set[ii]))
+    os.chdir(current_dir + '/withdft/new/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 
