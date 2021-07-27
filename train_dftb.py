@@ -9,7 +9,7 @@ from matplotlib import pyplot
 import torch
 from torch.autograd import Variable
 
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.metrics import mean_squared_error, make_scorer, mean_absolute_error
 
 from tensorflow.keras.layers import Dense
@@ -66,7 +66,8 @@ def complete_array(Aprop):
 
 def prepare_data(op):
     #  # read dataset
-    data_dir = '/scratch/ws/1/medranos-DFTB/props/dftb/data/n1-2/'
+    data_dir = '../'
+    # data_dir = '/scratch/ws/1/medranos-DFTB/props/dftb/data/n1-2/'
     properties = ['RMSD', 'EAT', 'EMBD', 'EGAP', 'KSE', 'FermiEne', 'BandEne', 'NumElec', 'h0Ene', 'sccEne', '3rdEne', 'RepEne', 'mbdEne', 'TBdip', 'TBeig', 'TBchg']
 
     # data preparation
@@ -150,6 +151,10 @@ def split_data(n_train, n_val, n_test, Repre, Target):
     Y_val = Y_val.reshape(-1, 1)
     Y_test = Y_test.reshape(-1, 1)
 
+    sc = MinMaxScaler()
+    X_train_scaled = sc.fit_transform(X_train)
+    sc2 = MinMaxScaler()
+    X_val_scaled = sc2.fit_transform(X_val)
     x_scaler = StandardScaler().fit(X_train)
     y_scaler = StandardScaler().fit(Y_train)
 
@@ -253,7 +258,7 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['30000']
+train_set = ['1000', '2000', '4000', '8000', '30000']
 n_val = 1000
 n_test = 10000
 op = sys.argv[1]
@@ -268,12 +273,12 @@ current_dir = os.getcwd()
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
     chdir(current_dir)
-    os.chdir(current_dir + '/withdft/')
+    os.chdir(current_dir + '/new/')
     try:
         os.mkdir(str(train_set[ii]))
     except:
         pass
-    os.chdir(current_dir + '/withdft/' + str(train_set[ii]))
+    os.chdir(current_dir + '/new/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 
