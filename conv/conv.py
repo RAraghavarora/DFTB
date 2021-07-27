@@ -307,12 +307,12 @@ current_dir = os.getcwd()
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
     chdir(current_dir)
-    os.chdir(current_dir + '/withdft/new/')
+    os.chdir(current_dir + '/conv/withdft/new/')
     try:
         os.mkdir(str(train_set[ii]))
     except:
         pass
-    os.chdir(current_dir + '/withdft/new/' + str(train_set[ii]))
+    os.chdir(current_dir + '/conv/withdft/new/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 
