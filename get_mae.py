@@ -11,7 +11,11 @@ import torch
 from torch.autograd import Variable
 
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import mean_squared_error, make_scorer, mean_absolute_error
+from sklearn.metrics import (
+    mean_squared_error,
+    make_scorer,
+    mean_absolute_error
+)
 
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
@@ -50,9 +54,12 @@ def complete_array(Aprop):
 def prepare_data(op):
     #  # read dataset
     data_dir = '../'
-    properties = ['RMSD', 'EAT', 'EMBD', 'EGAP', 'KSE', 'FermiEne', 'BandEne', 'NumElec', 'h0Ene', 'sccEne', '3rdEne', 'RepEne', 'mbdEne', 'TBdip', 'TBeig', 'TBchg']
+    properties = ['RMSD', 'EAT', 'EMBD', 'EGAP', 'KSE', 'FermiEne', 'BandEne',
+                  'NumElec', 'h0Ene', 'sccEne', '3rdEne', 'RepEne', 'mbdEne',
+                  'TBdip', 'TBeig', 'TBchg']
 
-    dataset = spk.data.AtomsData(data_dir + 'totgdb7x_pbe0.db', load_only=properties)
+    dataset = spk.data.AtomsData(
+        data_dir + 'totgdb7x_pbe0.db', load_only=properties)
 
     n = len(dataset)
     print(n)
@@ -64,7 +71,7 @@ def prepare_data(op):
     logging.info("get predicted property")
     AE, xyz, Z = [], [], []
     EGAP, KSE, TPROP = [], [], []
-    p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11 = [], [], [], [], [], [], [], [], [], [], []
+    p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11 = ([] for i in range(11))
     atoms_data = []
     for i in idx2[:n]:
         atoms, props = dataset.get_properties(i)
@@ -94,10 +101,12 @@ def prepare_data(op):
 
     # Generate representations
     # Coulomb matrix
-    xyz_reps = np.array([generate_coulomb_matrix(Z[mol], xyz[mol], sorting='unsorted') for mol in idx2])
+    xyz_reps = np.array([generate_coulomb_matrix(
+        Z[mol], xyz[mol], sorting='unsorted') for mol in idx2])
 
     TPROP2 = []
-    p1b, p2b, p11b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b = [], [], [], [], [], [], [], [], [], [], []
+    p1b, p2b, p11b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b = [
+    ], [], [], [], [], [], [], [], [], [], []
     for nn in idx2:
         p1b.append(p1[nn])
         p2b.append(p2[nn])
@@ -114,13 +123,19 @@ def prepare_data(op):
 
     p11b = complete_array(p11b)
 
-    reps2 = []
+    desc = []
+    dftb = []
     for ii in range(len(idx2)):
-        reps2.append(xyz_reps[ii])
-        # reps2.append(np.concatenate((xyz_reps[ii], p1b[ii], p2b[ii], p3b[ii], p4b[ii], p5b[ii], p6b[ii], p7b[ii], p8b[ii], np.linalg.norm(p9b[ii]), p10b[ii], p11b[ii]), axis=None))
-    reps2 = np.array(reps2)
+        desc.append(xyz_reps[ii])
+        dftb.append(
+            np.concatenate((
+                p1b[ii], p2b[ii], p3b[ii], p4b[ii], p5b[ii], p6b[ii], p7b[ii], p8b[ii], 
+                np.linalg.norm(p9b[ii]), p10b[ii], p11b[ii]), axis=None)
+        )
+    desc = np.array(desc)
+    dftb = np.array(dftb)
 
-    return reps2, TPROP2, atoms_data
+    return (desc, dftb), TPROP2, atoms_data
 
 
 train_set = ['1000', '2000', '4000', '8000', '10000', '20000', '30000']
@@ -128,33 +143,40 @@ n_test = 41537
 n_val = 1000
 
 Repre, Target, atoms_data = prepare_data('EAT')
+desc = Repre[0]
+dftb = Repre[1]
 
 
 for n_train in train_set:
     n_train = int(n_train)
-    X_train, X_val, X_test = np.array(Repre[:n_train]), np.array(Repre[-n_test - n_val:-n_test]), np.array(Repre[-n_test:])
+    X_test1 = np.array(desc[-n_test:])
+    X_test2 = np.array(dftb[-n_test:])
     Y_train, Y_val, Y_test = np.array(Target[:n_train]), np.array(Target[-n_test - n_val:-n_test]), np.array(Target[-n_test:])
 
     Y_train = Y_train.reshape(-1, 1)
     Y_val = Y_val.reshape(-1, 1)
     Y_test = Y_test.reshape(-1, 1)
 
-    model = load_model('%s' % n_train + '/model.h5')
-    pdb.set_trace()
-    y_test = model.predict(X_test)  # in eV
+    model = load_model('conv/withdft/%s' % n_train + '/model.h5')
+    y_test = model.predict((X_test1, X_test2))  # in eV
     MAE_PROP = float(mean_absolute_error(Y_test, y_test))
     MSE_PROP = float(mean_squared_error(Y_test, y_test))
     STD_PROP = float(Y_test.std())
 
-    out2 = open('%s/errors.dat' % n_train, 'w')
-    out2.write('{:>24}'.format(STD_PROP) + '{:>24}'.format(MAE_PROP) + '{:>24}'.format(MSE_PROP) + "\n")
+    out2 = open('conv/withdft/%s/errors.dat' % n_train, 'w')
+    out2.write('{:>24}'.format(STD_PROP) +
+               '{:>24}'.format(MAE_PROP) + '{:>24}'.format(MSE_PROP) + "\n")
     out2.close()
 
     # writing ouput for comparing values
     dtest = np.array(Y_test - y_test)
     format_list1 = ['{:16f}' for item1 in Y_test[0]]
     s = ' '.join(format_list1)
-    ctest = open('%s/comp.dat' % n_train, 'w')
+    ctest = open('conv/withdft/%s/comp.dat' % n_train, 'w')
     for ii in range(0, len(Y_test)):
-        ctest.write(s.format(*Y_test[ii]) + s.format(*y_test[ii]) + s.format(*dtest[ii]) + '\n')
+        ctest.write(
+            s.format(*Y_test[ii]) +
+            s.format(*y_test[ii]) +
+            s.format(*dtest[ii]) + '\n'
+        )
     ctest.close()
