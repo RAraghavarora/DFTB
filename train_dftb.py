@@ -138,6 +138,15 @@ def prepare_data(op):
         p11b.append(p11[nn].numpy())
         TPROP2.append(TPROP[nn])
 
+    # Standardize the data property wise
+
+    temp = []
+    for var in [p1b, p2b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b, p11b]:
+        scaler = StandardScaler()
+        temp.append(scaler.fit_transform(var))
+
+    p1b, p2b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b, p11b = temp
+
     p11b = complete_array(p11b)
 
     reps2 = []
@@ -169,10 +178,6 @@ def split_data(n_train, n_val, n_test, Repre, Target):
     Y_val = Y_val.reshape(-1, 1)
     Y_test = Y_test.reshape(-1, 1)
 
-    sc = MinMaxScaler()
-    X_train_scaled = sc.fit_transform(X_train)
-    sc2 = MinMaxScaler()
-    X_val_scaled = sc2.fit_transform(X_val)
     x_scaler = StandardScaler().fit(X_train)
     y_scaler = StandardScaler().fit(Y_train)
 
