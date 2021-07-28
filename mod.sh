@@ -4,9 +4,9 @@
 #SBATCH --gres=gpu:4
 #SBATCH --nodes=2
 #SBATCH --ntasks=8
-#SBATCH -J cnn-dftb-ra
-#SBATCH --output=cnn/new/dip.out
-#SBATCH --error=cnn/new/dip.err
+#SBATCH -J nn-dftb-ra
+#SBATCH --output=new/dip.out
+#SBATCH --error=new/dip.err
 #SBATCH -A p_phononics
 #SBATCH -N 2       # request 2 nodes                                                       
 #SBATCH -n 4   # allocate one task per node  
@@ -60,8 +60,8 @@ echo "training starts"
 #export DFTB_COMMAND='mpiexec -n 1 /home/medranos/vdftb20/dftb/bin/dftb+'
 #export DFTB_PREFIX='/home/medranos/SK-files/3ob-3-1/'
 
-work=/scratch/ws/1/medranos-DFTB/raghav/code/conv2
-python3 $work/conv2.py EAT fit
+work=/scratch/ws/1/medranos-DFTB/raghav/code
+python3 $work/train_dftb.py EAT fit
 
 echo "training is over :-)"
 
