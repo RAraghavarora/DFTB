@@ -1,6 +1,7 @@
 # NN model
 import sys
 import os
+import pdb
 from os import path, mkdir, chdir
 import warnings
 import numpy as np
@@ -138,16 +139,19 @@ def prepare_data(op):
         p11b.append(p11[nn].numpy())
         TPROP2.append(TPROP[nn])
 
+    p11b = complete_array(p11b)
+
     # Standardize the data property wise
 
     temp = []
     for var in [p1b, p2b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b, p11b]:
+        var2 = np.array(var)
+        var2 = var2.reshape(-1, 1)
         scaler = StandardScaler()
-        temp.append(scaler.fit_transform(var))
+        var3 = scaler.fit_transform(var2)
+        temp.append(var3)
 
     p1b, p2b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b, p11b = temp
-
-    p11b = complete_array(p11b)
 
     reps2 = []
     for ii in range(len(idx2)):
@@ -168,6 +172,8 @@ def prepare_data(op):
 def split_data(n_train, n_val, n_test, Repre, Target):
     # Training
     print("Perfoming training")
+    # Shuffle the data
+    np.random.shuffle(Repre)
     X_train, X_val, X_test = np.array(Repre[:n_train]), np.array(
         Repre[-n_test - n_val:-n_test]), np.array(Repre[-n_test:])
     Y_train, Y_val, Y_test = np.array(Target[:n_train]), np.array(
@@ -192,7 +198,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
         n_train, n_val, n_test, iX, iY)
 
     n_input = int(len(iX[0]))
-    #n_output = int(len(iY[0]))
+    # n_output = int(len(iY[0]))
     n_output = int(1)
 
     n_inout = n_input + n_output
@@ -233,7 +239,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
 def plotting_results(model, testX, testy):
     # applying nn model
     y_test = model.predict(testX)
-    #y_test = y_scaler.inverse_transform(y_test)
+    # y_test = y_scaler.inverse_transform(y_test)
     MAE_PROP = float(mean_absolute_error(testy, y_test))
     MSE_PROP = float(mean_squared_error(testy, y_test))
     STD_PROP = float(testy.std())
@@ -294,7 +300,7 @@ def save_plot(n_val):
     plt.plot(temp, temp)
     plt.xlabel("True EAT")
     plt.ylabel("Predicted EAT")
-    plt.title('Results for training size of %s', % n_val)
+    plt.title('Results for training size of %s' % n_val)
     plt.savefig('Results.png')
     plt.close()
 

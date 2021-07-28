@@ -2,6 +2,7 @@
 import sys
 import pdb
 import os
+import pdb
 from os import path, mkdir, chdir
 import warnings
 import numpy as np
@@ -13,7 +14,7 @@ from torch.autograd import Variable
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.metrics import mean_squared_error, make_scorer, mean_absolute_error
 
-from tensorflow.keras.layers import Dense, Input, Add, Conv2D, MaxPooling2D, Dot, Concatenate, GlobalMaxPooling2D
+from tensorflow.keras.layers import Dense, Input, Add
 from tensorflow.keras.models import Sequential
 from tensorflow.keras import regularizers
 from tensorflow.keras.optimizers import SGD, Adam
@@ -69,9 +70,8 @@ def complete_array(Aprop):
 
 def prepare_data(op):
     #  # read dataset
-    # data_dir = '../'
-
     data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/'
+    # data_dir = '../'
 
     properties = ['RMSD', 'EAT', 'EMBD', 'EGAP', 'KSE', 'FermiEne', 'BandEne', 'NumElec', 'h0Ene', 'sccEne', '3rdEne', 'RepEne', 'mbdEne', 'TBdip', 'TBeig', 'TBchg']
 
@@ -119,7 +119,7 @@ def prepare_data(op):
     xyz_reps = np.array([generate_coulomb_matrix(Z[mol], xyz[mol], sorting='unsorted') for mol in idx2])
 
     TPROP2 = []
-    p1b, p2b, p11b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b = [], [], [], [], [], [], [], [], [], [], []
+    p1b, p2b, p11b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b = ([] for i in range(11))
     for nn in idx2:
         p1b.append(p1[nn])
         p2b.append(p2[nn])
@@ -136,7 +136,16 @@ def prepare_data(op):
 
     p11b = complete_array(p11b)
 
-    reps2 = []
+    # Normalize the data property-wise
+    temp = []
+    for var in [p1b, p2b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b, p11b]:
+        var2 = np.array(var)
+        var2 = var2.reshape(-1, 1)
+        scaler = StandardScaler()
+        var3 = scaler.fit_transform(var2)
+        temp.append(var3)
+    p1b, p2b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b, p11b = temp
+
     desc = []
     dftb = []
     for ii in range(len(idx2)):
@@ -152,6 +161,7 @@ def prepare_data(op):
 def split_data(n_train, n_val, n_test, Repre, Target):
     # Training
     print("Perfoming training")
+    np.random.shuffle(Repre)
     X_train, X_val, X_test = np.array(Repre[:n_train]), np.array(Repre[-n_test - n_val:-n_test]), np.array(Repre[-n_test:])
     Y_train, Y_val, Y_test = np.array(Target[:n_train]), np.array(Target[-n_test - n_val:-n_test]), np.array(Target[-n_test:])
 
@@ -160,15 +170,10 @@ def split_data(n_train, n_val, n_test, Repre, Target):
     Y_val = Y_val.reshape(-1, 1)
     Y_test = Y_test.reshape(-1, 1)
 
-    # Normalize the training data
-    sc = MinMaxScaler()
-    X_train_scaled = sc.fit_transform(X_train)
-    sc2 = MinMaxScaler()
-    X_val_scaled = sc2.fit_transform(X_val)
     x_scaler = StandardScaler().fit(X_train)
     y_scaler = StandardScaler().fit(Y_train)
 
-    return X_train_scaled, Y_train, X_val_scaled, Y_val, X_test, Y_test, x_scaler, y_scaler
+    return X_train, Y_train, X_val, Y_val, X_test, Y_test, x_scaler, y_scaler
 
 # fit a model and plot learning curve
 
@@ -180,11 +185,6 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     trainX1, trainy, valX1, valy, testX1, testy, x_scaler1, y_scaler = split_data(n_train, n_val, n_test, desc, iY)
     trainX2, trainy, valX2, valy, testX2, testy, x_scaler2, y_scaler = split_data(n_train, n_val, n_test, dftb, iY)
 
-    trainX1.shape = [trainX1.shape[0], 12, 23, 1]
-    trainX2.shape = [trainX2.shape[0], 4, 10, 1]
-    valX1.shape = [valX1.shape[0], 12, 23, 1]
-    valX2.shape = [valX2.shape[0], 4, 10, 1]
-
     n_input = int(len(iX[0][0]))
     #n_output = int(len(iY[0]))
     n_output = int(1)
@@ -194,28 +194,31 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
 
     # 1st model
 
-    visible = Input(shape=(12, 23, 1))
-    hidden1 = Conv2D(32, kernel_size = [5, 5], activation='relu', 
-                     kernel_initializer='he_uniform',
-                     padding='valid', use_bias=True,
-                     bias_initializer='zeros')(visible)
-    hidden2 = MaxPooling2D(pool_size=(2, 2))(hidden1)
-    hidden3 = Conv2D(16, kernel_size = [3, 6], activation='relu', 
-                     padding='valid', use_bias=True)(hidden2)
+    visible = Input(shape=(n_input,))
+    hidden1 = Dense(256, activation='relu', 
+                    kernel_initializer='he_uniform',
+                    kernel_regularizer=regularizers.l2(0.01),
+                    activity_regularizer=regularizers.l1(0.01))(visible)
+    hidden2 = Dense(units=32, activation='sigmoid')(hidden1)
+    # hidden3 = Dense(units=160, activation='tanh')(hidden2)
+    out1 = Dense(units=128, activation='relu')(hidden2)
 
     # 2nd model
-    n_input = 40
-    visible2 = Input(shape=(4, 10, 1))
-    prop_hidden1 = Conv2D(16, kernel_size = [3, 3], activation='relu', 
-                          kernel_initializer='he_uniform',
-                          padding='valid', use_bias=True,
-                          bias_initializer='zeros')(visible2)
-    prop_hidden2 = MaxPooling2D(pool_size=(1, 2))(prop_hidden1)
-    hidden4 = Concatenate()([hidden3, prop_hidden2]) 
-    hidden5 = Conv2D(32, kernel_size = [2, 2], activation='relu', 
-                     padding='valid', use_bias=True)(hidden4)
-    x = GlobalMaxPooling2D()(hidden5)
-    out = Dense(1, activation='linear')(x)
+    n_input = int(len(iX[1][0]))
+    n_inout = n_input + n_output
+
+    visible2 = Input(shape=(n_input,))
+    hidden21 = Dense(160, activation='relu', 
+                     kernel_initializer='he_uniform',
+                     kernel_regularizer=regularizers.l2(0.01),
+                     activity_regularizer=regularizers.l1(0.01))(visible2)
+    hidden22 = Dense(units=32, activation='sigmoid')(hidden21)
+    # hidden23 = Dense(units=256, activation='tanh')(hidden22)
+    out2 = Dense(units=128, activation='relu')(hidden22)
+
+    hidden4 = Add()([out1, out2])
+    hidden5 = Dense(160, activation='relu')(hidden4)
+    out = Dense(n_output, activation='linear')(hidden5)
 
     model = Model(inputs=[visible, visible2], outputs=[out])
 
@@ -298,7 +301,7 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['1000', '2000', '4000', '8000', '10000']
+train_set = ['1000', '2000', '4000', '8000', '10000', '20000', '30000']
 n_val = 1000
 n_test = 10000
 op = sys.argv[1]
@@ -308,17 +311,12 @@ iX, iY = prepare_data(op)
 # fit model and plot learning curves for a patience
 patience = 100 
 
-current_dir = '/scratch/ws/1/medranos-DFTB/raghav/code/cnn/new'
+current_dir = '/scratch/ws/1/medranos-DFTB/raghav/codes/conv2/new'
 
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
-    try:
-        chdir(current_dir)
-        os.chdir(current_dir)
-    except:
-        os.mkdir(current_dir)
-        chdir(current_dir)
-        os.chdir(current_dir)
+    chdir(current_dir)
+    os.chdir(current_dir)
     try:
         os.mkdir(str(train_set[ii]))
     except:
