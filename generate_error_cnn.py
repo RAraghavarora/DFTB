@@ -47,12 +47,26 @@ def complete_array(Aprop):
 def prepare_data(op):
     #  # read dataset
     data_dir = '../'
-    properties = ['RMSD', 'EAT', 'EMBD', 'EGAP', 'KSE', 'FermiEne', 'BandEne',
-                  'NumElec', 'h0Ene', 'sccEne', '3rdEne', 'RepEne', 'mbdEne',
-                  'TBdip', 'TBeig', 'TBchg']
+    properties = [
+        'RMSD',
+        'EAT',
+        'EMBD',
+        'EGAP',
+        'KSE',
+        'FermiEne',
+        'BandEne',
+        'NumElec',
+        'h0Ene',
+        'sccEne',
+        '3rdEne',
+        'RepEne',
+        'mbdEne',
+        'TBdip',
+        'TBeig',
+        'TBchg',
+    ]
 
-    dataset = spk.data.AtomsData(
-        data_dir + 'totgdb7x_pbe0.db', load_only=properties)
+    dataset = spk.data.AtomsData(data_dir + 'totgdb7x_pbe0.db', load_only=properties)
 
     n = len(dataset)
     print(n)
@@ -94,12 +108,12 @@ def prepare_data(op):
 
     # Generate representations
     # Coulomb matrix
-    xyz_reps = np.array([generate_coulomb_matrix(
-        Z[mol], xyz[mol], sorting='unsorted') for mol in idx2])
+    xyz_reps = np.array(
+        [generate_coulomb_matrix(Z[mol], xyz[mol], sorting='unsorted') for mol in idx2]
+    )
 
     TPROP2 = []
-    p1b, p2b, p11b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b = (
-        [] for i in range(11))
+    p1b, p2b, p11b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b = ([] for i in range(11))
     for nn in idx2:
         p1b.append(p1[nn])
         p2b.append(p2[nn])
@@ -121,9 +135,22 @@ def prepare_data(op):
     for ii in range(len(idx2)):
         desc.append(xyz_reps[ii])
         dftb.append(
-            np.concatenate((
-                p1b[ii], p2b[ii], p3b[ii], p4b[ii], p5b[ii], p6b[ii], p7b[ii], p8b[ii],
-                np.linalg.norm(p9b[ii]), p10b[ii], p11b[ii]), axis=None)
+            np.concatenate(
+                (
+                    p1b[ii],
+                    p2b[ii],
+                    p3b[ii],
+                    p4b[ii],
+                    p5b[ii],
+                    p6b[ii],
+                    p7b[ii],
+                    p8b[ii],
+                    np.linalg.norm(p9b[ii]),
+                    p10b[ii],
+                    p11b[ii],
+                ),
+                axis=None,
+            )
         )
     desc = np.array(desc)
     dftb = np.array(dftb)
@@ -145,10 +172,13 @@ for n_train in train_set:
     X_test1 = np.array(desc[-n_test:])
     X_test2 = np.array(dftb[-n_test:])
 
+    X_test1.shape = [X_test1.shape[0], 12, 23, 1]
+    X_test2.shape = [X_test2.shape[0], 4, 10, 1]
+
     Y_train, Y_val, Y_test = (
         np.array(Target[:n_train]),
-        np.array(Target[-n_test - n_val:-n_test]),
-        np.array(Target[-n_test:])
+        np.array(Target[-n_test - n_val : -n_test]),
+        np.array(Target[-n_test:]),
     )
 
     Y_train = Y_train.reshape(-1, 1)
@@ -161,8 +191,12 @@ for n_train in train_set:
     STD_PROP = float(Y_test.std())
 
     out2 = open('cnn/new/%s/errors_test.dat' % n_train, 'w')
-    out2.write('{:>24}'.format(STD_PROP) +
-               '{:>24}'.format(MAE_PROP) + '{:>24}'.format(MSE_PROP) + "\n")
+    out2.write(
+        '{:>24}'.format(STD_PROP)
+        + '{:>24}'.format(MAE_PROP)
+        + '{:>24}'.format(MSE_PROP)
+        + "\n"
+    )
     out2.close()
 
     # writing ouput for comparing values
@@ -172,9 +206,7 @@ for n_train in train_set:
     ctest = open('cnn/new/%s/comp-test.dat' % n_train, 'w')
     for ii in range(0, len(Y_test)):
         ctest.write(
-            s.format(*Y_test[ii]) +
-            s.format(*y_test[ii]) +
-            s.format(*dtest[ii]) + '\n'
+            s.format(*Y_test[ii]) + s.format(*y_test[ii]) + s.format(*dtest[ii]) + '\n'
         )
     ctest.close()
     save_plot(n_train)
