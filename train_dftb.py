@@ -3,40 +3,30 @@ import sys
 import os
 import pdb
 from os import path, mkdir, chdir
-import warnings
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import pyplot
-import torch
-from torch.autograd import Variable
+from matplotlib import pyplot as plt
 
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.metrics import (
     mean_squared_error,
-    make_scorer,
     mean_absolute_error
 )
 
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
 from tensorflow.keras import regularizers
-from tensorflow.keras.optimizers import SGD, Adam
-from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.callbacks import Callback
-from tensorflow.keras.callbacks import ReduceLROnPlateau
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.callbacks import (
+    Callback,
+    ReduceLROnPlateau,
+)
 from tensorflow.keras import backend
-from tensorflow.keras.models import model_from_json
 from tensorflow.keras.models import load_model
 from qml.representations import generate_coulomb_matrix
-from qml.representations import generate_bob
 
 import logging
 import schnetpack as spk
-from ase.io import read
-from ase.db import connect
-from ase.atoms import Atoms
-from ase.calculators.dftb import Dftb
-from ase.units import Hartree, Bohr
 
 # monitor the learning rate
 
@@ -49,7 +39,6 @@ class LearningRateMonitor(Callback):
     # end of each training epoch
     def on_epoch_end(self, epoch, logs={}):
         # get and store the learning rate
-        optimizer = self.model.optimizer
         lrate = float(backend.get_value(self.model.optimizer.lr))
         self.lrates.append(lrate)
 
@@ -279,7 +268,6 @@ def load_nnmodel(idir):
 
 
 def save_plot(n_val):
-    import matplotlib.pyplot as plt
     f = open("comp-test.dat", 'r')
     lines = f.readlines()
     x = []
@@ -324,7 +312,7 @@ for ii in range(len(train_set)):
     os.chdir(current_dir + '/new/')
     try:
         os.mkdir(str(train_set[ii]))
-    except:
+    except FileExistsError:
         pass
     os.chdir(current_dir + '/new/' + str(train_set[ii]))
 
