@@ -105,8 +105,7 @@ def prepare_data(op):
         Z[mol], xyz[mol], sorting='unsorted') for mol in idx2])
 
     TPROP2 = []
-    p1b, p2b, p11b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b = [
-    ], [], [], [], [], [], [], [], [], [], []
+    p1b, p2b, p11b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b = ([] for i in range(11))
     for nn in idx2:
         p1b.append(p1[nn])
         p2b.append(p2[nn])
@@ -157,13 +156,13 @@ for n_train in train_set:
     Y_val = Y_val.reshape(-1, 1)
     Y_test = Y_test.reshape(-1, 1)
 
-    model = load_model('conv/withdft/%s' % n_train + '/model.h5')
+    model = load_model('conv2/new/%s' % n_train + '/model.h5')
     y_test = model.predict((X_test1, X_test2))  # in eV
     MAE_PROP = float(mean_absolute_error(Y_test, y_test))
     MSE_PROP = float(mean_squared_error(Y_test, y_test))
     STD_PROP = float(Y_test.std())
 
-    out2 = open('conv/withdft/%s/errors.dat' % n_train, 'w')
+    out2 = open('conv2/new/%s/errors.dat' % n_train, 'w')
     out2.write('{:>24}'.format(STD_PROP) +
                '{:>24}'.format(MAE_PROP) + '{:>24}'.format(MSE_PROP) + "\n")
     out2.close()
@@ -172,7 +171,7 @@ for n_train in train_set:
     dtest = np.array(Y_test - y_test)
     format_list1 = ['{:16f}' for item1 in Y_test[0]]
     s = ' '.join(format_list1)
-    ctest = open('conv/withdft/%s/comp.dat' % n_train, 'w')
+    ctest = open('conv2/new/%s/comp.dat' % n_train, 'w')
     for ii in range(0, len(Y_test)):
         ctest.write(
             s.format(*Y_test[ii]) +
