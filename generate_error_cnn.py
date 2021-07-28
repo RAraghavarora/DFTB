@@ -4,6 +4,7 @@ import numpy as np
 import schnetpack as spk
 from tensorflow.keras.models import load_model
 from qml.representations import generate_coulomb_matrix
+from sklearn.metrics import mean_squared_error, mean_absolute_error
 
 
 def save_plot(n_val):
@@ -27,7 +28,7 @@ def save_plot(n_val):
     plt.plot(temp, temp)
     plt.xlabel("True EAT")
     plt.ylabel("Predicted EAT")
-    plt.title("Result for train size of %s" % train_size)
+    plt.title("Result for train size of %s" % n_train)
     plt.savefig('cnn/new/%s/result.png' % n_train)
     plt.close()
 
