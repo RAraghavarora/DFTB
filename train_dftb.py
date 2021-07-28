@@ -10,7 +10,11 @@ import torch
 from torch.autograd import Variable
 
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
-from sklearn.metrics import mean_squared_error, make_scorer, mean_absolute_error
+from sklearn.metrics import (
+    mean_squared_error,
+    make_scorer,
+    mean_absolute_error
+)
 
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
@@ -68,11 +72,14 @@ def prepare_data(op):
     #  # read dataset
     data_dir = '../'
     # data_dir = '/scratch/ws/1/medranos-DFTB/props/dftb/data/n1-2/'
-    properties = ['RMSD', 'EAT', 'EMBD', 'EGAP', 'KSE', 'FermiEne', 'BandEne', 'NumElec', 'h0Ene', 'sccEne', '3rdEne', 'RepEne', 'mbdEne', 'TBdip', 'TBeig', 'TBchg']
+    properties = ['RMSD', 'EAT', 'EMBD', 'EGAP', 'KSE', 'FermiEne',
+                  'BandEne', 'NumElec', 'h0Ene', 'sccEne', '3rdEne',
+                  'RepEne', 'mbdEne', 'TBdip', 'TBeig', 'TBchg']
 
     # data preparation
     logging.info("get dataset")
-    dataset = spk.data.AtomsData(data_dir + 'totgdb7x_pbe0.db', load_only=properties)
+    dataset = spk.data.AtomsData(
+        data_dir + 'totgdb7x_pbe0.db', load_only=properties)
 
     n = len(dataset)
     print(n)
@@ -84,7 +91,7 @@ def prepare_data(op):
     logging.info("get predicted property")
     AE, xyz, Z = [], [], []
     EGAP, KSE, TPROP = [], [], []
-    p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11 = [], [], [], [], [], [], [], [], [], [], []
+    p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11 = ([] for i in range(11))
     for i in idx2[:n]:
         atoms, props = dataset.get_properties(i)
         AE.append(float(props['EAT']))
@@ -111,10 +118,12 @@ def prepare_data(op):
 
     # Generate representations
     # Coulomb matrix
-    xyz_reps = np.array([generate_coulomb_matrix(Z[mol], xyz[mol], sorting='unsorted') for mol in idx2])
+    xyz_reps = np.array([generate_coulomb_matrix(
+        Z[mol], xyz[mol], sorting='unsorted') for mol in idx2])
 
     TPROP2 = []
-    p1b, p2b, p11b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b = [], [], [], [], [], [], [], [], [], [], []
+    p1b, p2b, p11b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b = [
+    ], [], [], [], [], [], [], [], [], [], []
     for nn in idx2:
         p1b.append(p1[nn])
         p2b.append(p2[nn])
@@ -134,7 +143,14 @@ def prepare_data(op):
     reps2 = []
     for ii in range(len(idx2)):
         # reps2.append(xyz_reps[ii])
-        reps2.append(np.concatenate((xyz_reps[ii], p1b[ii], p2b[ii], p3b[ii], p4b[ii], p5b[ii], p6b[ii], p7b[ii], p8b[ii], np.linalg.norm(p9b[ii]), p10b[ii], p11b[ii]), axis=None))
+        reps2.append(
+            np.concatenate(
+                (xyz_reps[ii], p1b[ii], p2b[ii], p3b[ii], p4b[ii], p5b[ii],
+                 p6b[ii], p7b[ii], p8b[ii],
+                 np.linalg.norm(p9b[ii]),
+                 p10b[ii], p11b[ii]), axis=None
+            )
+        )
     reps2 = np.array(reps2)
 
     return reps2, TPROP2
@@ -143,8 +159,10 @@ def prepare_data(op):
 def split_data(n_train, n_val, n_test, Repre, Target):
     # Training
     print("Perfoming training")
-    X_train, X_val, X_test = np.array(Repre[:n_train]), np.array(Repre[-n_test - n_val:-n_test]), np.array(Repre[-n_test:])
-    Y_train, Y_val, Y_test = np.array(Target[:n_train]), np.array(Target[-n_test - n_val:-n_test]), np.array(Target[-n_test:])
+    X_train, X_val, X_test = np.array(Repre[:n_train]), np.array(
+        Repre[-n_test - n_val:-n_test]), np.array(Repre[-n_test:])
+    Y_train, Y_val, Y_test = np.array(Target[:n_train]), np.array(
+        Target[-n_test - n_val:-n_test]), np.array(Target[-n_test:])
 
     # Data standardization
     Y_train = Y_train.reshape(-1, 1)
@@ -165,7 +183,8 @@ def split_data(n_train, n_val, n_test, Repre, Target):
 
 def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
 
-    trainX, trainy, valX, valy, testX, testy, x_scaler, y_scaler = split_data(n_train, n_val, n_test, iX, iY)
+    trainX, trainy, valX, valy, testX, testy, x_scaler, y_scaler = split_data(
+        n_train, n_val, n_test, iX, iY)
 
     n_input = int(len(iX[0]))
     #n_output = int(len(iY[0]))
@@ -174,7 +193,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     n_inout = n_input + n_output
     # define model
     model = Sequential()
-    model.add(Dense(n_inout, input_dim=n_input, activation='tanh', 
+    model.add(Dense(n_inout, input_dim=n_input, activation='tanh',
                     kernel_initializer='he_uniform',
                     kernel_regularizer=regularizers.l2(0.01),
                     activity_regularizer=regularizers.l1(0.01)))
@@ -186,12 +205,24 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     opt = Adam(learning_rate=0.01)
     model.compile(loss='mse', optimizer=opt, metrics=['mae'])
     # fit model
-    rlrp = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=patience, min_delta=1E-5, min_lr=1E-6)
+    rlrp = ReduceLROnPlateau(
+        monitor='val_loss', factor=0.5,
+        patience=patience, min_delta=1E-5, min_lr=1E-6
+    )
     lrm = LearningRateMonitor()
-    history = model.fit(trainX, trainy, validation_data=(valX, valy), 
-                        batch_size=32, epochs=20000, verbose=2, callbacks=[rlrp, lrm])
+    history = model.fit(
+        trainX, trainy, validation_data=(valX, valy),
+        batch_size=32, epochs=20000, verbose=2, callbacks=[rlrp, lrm]
+    )
 
-    return model, lrm.lrates, history.history['loss'], history.history['mae'], testX, testy
+    return (
+        model,
+        lrm.lrates,
+        history.history['loss'],
+        history.history['mae'],
+        testX,
+        testy
+    )
 
 
 def plotting_results(model, testX, testy):
@@ -203,7 +234,8 @@ def plotting_results(model, testX, testy):
     STD_PROP = float(testy.std())
 
     out2 = open('errors_test.dat', 'w')
-    out2.write('{:>24}'.format(STD_PROP) + '{:>24}'.format(MAE_PROP) + '{:>24}'.format(MSE_PROP) + "\n")
+    out2.write('{:>24}'.format(STD_PROP) +
+               '{:>24}'.format(MAE_PROP) + '{:>24}'.format(MSE_PROP) + "\n")
     out2.close()
 
     # writing ouput for comparing values
@@ -212,8 +244,12 @@ def plotting_results(model, testX, testy):
     s = ' '.join(format_list1)
     ctest = open('comp-test.dat', 'w')
     for ii in range(0, len(testy)):
-        ctest.write(s.format(*testy[ii]) + s.format(*y_test[ii]) + s.format(*dtest[ii]) + '\n')
-    ctest.close
+        ctest.write(
+            s.format(*testy[ii]) +
+            s.format(*y_test[ii]) +
+            s.format(*dtest[ii]) + '\n'
+        )
+    ctest.close()
 
 # save model and architecture to single file
 
@@ -241,7 +277,7 @@ def save_plot(n_val):
     maxi = float(lines[0].split()[1])
     for line in lines:
         x1, y1, z1 = line.split()
-        x.append(float(x1)) 
+        x.append(float(x1))
         y.append(float(y1))
         if float(x1) < mini:
             mini = float(x1)
@@ -253,7 +289,8 @@ def save_plot(n_val):
     plt.plot(temp, temp)
     plt.xlabel("True EAT")
     plt.ylabel("Predicted EAT")
-    plt.savefig(str(n_val) + '.png')
+    plt.title('Results for training size of %s', % n_val)
+    plt.savefig('Results.png')
     plt.close()
 
 
@@ -266,7 +303,7 @@ op = sys.argv[1]
 iX, iY = prepare_data(op)
 
 # fit model and plot learning curves for a patience
-patience = 100 
+patience = 100
 
 current_dir = os.getcwd()
 
@@ -282,12 +319,18 @@ for ii in range(len(train_set)):
 
     if sys.argv[2] == 'fit':
 
-        model, lr, loss, acc, testX, testy = fit_model_dense(int(train_set[ii]), int(n_val), int(n_test), iX, iY, patience)
+        model, lr, loss, acc, testX, testy = fit_model_dense(
+            int(train_set[ii]), int(n_val), int(n_test), iX, iY, patience)
 
         lhis = open('learning-history.dat', 'w')
         for ii in range(0, len(lr)):
-            lhis.write('{:8d}'.format(ii) + '{:16f}'.format(lr[ii]) + '{:16f}'.format(loss[ii]) + '{:16f}'.format(acc[ii]) + '\n')
-        lhis.close
+            lhis.write(
+                '{:8d}'.format(ii) +
+                '{:16f}'.format(lr[ii]) +
+                '{:16f}'.format(loss[ii]) +
+                '{:16f}'.format(acc[ii]) + '\n'
+            )
+        lhis.close()
 
         # Saving NN model
         save_nnmodel(model)
