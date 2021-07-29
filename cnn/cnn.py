@@ -436,7 +436,7 @@ current_dir = '/Users/davinderkumar/Essentials/Thesis/code/cnn/new'
 
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
-
+    n_train = ii
     chdir(current_dir)
     os.chdir(current_dir)
     try:
@@ -471,8 +471,8 @@ for ii in range(len(train_set)):
 
     # Saving results
     try:
-        plotting_results(model, testX, testy, ii)
-        save_plot(ii)
+        plotting_results(model, testX, testy, n_train)
+        save_plot(n_train)
     except:
         pdb.set_trace()
         pass
