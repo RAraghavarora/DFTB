@@ -1,14 +1,14 @@
 #!/bin/bash
 #SBATCH --time=48:00:00
 #SBATCH --partition=gpu2 
-#SBATCH --gres=gpu:4
+#SBATCH --gres=gpu:2
 #SBATCH --nodes=2
 #SBATCH --ntasks=8
 #SBATCH -J nn-dftb-ra
 #SBATCH --output=new/dip.out
 #SBATCH --error=new/dip.err
 #SBATCH -A p_phononics
-#SBATCH -N 2       # request 2 nodes                                                       
+#SBATCH -N 1       # request 2 nodes                                                       
 #SBATCH -n 4   # allocate one task per node  
 #SBATCH --ntasks-per-node=4
 #SBATCH --mail-type=all

@@ -311,7 +311,7 @@ iX, iY = prepare_data(op)
 # fit model and plot learning curves for a patience
 patience = 100 
 
-current_dir = '/scratch/ws/1/medranos-DFTB/raghav/codes/conv2/new'
+current_dir = '/scratch/ws/1/medranos-DFTB/raghav/code/conv2/new'
 
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
