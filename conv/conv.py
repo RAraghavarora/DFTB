@@ -2,6 +2,7 @@
 import sys
 import pdb
 import os
+import pandas as pd
 from os import path, mkdir, chdir
 import warnings
 import numpy as np
@@ -11,7 +12,10 @@ import torch
 from torch.autograd import Variable
 
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
-from sklearn.metrics import mean_squared_error, make_scorer, mean_absolute_error
+from sklearn.metrics import (
+    mean_squared_error,
+    mean_absolute_error
+)
 
 from tensorflow.keras.layers import Dense, Input, Add
 from tensorflow.keras.models import Sequential
@@ -24,8 +28,6 @@ from tensorflow.keras import Model
 from tensorflow.keras import backend
 from tensorflow.keras.models import model_from_json
 from tensorflow.keras.models import load_model
-from qml.representations import generate_coulomb_matrix
-from qml.representations import generate_bob
 
 import logging
 import schnetpack as spk
@@ -66,101 +68,37 @@ def complete_array(Aprop):
 # prepare train and test dataset
 
 
-def prepare_data(op):
+def prepare_data(op='EAT'):
     #  # read dataset
-    data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/'
-    # data_dir = '../'
-    properties = ['RMSD', 'EAT', 'EMBD', 'EGAP', 'KSE', 'FermiEne', 'BandEne', 'NumElec', 'h0Ene', 'sccEne', '3rdEne', 'RepEne', 'mbdEne', 'TBdip', 'TBeig', 'TBchg']
+    # data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/'
+    data_dir = '../'
+    desc = pd.read_csv(data_dir + '/desc.csv', header=None)
+    desc = pd.DataFrame(desc)
+    desc = np.array(desc.values)
 
-    # data preparation
-    logging.info("get dataset")
-    dataset = spk.data.AtomsData(data_dir + 'totgdb7x_pbe0.db', load_only=properties)
+    dftb = pd.read_csv(data_dir + '/dftb.csv', header=None)
+    dftb = pd.DataFrame(dftb)
+    dftb = np.array(dftb.values)
 
-    n = len(dataset)
-    print(n)
-    idx = np.arange(n)
-    np.random.seed(2314)
-    idx2 = np.random.permutation(idx)
+    Y = pd.read_csv(data_dir + '/Y.csv', header=None)
+    Y = pd.DataFrame(Y)
+    Y = np.array(Y.values)
 
-    # computing predicted property
-    logging.info("get predicted property")
-    AE, xyz, Z = [], [], []
-    EGAP, KSE, TPROP = [], [], []
-    p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11 = [], [], [], [], [], [], [], [], [], [], []
-    for i in idx2[:n]:
-        atoms, props = dataset.get_properties(i)
-        AE.append(float(props['EAT']))
-        EGAP.append(float(props['EGAP']))
-        KSE.append(props['KSE'])
-        TPROP.append(float(props[op]))
-        xyz.append(atoms.get_positions())
-        Z.append(atoms.get_atomic_numbers())
-        p1.append(float(props['FermiEne']))
-        p2.append(float(props['BandEne']))
-        p3.append(float(props['NumElec']))
-        p4.append(float(props['h0Ene']))
-        p5.append(float(props['sccEne']))
-        p6.append(float(props['3rdEne']))
-        p7.append(float(props['RepEne']))
-        p8.append(float(props['mbdEne']))
-        p9.append(props['TBdip'])
-        p10.append(props['TBeig'])
-        p11.append(props['TBchg'])
-
-    AE = np.array(AE)
-    EGAP = np.array(EGAP)
-    TPROP = np.array(TPROP)
-
-    # Generate representations
-    # Coulomb matrix
-    xyz_reps = np.array([generate_coulomb_matrix(Z[mol], xyz[mol], sorting='unsorted') for mol in idx2])
-
-    TPROP2 = []
-    p1b, p2b, p11b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b = [], [], [], [], [], [], [], [], [], [], []
-    for nn in idx2:
-        p1b.append(p1[nn])
-        p2b.append(p2[nn])
-        p3b.append(p3[nn])
-        p4b.append(p4[nn])
-        p5b.append(p5[nn])
-        p6b.append(p6[nn])
-        p7b.append(p7[nn])
-        p8b.append(p8[nn])
-        p9b.append(p9[nn].numpy())
-        p10b.append(p10[nn].numpy())
-        p11b.append(p11[nn].numpy())
-        TPROP2.append(TPROP[nn])
-
-    p11b = complete_array(p11b)
-
-    reps2 = []
-    desc = []
-    dftb = []
-    for ii in range(len(idx2)):
-        desc.append(xyz_reps[ii])
-        dftb.append(np.concatenate((p1b[ii], p2b[ii], p3b[ii], p4b[ii], p5b[ii], p6b[ii], p7b[ii], p8b[ii], np.linalg.norm(p9b[ii]), p10b[ii], p11b[ii]), axis=None))
-
-    desc = np.array(desc)
-    dftb = np.array(dftb)
-
-    return [desc, dftb], TPROP2
+    return [desc, dftb], Y
 
 
 def split_data(n_train, n_val, n_test, Repre, Target):
     # Training
     print("Perfoming training")
-    X_train, X_val, X_test = np.array(Repre[:n_train]), np.array(Repre[-n_test - n_val:-n_test]), np.array(Repre[-n_test:])
-    Y_train, Y_val, Y_test = np.array(Target[:n_train]), np.array(Target[-n_test - n_val:-n_test]), np.array(Target[-n_test:])
+    X_train, X_val, X_test = np.array(Repre[:n_train]), np.array(
+        Repre[-n_test - n_val:-n_test]), np.array(Repre[-n_test:])
+    Y_train, Y_val, Y_test = np.array(Target[:n_train]), np.array(
+        Target[-n_test - n_val:-n_test]), np.array(Target[-n_test:])
 
     # Data standardization
     Y_train = Y_train.reshape(-1, 1)
     Y_val = Y_val.reshape(-1, 1)
     Y_test = Y_test.reshape(-1, 1)
-
-    sc = MinMaxScaler()
-    X_train_scaled = sc.fit_transform(X_train)
-    sc2 = MinMaxScaler()
-    X_val_scaled = sc2.fit_transform(X_val)
 
     x_scaler = StandardScaler().fit(X_train)
     y_scaler = StandardScaler().fit(Y_train)
@@ -174,8 +112,14 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
 
     desc = iX[0]
     dftb = iX[1]
-    trainX1, trainy, valX1, valy, testX1, testy, x_scaler1, y_scaler = split_data(n_train, n_val, n_test, desc, iY)
-    trainX2, trainy, valX2, valy, testX2, testy, x_scaler2, y_scaler = split_data(n_train, n_val, n_test, dftb, iY)
+    trainX1, trainy, valX1, valy, testX1, testy, x_scaler1, y_scaler = split_data(
+        n_train, n_val, n_test, desc, iY)
+
+    trainX2, trainy, valX2, valy, testX2, testy, x_scaler2, y_scaler = split_data(
+        n_train, n_val, n_test, dftb, iY)
+
+    sc = MinMaxScaler()
+    trainX2 = sc.fit_transform(trainX2)
 
     n_input = int(len(iX[0][0]))
     #n_output = int(len(iY[0]))
@@ -187,7 +131,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     # 1st model
 
     visible = Input(shape=(n_input,))
-    hidden1 = Dense(n_inout, activation='tanh', 
+    hidden1 = Dense(n_inout, activation='tanh',
                     kernel_initializer='he_uniform',
                     kernel_regularizer=regularizers.l2(0.01),
                     activity_regularizer=regularizers.l1(0.01))(visible)
@@ -200,7 +144,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     n_inout = n_input + n_output
 
     visible2 = Input(shape=(n_input,))
-    hidden21 = Dense(n_inout, activation='tanh', 
+    hidden21 = Dense(n_inout, activation='tanh',
                      kernel_initializer='he_uniform',
                      kernel_regularizer=regularizers.l2(0.01),
                      activity_regularizer=regularizers.l1(0.01))(visible2)
@@ -219,9 +163,10 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     opt = Adam(learning_rate=0.01)
     model.compile(loss='mse', optimizer=opt, metrics=['mae'])
     # fit model
-    rlrp = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=patience, min_delta=1E-5, min_lr=1E-6)
+    rlrp = ReduceLROnPlateau(
+        monitor='val_loss', factor=0.5, patience=patience, min_delta=1E-5, min_lr=1E-6)
     lrm = LearningRateMonitor()
-    history = model.fit([trainX1, trainX2], trainy, validation_data=([valX1, valX2], valy), 
+    history = model.fit([trainX1, trainX2], trainy, validation_data=([valX1, valX2], valy),
                         batch_size=32, epochs=20000, verbose=2, callbacks=[rlrp, lrm])
 
     return model, lrm.lrates, history.history['loss'], history.history['mae'], [testX1, testX2], testy
@@ -236,7 +181,8 @@ def plotting_results(model, testX, testy):
     STD_PROP = float(testy.std())
 
     out2 = open('errors_test.dat', 'w')
-    out2.write('{:>24}'.format(STD_PROP) + '{:>24}'.format(MAE_PROP) + '{:>24}'.format(MSE_PROP) + "\n")
+    out2.write('{:>24}'.format(STD_PROP) +
+               '{:>24}'.format(MAE_PROP) + '{:>24}'.format(MSE_PROP) + "\n")
     out2.close()
 
     # writing ouput for comparing values
@@ -245,7 +191,8 @@ def plotting_results(model, testX, testy):
     s = ' '.join(format_list1)
     ctest = open('comp-test.dat', 'w')
     for ii in range(0, len(testy)):
-        ctest.write(s.format(*testy[ii]) + s.format(*y_test[ii]) + s.format(*dtest[ii]) + '\n')
+        ctest.write(s.format(*testy[ii]) + s.format(*
+                                                    y_test[ii]) + s.format(*dtest[ii]) + '\n')
     ctest.close
 
 # save model and architecture to single file
@@ -275,7 +222,7 @@ def save_plot(n_val):
     maxi = float(lines[0].split()[1])
     for line in lines:
         x1, y1, z1 = line.split()
-        x.append(float(x1)) 
+        x.append(float(x1))
         y.append(float(y1))
         if float(x1) < mini:
             mini = float(x1)
@@ -292,35 +239,40 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['2000', '4000', '8000', '10000', '20000', '30000']
+train_set = ['1000', '2000', '4000', '8000', '10000', '20000', '30000']
 n_val = 1000
 n_test = 10000
-op = sys.argv[1]
+try:
+    op = sys.argv[1]
+except Exception as e:
+    op = 'EAT'
 
 iX, iY = prepare_data(op)
 
 # fit model and plot learning curves for a patience
-patience = 100 
+patience = 100
 
 current_dir = os.getcwd()
 
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
     chdir(current_dir)
-    os.chdir(current_dir + '/conv/withdft/new/')
+    os.chdir(current_dir + '/conv/withdft/new2/')
     try:
         os.mkdir(str(train_set[ii]))
     except:
         pass
-    os.chdir(current_dir + '/conv/withdft/new/' + str(train_set[ii]))
+    os.chdir(current_dir + '/conv/withdft/new2/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 
-        model, lr, loss, acc, testX, testy = fit_model_dense(int(train_set[ii]), int(n_val), int(n_test), iX, iY, patience)
+        model, lr, loss, acc, testX, testy = fit_model_dense(
+            int(train_set[ii]), int(n_val), int(n_test), iX, iY, patience)
 
         lhis = open('learning-history.dat', 'w')
         for ii in range(0, len(lr)):
-            lhis.write('{:8d}'.format(ii) + '{:16f}'.format(lr[ii]) + '{:16f}'.format(loss[ii]) + '{:16f}'.format(acc[ii]) + '\n')
+            lhis.write('{:8d}'.format(
+                ii) + '{:16f}'.format(lr[ii]) + '{:16f}'.format(loss[ii]) + '{:16f}'.format(acc[ii]) + '\n')
         lhis.close
 
         # Saving NN model
