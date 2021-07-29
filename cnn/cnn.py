@@ -3,6 +3,7 @@ import sys
 import os
 from os import chdir
 import numpy as np
+import pdb
 import matplotlib.pyplot as plt
 
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
@@ -173,6 +174,22 @@ def prepare_data(op):
 
     p11b = complete_array(p11b)
 
+    # Normalize the data property wise
+    temp = []
+    for var in [p1b, p2b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b, p11b]:
+        var2 = np.array(var)
+        try:
+            _ = var2.shape[1]
+        except IndexError:
+            var2 = var2.reshape(-1, 1)
+        scaler = MinMaxScaler()
+        var3 = scaler.fit_transform(var2)
+        temp.append(var3)
+
+    p1b, p2b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b, p11b = (
+        list(var) for var in temp
+    )
+
     desc = []
     dftb = []
     for ii in range(len(idx2)):
@@ -221,24 +238,10 @@ def split_data(n_train, n_val, n_test, Repre, Target):
     Y_val = Y_val.reshape(-1, 1)
     Y_test = Y_test.reshape(-1, 1)
 
-    # Normalize the training data
-    sc = MinMaxScaler()
-    X_train_scaled = sc.fit_transform(X_train)
-    sc2 = MinMaxScaler()
-    X_val_scaled = sc2.fit_transform(X_val)
     x_scaler = StandardScaler().fit(X_train)
     y_scaler = StandardScaler().fit(Y_train)
 
-    return (
-        X_train_scaled,
-        Y_train,
-        X_val_scaled,
-        Y_val,
-        X_test,
-        Y_test,
-        x_scaler,
-        y_scaler,
-    )
+    return (X_train, Y_train, X_val, Y_val, X_test, Y_test, x_scaler, y_scaler)
 
 
 # fit a model and plot learning curve
@@ -471,4 +474,5 @@ for ii in range(len(train_set)):
         plotting_results(model, testX, testy, ii)
         save_plot(ii)
     except:
+        pdb.set_trace()
         pass
