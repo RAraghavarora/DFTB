@@ -40,6 +40,17 @@ for i in train_set:
     a, b, c = lines5[0].split()
     y5.append(round(float(b), 3))  # Rounded upto 3 decimal places
 
+y3 = []
+for i in train_set:
+    try:
+        f = open("conv/withdft/%s/errors_test.dat" % i, 'r')
+    except:
+        print(i)
+        continue
+    lines = f.readlines()
+    a, b, c = lines[0].split()
+    y3.append(round(float(b), 3))
+
 print(y1)
 print(y2)
 print(y3)
@@ -67,3 +78,5 @@ plt.ylabel('MAE (eV)')
 plt.title('Learning Curve of simple Sequential network')
 plt.legend()
 plt.show()
+
+
