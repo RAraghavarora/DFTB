@@ -2,14 +2,14 @@
 import sys
 import os
 import pandas as pd
-from os import path, mkdir, chdir
+from os import chdir
 import numpy as np
 import matplotlib.pyplot as plt
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 
-from tensorflow.keras.layers import Dense, Input, Add
+from tensorflow.keras.layers import Dense, Input, Add, Dropout
 from tensorflow.keras import regularizers
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import Callback
@@ -147,8 +147,9 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
 
     hidden4 = Add()([out1, out2])
     out = Dense(n_output, activation='linear')(hidden4)
+    out2 = Dropout(0.5)(out)
 
-    model = Model(inputs=[visible, visible2], outputs=[out])
+    model = Model(inputs=[visible, visible2], outputs=[out2])
 
     #    plot_model(model, to_file='combined_NN.png')
 
