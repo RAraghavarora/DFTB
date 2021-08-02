@@ -1,29 +1,49 @@
 # NN model
+import sys
+import os
+from os import chdir
 import numpy as np
+import pdb
+import matplotlib.pyplot as plt
 
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.models import Sequential
-from tensorflow.keras import regularizers
-from tensorflow.keras.optimizers import SGD, Adam
-from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.layers import (
+    Dense,
+    Input,
+    Conv2D,
+    MaxPooling2D,
+    Concatenate,
+    GlobalMaxPooling2D,
+)
+
+from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import Callback
 from tensorflow.keras.callbacks import ReduceLROnPlateau
+from tensorflow.keras import Model
 from tensorflow.keras import backend
-from tensorflow.keras.models import model_from_json
 from tensorflow.keras.models import load_model
-from qml.representations import generate_coulomb_matrix
-from qml.representations import generate_bob
 
 import logging
 import schnetpack as spk
-from ase.io import read
-from ase.db import connect
-from ase.atoms import Atoms
-from ase.calculators.dftb import Dftb
-from ase.units import Hartree, Bohr
+
+from qml.representations import generate_coulomb_matrix
+
+
+# monitor the learning rate
+
+
+class LearningRateMonitor(Callback):
+    # start of training
+    def on_train_begin(self, logs={}):
+        self.lrates = list()
+
+    # end of each training epoch
+    def on_epoch_end(self, epoch, logs={}):
+        # get and store the learning rate
+        lrate = float(backend.get_value(self.model.optimizer.lr))
+        self.lrates.append(lrate)
 
 
 def complete_array(Aprop):
@@ -35,12 +55,19 @@ def complete_array(Aprop):
         else:
             n2 = 23 - n1
             Aprop2.append(np.concatenate((Aprop[ii], np.zeros(n2)), axis=None))
+
     return Aprop2
+
+
+# prepare train and test dataset
 
 
 def prepare_data(op):
     #  # read dataset
     data_dir = '../'
+
+    # data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/'
+
     properties = [
         'RMSD',
         'EAT',
@@ -60,6 +87,8 @@ def prepare_data(op):
         'TBchg',
     ]
 
+    # data preparation
+    logging.info("get dataset")
     dataset = spk.data.AtomsData(data_dir + 'totgdb7x_pbe0.db', load_only=properties)
 
     n = len(dataset)
@@ -72,8 +101,19 @@ def prepare_data(op):
     logging.info("get predicted property")
     AE, xyz, Z = [], [], []
     EGAP, KSE, TPROP = [], [], []
-    p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11 = ([] for i in range(11))
-    atoms_data = []
+    p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11 = (
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+    )
     for i in idx2[:n]:
         atoms, props = dataset.get_properties(i)
         AE.append(float(props['EAT']))
@@ -93,12 +133,10 @@ def prepare_data(op):
         p9.append(props['TBdip'])
         p10.append(props['TBeig'])
         p11.append(props['TBchg'])
-        atoms_data.append(atoms)
 
     AE = np.array(AE)
     EGAP = np.array(EGAP)
     TPROP = np.array(TPROP)
-    atoms_data = np.array(atoms_data)
 
     # Generate representations
     # Coulomb matrix
@@ -107,7 +145,19 @@ def prepare_data(op):
     )
 
     TPROP2 = []
-    p1b, p2b, p11b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b = ([] for i in range(11))
+    p1b, p2b, p11b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b = (
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+    )
     for nn in idx2:
         p1b.append(p1[nn])
         p2b.append(p2[nn])
@@ -123,6 +173,22 @@ def prepare_data(op):
         TPROP2.append(TPROP[nn])
 
     p11b = complete_array(p11b)
+
+    # Normalize the data property wise
+    temp = []
+    for var in [p1b, p2b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b, p11b]:
+        var2 = np.array(var)
+        try:
+            _ = var2.shape[1]
+        except IndexError:
+            var2 = var2.reshape(-1, 1)
+        scaler = MinMaxScaler()
+        var3 = scaler.fit_transform(var2)
+        temp.append(var3)
+
+    p1b, p2b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b, p11b = (
+        list(var) for var in temp
+    )
 
     desc = []
     dftb = []
@@ -146,57 +212,12 @@ def prepare_data(op):
                 axis=None,
             )
         )
+
     desc = np.array(desc)
     dftb = np.array(dftb)
 
-    return (desc, dftb), TPROP2, atoms_data
+    return [desc, dftb], TPROP2
 
 
-train_set = ['1000', '2000', '4000', '8000', '10000', '20000', '30000']
-n_test = 41537
-n_val = 1000
-
-Repre, Target, atoms_data = prepare_data('EAT')
-desc = Repre[0]
-dftb = Repre[1]
-
-
-for n_train in train_set:
-    n_train = int(n_train)
-    X_test1 = np.array(desc[-n_test:])
-    X_test2 = np.array(dftb[-n_test:])
-    Y_train, Y_val, Y_test = (
-        np.array(Target[:n_train]),
-        np.array(Target[-n_test - n_val : -n_test]),
-        np.array(Target[-n_test:]),
-    )
-
-    Y_train = Y_train.reshape(-1, 1)
-    Y_val = Y_val.reshape(-1, 1)
-    Y_test = Y_test.reshape(-1, 1)
-
-    model = load_model('conv/withdft/new/%s' % n_train + '/model.h5')
-    y_test = model.predict((X_test1, X_test2))  # in eV
-    MAE_PROP = float(mean_absolute_error(Y_test, y_test))
-    MSE_PROP = float(mean_squared_error(Y_test, y_test))
-    STD_PROP = float(Y_test.std())
-
-    out2 = open('conv/withdft/new/%s/errors.dat' % n_train, 'w')
-    out2.write(
-        '{:>24}'.format(STD_PROP)
-        + '{:>24}'.format(MAE_PROP)
-        + '{:>24}'.format(MSE_PROP)
-        + "\n"
-    )
-    out2.close()
-
-    # writing ouput for comparing values
-    dtest = np.array(Y_test - y_test)
-    format_list1 = ['{:16f}' for item1 in Y_test[0]]
-    s = ' '.join(format_list1)
-    ctest = open('conv/withdft/new/%s/comp.dat' % n_train, 'w')
-    for ii in range(0, len(Y_test)):
-        ctest.write(
-            s.format(*Y_test[ii]) + s.format(*y_test[ii]) + s.format(*dtest[ii]) + '\n'
-        )
-    ctest.close()
+iX, iY = prepare_data('EAT')
+pdb.set_trace()
