@@ -190,13 +190,13 @@ X_test = np.array(X_test)
 
 Y_train, Y_val, Y_test = (
     np.array(Target[:n_train]),
-    np.array(Target[-n_test - n_val : -n_test]),
+    np.array(Target[-n_test - n_val: -n_test]),
     np.array(Target[-n_test:]),
 )
 sigma = 4000.0
 K = gaussian_kernel(X_train, X_train, sigma)
 print(K)
-K[np.diag_indices_from(K)] += 1e-8
+K[np.diag_indices_from(K)] += 1e-8  # Regularizer
 alpha = cho_solve(K, Y_train)  # α=(K+λI)−1y
 print(alpha)
 Ks = gaussian_kernel(X_test, X_train, sigma)
