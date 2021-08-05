@@ -147,7 +147,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
 
     hidden4 = Add()([out1, out2])
     out = Dense(n_output, activation='linear')(hidden4)
-    out2 = Dropout(0.5)(out)
+    out2 = Dropout(0.2)(out)
 
     model = Model(inputs=[visible, visible2], outputs=[out2])
 
