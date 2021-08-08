@@ -19,7 +19,7 @@ module purge                                 # purge if you already have modules
 module load modenv/scs5
 module load Python/3.6.4-intel-2018a
 . /home/medranos/vdftb20/bin/activate
-module load cuDNN/8.0.4.30-CUDA-11.1.1
+# module load cuDNN/8.0.4.30-CUDA-11.1.1
 
 echo "training starts"
 

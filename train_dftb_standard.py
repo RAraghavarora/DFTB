@@ -17,7 +17,6 @@ from tensorflow.keras.callbacks import Callback, ReduceLROnPlateau
 from tensorflow.keras import backend
 from tensorflow.keras.models import load_model
 from tensorflow.keras.initializers import HeNormal
-from tensorflow.keras.activations import LeakyReLU
 from qml.representations import generate_coulomb_matrix
 
 import logging
@@ -203,12 +202,12 @@ def split_data(n_train, n_val, n_test, Repre, Target):
 
     X_train, X_val, X_test = (
         np.array(Repre[:n_train]),
-        np.array(Repre[-n_test - n_val : -n_test]),
+        np.array(Repre[-n_test - n_val: -n_test]),
         np.array(Repre[-n_test:]),
     )
     Y_train, Y_val, Y_test = (
         np.array(Target[:n_train]),
-        np.array(Target[-n_test - n_val : -n_test]),
+        np.array(Target[-n_test - n_val: -n_test]),
         np.array(Target[-n_test:]),
     )
 
@@ -239,12 +238,11 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     # define model
     model = Sequential()
     initializer = HeNormal()
-    activation = LeakyReLU(alpha=0.01)
     model.add(
         Dense(
             128,
             input_dim=n_input,
-            activation=activation,
+            activation='elu',
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
         )
@@ -253,7 +251,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     model.add(
         Dense(
             units=64,
-            activation=activation,
+            activation='elu',
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
         )
@@ -262,7 +260,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     model.add(
         Dense(
             units=32,
-            activation=activation,
+            activation='elu',
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
         )
