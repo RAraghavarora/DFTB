@@ -7,7 +7,6 @@ from os import path, mkdir, chdir
 import warnings
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import pyplot
 import torch
 from torch.autograd import Variable
 
@@ -65,6 +64,7 @@ def complete_array(Aprop):
 
     return Aprop2
 
+
 # prepare train and test dataset
 
 
@@ -73,7 +73,24 @@ def prepare_data(op):
     data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/'
     # data_dir = '../'
 
-    properties = ['RMSD', 'EAT', 'EMBD', 'EGAP', 'KSE', 'FermiEne', 'BandEne', 'NumElec', 'h0Ene', 'sccEne', '3rdEne', 'RepEne', 'mbdEne', 'TBdip', 'TBeig', 'TBchg']
+    properties = [
+        'RMSD',
+        'EAT',
+        'EMBD',
+        'EGAP',
+        'KSE',
+        'FermiEne',
+        'BandEne',
+        'NumElec',
+        'h0Ene',
+        'sccEne',
+        '3rdEne',
+        'RepEne',
+        'mbdEne',
+        'TBdip',
+        'TBeig',
+        'TBchg',
+    ]
 
     # data preparation
     logging.info("get dataset")
@@ -89,7 +106,19 @@ def prepare_data(op):
     logging.info("get predicted property")
     AE, xyz, Z = [], [], []
     EGAP, KSE, TPROP = [], [], []
-    p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11 = [], [], [], [], [], [], [], [], [], [], []
+    p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11 = (
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+    )
     for i in idx2[:n]:
         atoms, props = dataset.get_properties(i)
         AE.append(float(props['EAT']))
@@ -116,7 +145,9 @@ def prepare_data(op):
 
     # Generate representations
     # Coulomb matrix
-    xyz_reps = np.array([generate_coulomb_matrix(Z[mol], xyz[mol], sorting='unsorted') for mol in idx2])
+    xyz_reps = np.array(
+        [generate_coulomb_matrix(Z[mol], xyz[mol], sorting='unsorted') for mol in idx2]
+    )
 
     TPROP2 = []
     p1b, p2b, p11b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b = ([] for i in range(11))
@@ -150,7 +181,24 @@ def prepare_data(op):
     dftb = []
     for ii in range(len(idx2)):
         desc.append(xyz_reps[ii])
-        dftb.append(np.concatenate((p1b[ii], p2b[ii], p3b[ii], p4b[ii], p5b[ii], p6b[ii], p7b[ii], p8b[ii], np.linalg.norm(p9b[ii]), p10b[ii], p11b[ii]), axis=None))
+        dftb.append(
+            np.concatenate(
+                (
+                    p1b[ii],
+                    p2b[ii],
+                    p3b[ii],
+                    p4b[ii],
+                    p5b[ii],
+                    p6b[ii],
+                    p7b[ii],
+                    p8b[ii],
+                    np.linalg.norm(p9b[ii]),
+                    p10b[ii],
+                    p11b[ii],
+                ),
+                axis=None,
+            )
+        )
 
     desc = np.array(desc)
     dftb = np.array(dftb)
@@ -161,9 +209,17 @@ def prepare_data(op):
 def split_data(n_train, n_val, n_test, Repre, Target):
     # Training
     print("Perfoming training")
-    np.random.shuffle(Repre)
-    X_train, X_val, X_test = np.array(Repre[:n_train]), np.array(Repre[-n_test - n_val:-n_test]), np.array(Repre[-n_test:])
-    Y_train, Y_val, Y_test = np.array(Target[:n_train]), np.array(Target[-n_test - n_val:-n_test]), np.array(Target[-n_test:])
+
+    X_train, X_val, X_test = (
+        np.array(Repre[:n_train]),
+        np.array(Repre[-n_test - n_val : -n_test]),
+        np.array(Repre[-n_test:]),
+    )
+    Y_train, Y_val, Y_test = (
+        np.array(Target[:n_train]),
+        np.array(Target[-n_test - n_val : -n_test]),
+        np.array(Target[-n_test:]),
+    )
 
     # Data standardization
     Y_train = Y_train.reshape(-1, 1)
@@ -175,6 +231,7 @@ def split_data(n_train, n_val, n_test, Repre, Target):
 
     return X_train, Y_train, X_val, Y_val, X_test, Y_test, x_scaler, y_scaler
 
+
 # fit a model and plot learning curve
 
 
@@ -182,70 +239,113 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
 
     desc = iX[0]
     dftb = iX[1]
-    trainX1, trainy, valX1, valy, testX1, testy, x_scaler1, y_scaler = split_data(n_train, n_val, n_test, desc, iY)
-    trainX2, trainy, valX2, valy, testX2, testy, x_scaler2, y_scaler = split_data(n_train, n_val, n_test, dftb, iY)
+    trainX1, trainy1, valX1, valy, testX1, testy, x_scaler1, y_scaler = split_data(
+        n_train, n_val, n_test, desc, iY
+    )
+    trainX2, trainy2, valX2, valy, testX2, testy, x_scaler2, y_scaler = split_data(
+        n_train, n_val, n_test, dftb, iY
+    )
+
+    assert trainy1 == trainy2
+
+    indices = np.arange(trainX1.shape[0])
+    np.random.shuffle(indices)
+    trainX1 = trainX1[indices]
+    trainX2 = trainX2[indices]
+    trainy = trainy1[indices]
 
     n_input = int(len(iX[0][0]))
-    #n_output = int(len(iY[0]))
+    # n_output = int(len(iY[0]))
     n_output = int(1)
 
-    n_inout = n_input + n_output
     # define model
 
     # 1st model
 
     visible = Input(shape=(n_input,))
-    hidden1 = Dense(256, activation='relu', 
-                    kernel_initializer='he_uniform',
-                    kernel_regularizer=regularizers.l2(0.01),
-                    activity_regularizer=regularizers.l1(0.01))(visible)
-    hidden2 = Dense(units=32, activation='sigmoid')(hidden1)
+    hidden1 = Dense(
+        256,
+        activation='relu',
+        kernel_initializer='he_uniform',
+        kernel_regularizer=regularizers.l2(0.01),
+        activity_regularizer=regularizers.l1(0.01),
+    )(visible)
+    hidden2 = Dense(
+        units=32, activation='sigmoid', kernel_regularizer=regularizers.l2(0.001)
+    )(hidden1)
     # hidden3 = Dense(units=160, activation='tanh')(hidden2)
     out1 = Dense(units=128, activation='relu')(hidden2)
 
     # 2nd model
     n_input = int(len(iX[1][0]))
-    n_inout = n_input + n_output
 
     visible2 = Input(shape=(n_input,))
-    hidden21 = Dense(160, activation='relu', 
-                     kernel_initializer='he_uniform',
-                     kernel_regularizer=regularizers.l2(0.01),
-                     activity_regularizer=regularizers.l1(0.01))(visible2)
-    hidden22 = Dense(units=32, activation='sigmoid')(hidden21)
+    hidden21 = Dense(
+        160,
+        activation='relu',
+        kernel_initializer='he_uniform',
+        kernel_regularizer=regularizers.l2(0.01),
+        activity_regularizer=regularizers.l1(0.01),
+    )(visible2)
+    hidden22 = Dense(
+        units=32, activation='sigmoid', kernel_regularizer=regularizers.l2(0.001)
+    )(hidden21)
     # hidden23 = Dense(units=256, activation='tanh')(hidden22)
     out2 = Dense(units=128, activation='relu')(hidden22)
 
     hidden4 = Add()([out1, out2])
-    hidden5 = Dense(160, activation='relu')(hidden4)
+    hidden5 = Dense(160, activation='relu', kernel_regularizer=regularizers.l2(0.001))(
+        hidden4
+    )
     out = Dense(n_output, activation='linear')(hidden5)
 
     model = Model(inputs=[visible, visible2], outputs=[out])
 
-#    plot_model(model, to_file='combined_NN.png')
+    #    plot_model(model, to_file='combined_NN.png')
 
     # compile model
     opt = Adam(learning_rate=0.01)
     model.compile(loss='mse', optimizer=opt, metrics=['mae'])
     # fit model
-    rlrp = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=patience, min_delta=1E-5, min_lr=1E-6)
+    rlrp = ReduceLROnPlateau(
+        monitor='val_loss', factor=0.5, patience=patience, min_delta=1e-5, min_lr=1e-6
+    )
     lrm = LearningRateMonitor()
-    history = model.fit([trainX1, trainX2], trainy, validation_data=([valX1, valX2], valy), 
-                        batch_size=32, epochs=20000, verbose=2, callbacks=[rlrp, lrm])
+    history = model.fit(
+        [trainX1, trainX2],
+        trainy,
+        validation_data=([valX1, valX2], valy),
+        batch_size=32,
+        epochs=20000,
+        verbose=0,
+        callbacks=[rlrp, lrm],
+    )
 
-    return model, lrm.lrates, history.history['loss'], history.history['mae'], [testX1, testX2], testy
+    return (
+        model,
+        lrm.lrates,
+        history.history['loss'],
+        history.history['mae'],
+        [testX1, testX2],
+        testy,
+    )
 
 
 def plotting_results(model, testX, testy):
     # applying nn model
     y_test = model.predict(testX)
-    #y_test = y_scaler.inverse_transform(y_test)
+    # y_test = y_scaler.inverse_transform(y_test)
     MAE_PROP = float(mean_absolute_error(testy, y_test))
     MSE_PROP = float(mean_squared_error(testy, y_test))
     STD_PROP = float(testy.std())
 
     out2 = open('errors_test.dat', 'w')
-    out2.write('{:>24}'.format(STD_PROP) + '{:>24}'.format(MAE_PROP) + '{:>24}'.format(MSE_PROP) + "\n")
+    out2.write(
+        '{:>24}'.format(STD_PROP)
+        + '{:>24}'.format(MAE_PROP)
+        + '{:>24}'.format(MSE_PROP)
+        + "\n"
+    )
     out2.close()
 
     # writing ouput for comparing values
@@ -254,8 +354,11 @@ def plotting_results(model, testX, testy):
     s = ' '.join(format_list1)
     ctest = open('comp-test.dat', 'w')
     for ii in range(0, len(testy)):
-        ctest.write(s.format(*testy[ii]) + s.format(*y_test[ii]) + s.format(*dtest[ii]) + '\n')
+        ctest.write(
+            s.format(*testy[ii]) + s.format(*y_test[ii]) + s.format(*dtest[ii]) + '\n'
+        )
     ctest.close
+
 
 # save model and architecture to single file
 
@@ -263,6 +366,7 @@ def plotting_results(model, testX, testy):
 def save_nnmodel(model):
     model.save("model.h5")
     print("Saved model to disk")
+
 
 # load model
 
@@ -275,7 +379,6 @@ def load_nnmodel(idir):
 
 
 def save_plot(n_val):
-    import matplotlib.pyplot as plt
     f = open("comp-test.dat", 'r')
     lines = f.readlines()
     x = []
@@ -284,14 +387,14 @@ def save_plot(n_val):
     maxi = float(lines[0].split()[1])
     for line in lines:
         x1, y1, z1 = line.split()
-        x.append(float(x1)) 
+        x.append(float(x1))
         y.append(float(y1))
         if float(x1) < mini:
             mini = float(x1)
         if float(x1) > maxi:
             maxi = float(x1)
 
-    plt.plot(x, y, 'ro')
+    plt.plot(x, y, 'g.')
     temp = np.arange(mini, maxi, 0.1)
     plt.plot(temp, temp)
     plt.xlabel("True EAT")
@@ -301,7 +404,7 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['1000', '2000', '4000', '8000', '10000', '20000', '30000']
+train_set = ['30000']
 n_val = 1000
 n_test = 10000
 op = sys.argv[1]
@@ -309,7 +412,7 @@ op = sys.argv[1]
 iX, iY = prepare_data(op)
 
 # fit model and plot learning curves for a patience
-patience = 100 
+patience = 100
 
 current_dir = '/scratch/ws/1/medranos-DFTB/raghav/code/conv2/new'
 
@@ -325,11 +428,19 @@ for ii in range(len(train_set)):
 
     if sys.argv[2] == 'fit':
 
-        model, lr, loss, acc, testX, testy = fit_model_dense(int(train_set[ii]), int(n_val), int(n_test), iX, iY, patience)
+        model, lr, loss, acc, testX, testy = fit_model_dense(
+            int(train_set[ii]), int(n_val), int(n_test), iX, iY, patience
+        )
 
         lhis = open('learning-history.dat', 'w')
         for ii in range(0, len(lr)):
-            lhis.write('{:8d}'.format(ii) + '{:16f}'.format(lr[ii]) + '{:16f}'.format(loss[ii]) + '{:16f}'.format(acc[ii]) + '\n')
+            lhis.write(
+                '{:8d}'.format(ii)
+                + '{:16f}'.format(lr[ii])
+                + '{:16f}'.format(loss[ii])
+                + '{:16f}'.format(acc[ii])
+                + '\n'
+            )
         lhis.close()
 
         # Saving NN model

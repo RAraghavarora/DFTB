@@ -4,7 +4,7 @@
 #SBATCH --gres=gpu:2                      # use 1 GPU per node (i.e. use one GPU per task)
 #SBATCH --nodes=1                        # request 1 node
 #SBATCH --ntasks=8
-#SBATCH -J nn-dftb-ra-3
+#SBATCH -J ra-conv2
 #SBATCH --output=conv2/new/dip.out
 #SBATCH --error=conv2/new/dip.err
 #SBATCH -A p_biomolecules
