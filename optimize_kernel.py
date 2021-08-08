@@ -135,7 +135,16 @@ def prepare_data(op):
     return (desc, dftb), TPROP2, atoms_data
 
 
+Repre, Target, atoms_data = prepare_data('EAT')
+desc = Repre[0]
+dftb = Repre[1]
+Target = np.array(Target)
+
+
 def objective(params):
+    global desc
+    global dftb
+    global Target
     sigma, gamma = params
     print("sigma=", sigma)
     print("gamma=", gamma)
@@ -151,7 +160,8 @@ def objective(params):
         desc = desc[indices]
         dftb = dftb[indices]
         Target = Target[indices]
-    except:
+    except Exception as e:
+        print(e)
         pdb.set_trace()
 
     X_train1 = np.array(desc[:n_train])
@@ -185,17 +195,12 @@ def objective(params):
     return res
 
 
-Repre, Target, atoms_data = prepare_data('EAT')
-desc = Repre[0]
-dftb = Repre[1]
-Target = np.array(Target)
-
 sigma_min = 100
 sigma_max = 10000
 gamma_min = 1e-8
 gamma_max = 1e-3
 bounds = [[sigma_min, sigma_max], [gamma_min, gamma_max]]
-result = dual_annealing(objective, bounds)
+result = dual_annealing(objective, bounds, maxiter=500)
 print('Status : %s' % result['message'])
 print('Total Evaluations: %d' % result['nfev'])
 # evaluate solution
