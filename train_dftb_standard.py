@@ -283,7 +283,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
         validation_data=(valX, valy),
         batch_size=32,
         epochs=20000,
-        verbose=1,
+        verbose=0,
         callbacks=[rlrp, lrm],
     )
 
@@ -378,19 +378,19 @@ op = sys.argv[1]
 iX, iY = prepare_data(op)
 
 # fit model and plot learning curves for a patience
-patience = 100  # If no improvement is seen for these epochs, Learning rate is reduced
+patience = 100
 
 current_dir = os.getcwd()
 
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
-    chdir(current_dir + '/normalize/')
-    os.chdir(current_dir + '/normalize/')
+    chdir(current_dir + '/standard/')
+    os.chdir(current_dir + '/standard/')
     try:
         os.mkdir(str(train_set[ii]))
     except FileExistsError:
         pass
-    os.chdir(current_dir + '/normalize/' + str(train_set[ii]))
+    os.chdir(current_dir + '/standard/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 
