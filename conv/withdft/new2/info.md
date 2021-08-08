@@ -5,3 +5,4 @@
  - Normalizing the standardized DFTB data (mistake?)
  - File used: conv.py
  - Code run locally
+ - Results are OK, final mae of 0.9 eV
