@@ -246,7 +246,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
         n_train, n_val, n_test, dftb, iY
     )
 
-    assert trainy1 == trainy2
+    assert (trainy1 == trainy2).all()
 
     indices = np.arange(trainX1.shape[0])
     np.random.shuffle(indices)
