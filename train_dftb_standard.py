@@ -194,6 +194,8 @@ def prepare_data(op):
 def split_data(n_train, n_val, n_test, Repre, Target):
     # Training
     print("Perfoming training")
+    Target = np.array(Target)
+
     # Shuffle the data
     indices = np.arange(Repre.shape[0])
     np.random.shuffle(indices)
@@ -202,12 +204,12 @@ def split_data(n_train, n_val, n_test, Repre, Target):
 
     X_train, X_val, X_test = (
         np.array(Repre[:n_train]),
-        np.array(Repre[-n_test - n_val: -n_test]),
+        np.array(Repre[-n_test - n_val : -n_test]),
         np.array(Repre[-n_test:]),
     )
     Y_train, Y_val, Y_test = (
         np.array(Target[:n_train]),
-        np.array(Target[-n_test - n_val: -n_test]),
+        np.array(Target[-n_test - n_val : -n_test]),
         np.array(Target[-n_test:]),
     )
 
