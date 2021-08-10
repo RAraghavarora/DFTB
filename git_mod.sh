@@ -50,6 +50,8 @@ SECONDS=0
 work=/scratch/ws/1/medranos-DFTB/raghav/code
 git add .
 git commit -m 'Server results for conv2,normalize, standardize'
+git pull origin master
+sbatch mod2.sh
 
 EXTSTAT=$?
 echo ""
