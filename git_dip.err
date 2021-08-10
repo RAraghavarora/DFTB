@@ -1,0 +1,5 @@
+The following modules were not unloaded:
+  (Use "module --force purge" to unload all):
+
+  1) modenv/scs5
+Module Python/3.6.4-intel-2018a and 18 dependencies loaded.
