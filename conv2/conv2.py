@@ -304,11 +304,11 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     #    plot_model(model, to_file='combined_NN.png')
 
     # compile model
-    opt = Adam(learning_rate=0.01)
+    opt = Adam(learning_rate=0.1)
     model.compile(loss='mse', optimizer=opt, metrics=['mae'])
     # fit model
     rlrp = ReduceLROnPlateau(
-        monitor='val_loss', factor=0.5, patience=patience, min_delta=1e-5, min_lr=1e-6
+        monitor='val_loss', factor=0.5, patience=patience, min_delta=1e-5, min_lr=1e-8
     )
     lrm = LearningRateMonitor()
     history = model.fit(
@@ -316,7 +316,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
         trainy,
         validation_data=([valX1, valX2], valy),
         batch_size=32,
-        epochs=20000,
+        epochs=30000,
         verbose=0,
         callbacks=[rlrp, lrm],
     )
