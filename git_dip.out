@@ -12,3 +12,15 @@ training starts
 JOB OUTPUT:
 ###########################################################################
 
+[master 058a310] Server results for conv2,normalize, standardize
+ 2 files changed, 5 insertions(+), 3 deletions(-)
+Merge made by the 'recursive' strategy.
+ conv2/conv2.py | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+Submitted batch job 18772452
+
+###########################################################################
+
+*** [TIMING] end Aug 10, 08:08:16 ***
+*** [TIMING] duration 2:46[0:02:36] ***
+
