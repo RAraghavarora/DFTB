@@ -13,7 +13,7 @@ from torch.autograd import Variable
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.metrics import mean_squared_error, make_scorer, mean_absolute_error
 
-from tensorflow.keras.layers import Dense, Input, Add
+from tensorflow.keras.layers import Dense, Input, Add, BatchNormalization
 from tensorflow.keras.models import Sequential
 from tensorflow.keras import regularizers
 from tensorflow.keras.optimizers import SGD, Adam
@@ -264,39 +264,62 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
 
     visible = Input(shape=(n_input,))
     hidden1 = Dense(
-        256,
+        128,
         activation='relu',
         kernel_initializer='he_uniform',
-        kernel_regularizer=regularizers.l2(0.01),
+        kernel_regularizer=regularizers.l2(0.001),
         activity_regularizer=regularizers.l1(0.01),
     )(visible)
+    temp_layer = BatchNormalization()(hidden1)
     hidden2 = Dense(
-        units=32, activation='sigmoid', kernel_regularizer=regularizers.l2(0.001)
-    )(hidden1)
-    # hidden3 = Dense(units=160, activation='tanh')(hidden2)
-    out1 = Dense(units=128, activation='relu')(hidden2)
+        units=64,
+        activation='relu',
+        kernel_initializer='he_uniform',
+        kernel_regularizer=regularizers.l2(0.001),
+    )(temp_layer)
+    temp_layer = BatchNormalization()(hidden2)
+    out1 = Dense(
+        units=32,
+        activation='relu',
+        kernel_initializer='he_uniform',
+        kernel_regularizer=regularizers.l2(0.001),
+    )(temp_layer)
 
     # 2nd model
     n_input = int(len(iX[1][0]))
 
     visible2 = Input(shape=(n_input,))
     hidden21 = Dense(
-        160,
+        128,
         activation='relu',
         kernel_initializer='he_uniform',
-        kernel_regularizer=regularizers.l2(0.01),
+        kernel_regularizer=regularizers.l2(0.001),
         activity_regularizer=regularizers.l1(0.01),
     )(visible2)
+    temp_layer = BatchNormalization()(hidden21)
     hidden22 = Dense(
-        units=32, activation='sigmoid', kernel_regularizer=regularizers.l2(0.001)
-    )(hidden21)
-    # hidden23 = Dense(units=256, activation='tanh')(hidden22)
-    out2 = Dense(units=128, activation='relu')(hidden22)
+        units=64,
+        activation='relu',
+        kernel_initializer='he_uniform',
+        kernel_regularizer=regularizers.l2(0.001),
+    )(temp_layer)
+
+    temp_layer = BatchNormalization()(hidden22)
+
+    out2 = Dense(
+        units=32,
+        activation='relu',
+        kernel_initializer='he_uniform',
+        kernel_regularizer=regularizers.l2(0.001),
+    )(temp_layer)
 
     hidden4 = Add()([out1, out2])
-    hidden5 = Dense(160, activation='relu', kernel_regularizer=regularizers.l2(0.001))(
-        hidden4
-    )
+    hidden5 = Dense(
+        32,
+        activation='relu',
+        kernel_initializer='he_uniform',
+        kernel_regularizer=regularizers.l2(0.001),
+    )(hidden4)
     out = Dense(n_output, activation='linear')(hidden5)
 
     model = Model(inputs=[visible, visible2], outputs=[out])
@@ -316,7 +339,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
         trainy,
         validation_data=([valX1, valX2], valy),
         batch_size=32,
-        epochs=30000,
+        epochs=20000,
         verbose=0,
         callbacks=[rlrp, lrm],
     )
@@ -436,7 +459,7 @@ for ii in range(len(train_set)):
         for ii in range(0, len(lr)):
             lhis.write(
                 '{:8d}'.format(ii)
-                + '{:16f}'.format(lr[ii])
+                + '{:16.8f}'.format(lr[ii])
                 + '{:16f}'.format(loss[ii])
                 + '{:16f}'.format(acc[ii])
                 + '\n'
