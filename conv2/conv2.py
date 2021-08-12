@@ -327,7 +327,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     #    plot_model(model, to_file='combined_NN.png')
 
     # compile model
-    opt = Adam(learning_rate=0.1)
+    opt = Adam(learning_rate=0.01)
     model.compile(loss='mse', optimizer=opt, metrics=['mae'])
     # fit model
     rlrp = ReduceLROnPlateau(
