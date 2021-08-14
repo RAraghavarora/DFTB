@@ -297,7 +297,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     model.compile(loss='mse', optimizer=opt, metrics=['mae'])
     # fit model
     rlrp = ReduceLROnPlateau(
-        monitor='val_loss', factor=0.5, patience=patience, min_delta=1e-5, min_lr=1e-7
+        monitor='val_loss', factor=0.67, patience=patience, min_delta=1e-5, min_lr=1e-7
     )
     lrm = LearningRateMonitor()
     history = model.fit(
@@ -401,7 +401,7 @@ op = sys.argv[1]
 iX, iY = prepare_data(op)
 
 # fit model and plot learning curves for a patience
-patience = 100
+patience = 1000
 
 current_dir = '/scratch/ws/1/medranos-DFTB/raghav/code/conv2/new'
 
