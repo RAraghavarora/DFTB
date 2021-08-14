@@ -1,8 +1,10 @@
 # NN model
-from os import mkdir, chdir, getcwd
 import numpy as np
 import logging
 import schnetpack as spk
+import pdb
+
+from os import mkdir, chdir, getcwd
 
 from qml.kernels import gaussian_kernel
 from qml.representations import generate_coulomb_matrix
@@ -44,7 +46,7 @@ def complete_array(Aprop):
 
 def prepare_data(op):
     #  # read dataset
-    data_dir = '../'
+
     properties = [
         'RMSD',
         'EAT',
@@ -63,8 +65,16 @@ def prepare_data(op):
         'TBeig',
         'TBchg',
     ]
-
-    dataset = spk.data.AtomsData(data_dir + 'totgdb7x_pbe0.db', load_only=properties)
+    try:
+        data_dir = '/scratch/ws/1/medranos-DFTB/props/dftb/data/n1-2/'
+        dataset = spk.data.AtomsData(
+            data_dir + 'totgdb7x_pbe0.db', load_only=properties
+        )
+    except:
+        data_dir = '..'
+        dataset = spk.data.AtomsData(
+            data_dir + 'totgdb7x_pbe0.db', load_only=properties
+        )
 
     n = len(dataset)
     idx = np.arange(n)
@@ -223,6 +233,7 @@ def fit_model_dense(K_train, K_val, K_test, Y_val, Y_train, patience=1000):
 def plotting_results(model, K_test, testy):
     # applying nn model
     y_test = model.predict(K_test)
+    testy.shape = (testy.shape[0], 1)
     # y_test = y_scaler.inverse_transform(y_test)
     MAE_PROP = float(mean_absolute_error(testy, y_test))
     MSE_PROP = float(mean_squared_error(testy, y_test))
@@ -239,7 +250,9 @@ def plotting_results(model, K_test, testy):
 
     # writing ouput for comparing values
     dtest = np.array(testy - y_test)
-    format_list1 = ['{:16f}' for item1 in testy[0]]
+
+    format_list1 = ['{:16f}']
+
     s = ' '.join(format_list1)
     ctest = open('comp-test.dat', 'w')
     for ii in range(0, len(testy)):
@@ -262,9 +275,10 @@ train_set = [2000, 20000]
 
 current_dir = getcwd()
 
-chdir(current_dir + '/kernel/')
-
 for n_train in train_set:
+    chdir(current_dir + '/kernel/')
+
+    n_val = n_test = n_train
     print('Trainset= {:}'.format(n_train))
     try:
         mkdir(str(n_train))
