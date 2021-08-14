@@ -263,27 +263,15 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     # 1st model
 
     visible = Input(shape=(n_input,))
-    hidden1 = Dense(
-        128,
-        activation='relu',
-        kernel_initializer='he_uniform',
-        kernel_regularizer=regularizers.l2(0.001),
-        activity_regularizer=regularizers.l1(0.01),
-    )(visible)
+    hidden1 = Dense(128, activation='relu', kernel_initializer='he_uniform')(visible)
     temp_layer = BatchNormalization()(hidden1)
-    hidden2 = Dense(
-        units=64,
-        activation='relu',
-        kernel_initializer='he_uniform',
-        kernel_regularizer=regularizers.l2(0.001),
-    )(temp_layer)
+    hidden2 = Dense(units=64, activation='relu', kernel_initializer='he_uniform')(
+        temp_layer
+    )
     temp_layer = BatchNormalization()(hidden2)
-    out1 = Dense(
-        units=32,
-        activation='relu',
-        kernel_initializer='he_uniform',
-        kernel_regularizer=regularizers.l2(0.001),
-    )(temp_layer)
+    out1 = Dense(units=32, activation='relu', kernel_initializer='he_uniform')(
+        temp_layer
+    )
 
     # 2nd model
     n_input = int(len(iX[1][0]))
@@ -293,33 +281,21 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
         128,
         activation='relu',
         kernel_initializer='he_uniform',
-        kernel_regularizer=regularizers.l2(0.001),
         activity_regularizer=regularizers.l1(0.01),
     )(visible2)
     temp_layer = BatchNormalization()(hidden21)
-    hidden22 = Dense(
-        units=64,
-        activation='relu',
-        kernel_initializer='he_uniform',
-        kernel_regularizer=regularizers.l2(0.001),
-    )(temp_layer)
+    hidden22 = Dense(units=64, activation='relu', kernel_initializer='he_uniform')(
+        temp_layer
+    )
 
     temp_layer = BatchNormalization()(hidden22)
 
-    out2 = Dense(
-        units=32,
-        activation='relu',
-        kernel_initializer='he_uniform',
-        kernel_regularizer=regularizers.l2(0.001),
-    )(temp_layer)
+    out2 = Dense(units=32, activation='relu', kernel_initializer='he_uniform')(
+        temp_layer
+    )
 
     hidden4 = Add()([out1, out2])
-    hidden5 = Dense(
-        32,
-        activation='relu',
-        kernel_initializer='he_uniform',
-        kernel_regularizer=regularizers.l2(0.001),
-    )(hidden4)
+    hidden5 = Dense(32, activation='relu', kernel_initializer='he_uniform')(hidden4)
     out = Dense(n_output, activation='linear')(hidden5)
 
     model = Model(inputs=[visible, visible2], outputs=[out])
@@ -331,7 +307,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     model.compile(loss='mse', optimizer=opt, metrics=['mae'])
     # fit model
     rlrp = ReduceLROnPlateau(
-        monitor='val_loss', factor=0.5, patience=patience, min_delta=1e-5, min_lr=1e-16
+        monitor='val_loss', factor=0.5, patience=patience, min_delta=1e-5, min_lr=1e-7
     )
     lrm = LearningRateMonitor()
     history = model.fit(
