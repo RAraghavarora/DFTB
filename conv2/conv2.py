@@ -277,26 +277,16 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     n_input = int(len(iX[1][0]))
 
     visible2 = Input(shape=(n_input,))
-    hidden21 = Dense(
-        128,
+    out2 = Dense(
+        32,
         activation='relu',
         kernel_initializer='he_uniform',
         activity_regularizer=regularizers.l1(0.01),
     )(visible2)
-    temp_layer = BatchNormalization()(hidden21)
-    hidden22 = Dense(units=64, activation='relu', kernel_initializer='he_uniform')(
-        temp_layer
-    )
 
-    temp_layer = BatchNormalization()(hidden22)
-
-    out2 = Dense(units=32, activation='relu', kernel_initializer='he_uniform')(
-        temp_layer
-    )
-
-    hidden4 = Add()([out1, out2])
-    hidden5 = Dense(32, activation='relu', kernel_initializer='he_uniform')(hidden4)
-    out = Dense(n_output, activation='linear')(hidden5)
+    hidden3 = Add()([out1, out2])
+    hidden4 = Dense(32, activation='relu', kernel_initializer='he_uniform')(hidden3)
+    out = Dense(n_output, activation='linear')(hidden4)
 
     model = Model(inputs=[visible, visible2], outputs=[out])
 
@@ -307,7 +297,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     model.compile(loss='mse', optimizer=opt, metrics=['mae'])
     # fit model
     rlrp = ReduceLROnPlateau(
-        monitor='val_loss', factor=0.5, patience=patience, min_delta=1e-5, min_lr=1e-7
+        monitor='val_loss', factor=0.67, patience=patience, min_delta=1e-5, min_lr=1e-7
     )
     lrm = LearningRateMonitor()
     history = model.fit(
@@ -411,7 +401,7 @@ op = sys.argv[1]
 iX, iY = prepare_data(op)
 
 # fit model and plot learning curves for a patience
-patience = 100
+patience = 1000
 
 current_dir = '/scratch/ws/1/medranos-DFTB/raghav/code/conv2/new'
 
