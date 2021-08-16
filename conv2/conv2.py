@@ -13,7 +13,7 @@ from torch.autograd import Variable
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.metrics import mean_squared_error, make_scorer, mean_absolute_error
 
-from tensorflow.keras.layers import Dense, Input, Add, BatchNormalization
+from tensorflow.keras.layers import Dense, Input, Add, BatchNormalization, Concatenate
 from tensorflow.keras.models import Sequential
 from tensorflow.keras import regularizers
 from tensorflow.keras.optimizers import SGD, Adam
@@ -263,15 +263,26 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     # 1st model
 
     visible = Input(shape=(n_input,))
-    hidden1 = Dense(128, activation='relu', kernel_initializer='he_uniform')(visible)
+    hidden1 = Dense(
+        128,
+        activation='relu',
+        kernel_initializer='he_uniform',
+        kernel_regularizer=regularizers.l2(0.01),
+    )(visible)
     temp_layer = BatchNormalization()(hidden1)
-    hidden2 = Dense(units=64, activation='relu', kernel_initializer='he_uniform')(
-        temp_layer
-    )
+    hidden2 = Dense(
+        units=64,
+        activation='relu',
+        kernel_initializer='he_uniform',
+        kernel_regularizer=regularizers.l2(0.01),
+    )(temp_layer)
     temp_layer = BatchNormalization()(hidden2)
-    out1 = Dense(units=32, activation='relu', kernel_initializer='he_uniform')(
-        temp_layer
-    )
+    out1 = Dense(
+        units=32,
+        activation='relu',
+        kernel_initializer='he_uniform',
+        kernel_regularizer=regularizers.l2(0.01),
+    )(temp_layer)
 
     # 2nd model
     n_input = int(len(iX[1][0]))
@@ -284,9 +295,16 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
         activity_regularizer=regularizers.l1(0.01),
     )(visible2)
 
-    hidden3 = Add()([out1, out2])
-    hidden4 = Dense(32, activation='relu', kernel_initializer='he_uniform')(hidden3)
-    out = Dense(n_output, activation='linear')(hidden4)
+    hidden3 = Concatenate()([out1, out2])
+    hidden4 = Dense(
+        32,
+        activation='relu',
+        kernel_initializer='he_uniform',
+        kernel_regularizer=regularizers.l2(0.01),
+    )(hidden3)
+    out = Dense(
+        n_output, activation='linear', kernel_regularizer=regularizers.l2(0.01)
+    )(hidden4)
 
     model = Model(inputs=[visible, visible2], outputs=[out])
 
