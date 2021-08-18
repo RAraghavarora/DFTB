@@ -295,15 +295,15 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
         activity_regularizer=regularizers.l1(0.01),
     )(visible2)
 
-    hidden3 = Concatenate()([out1, out2])
+    hidden3 = Add()([out1, out2])
     hidden4 = Dense(
-        32,
+        16,
         activation='relu',
         kernel_initializer='he_uniform',
         kernel_regularizer=regularizers.l2(0.01),
     )(hidden3)
     hidden5 = Dense(
-        16,
+        8,
         activation='elu',
         kernel_initializer='he_uniform',
         kernel_regularizer=regularizers.l2(0.01),
