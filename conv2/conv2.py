@@ -265,23 +265,23 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     visible = Input(shape=(n_input,))
     hidden1 = Dense(
         128,
-        activation='relu',
+        activation='elu',
         kernel_initializer='he_uniform',
-        kernel_regularizer=regularizers.l2(0.01),
+        kernel_regularizer=regularizers.l2(0.001),
     )(visible)
     temp_layer = BatchNormalization()(hidden1)
     hidden2 = Dense(
         units=64,
-        activation='relu',
+        activation='elu',
         kernel_initializer='he_uniform',
-        kernel_regularizer=regularizers.l2(0.01),
+        kernel_regularizer=regularizers.l2(0.001),
     )(temp_layer)
     temp_layer = BatchNormalization()(hidden2)
     out1 = Dense(
         units=32,
-        activation='relu',
+        activation='elu',
         kernel_initializer='he_uniform',
-        kernel_regularizer=regularizers.l2(0.01),
+        kernel_regularizer=regularizers.l2(0.001),
     )(temp_layer)
 
     # 2nd model
@@ -290,27 +290,21 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     visible2 = Input(shape=(n_input,))
     out2 = Dense(
         32,
-        activation='relu',
-        kernel_initializer='he_uniform',
-        activity_regularizer=regularizers.l1(0.01),
-    )(visible2)
-
-    hidden3 = Add()([out1, out2])
-    hidden4 = Dense(
-        16,
-        activation='relu',
-        kernel_initializer='he_uniform',
-        kernel_regularizer=regularizers.l2(0.01),
-    )(hidden3)
-    hidden5 = Dense(
-        8,
         activation='elu',
         kernel_initializer='he_uniform',
-        kernel_regularizer=regularizers.l2(0.01),
-    )(hidden4)
+        activity_regularizer=regularizers.l1(0.001),
+    )(visible2)
+
+    hidden3 = Concatenate()([out1, out2])
+    hidden4 = Dense(
+        16,
+        activation='elu',
+        kernel_initializer='he_uniform',
+        kernel_regularizer=regularizers.l2(0.001),
+    )(hidden3)
     out = Dense(
         n_output, activation='linear', kernel_regularizer=regularizers.l2(0.01)
-    )(hidden5)
+    )(hidden4)
 
     model = Model(inputs=[visible, visible2], outputs=[out])
 
