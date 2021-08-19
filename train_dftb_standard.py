@@ -157,7 +157,7 @@ def prepare_data(op):
     for var in [p1b, p2b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b, p11b]:
         var2 = np.array(var)
         var2 = var2.reshape(-1, 1)
-        scaler = MinMaxScaler()
+        scaler = StandardScaler()
         var3 = scaler.fit_transform(var2)
 
         temp.append(var3)
