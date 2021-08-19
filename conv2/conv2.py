@@ -269,20 +269,18 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
         kernel_initializer='he_uniform',
         kernel_regularizer=regularizers.l2(0.001),
     )(visible)
-    temp_layer = BatchNormalization()(hidden1)
     hidden2 = Dense(
         units=64,
         activation='elu',
         kernel_initializer='he_uniform',
         kernel_regularizer=regularizers.l2(0.001),
-    )(temp_layer)
-    temp_layer = BatchNormalization()(hidden2)
+    )(hidden1)
     out1 = Dense(
         units=32,
         activation='elu',
         kernel_initializer='he_uniform',
         kernel_regularizer=regularizers.l2(0.001),
-    )(temp_layer)
+    )(hidden2)
 
     # 2nd model
     n_input = int(len(iX[1][0]))
@@ -315,7 +313,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     model.compile(loss='mse', optimizer=opt, metrics=['mae'])
     # fit model
     rlrp = ReduceLROnPlateau(
-        monitor='val_loss', factor=0.67, patience=patience, min_delta=1e-5, min_lr=1e-7
+        monitor='val_loss', factor=0.6, patience=patience, min_delta=1e-5, min_lr=1e-7
     )
     lrm = LearningRateMonitor()
     history = model.fit(
@@ -421,7 +419,7 @@ iX, iY = prepare_data(op)
 # fit model and plot learning curves for a patience
 patience = 1000
 
-current_dir = '/scratch/ws/1/medranos-DFTB/raghav/code/conv2/new'
+current_dir = '/scratch/ws/1/medranos-DFTB/raghav/code/conv2/new2'
 
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
