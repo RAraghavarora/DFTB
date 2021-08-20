@@ -271,7 +271,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     model.compile(loss='mse', optimizer=opt, metrics=['mae'])
     # fit model
     rlrp = ReduceLROnPlateau(
-        monitor='val_loss', factor=0.6, patience=patience, min_delta=1e-5, min_lr=1e-6
+        monitor='val_loss', factor=0.57, patience=patience, min_delta=1e-5, min_lr=1e-6
     )
     lrm = LearningRateMonitor()
     history = model.fit(
@@ -399,7 +399,7 @@ for ii in range(len(train_set)):
         for ii in range(0, len(lr)):
             lhis.write(
                 '{:8d}'.format(ii)
-                + '{:16f}'.format(lr[ii])
+                + '{:16.8f}'.format(lr[ii])
                 + '{:16f}'.format(loss[ii])
                 + '{:16f}'.format(acc[ii])
                 + '\n'
