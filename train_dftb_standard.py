@@ -356,7 +356,7 @@ def save_plot(n_val):
         if float(x1) > maxi:
             maxi = float(x1)
 
-    plt.plot(x, y, 'ro')
+    plt.plot(x, y, '.')
     temp = np.arange(mini, maxi, 0.1)
     plt.plot(temp, temp)
     plt.xlabel("True EAT")
@@ -367,7 +367,7 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['20000']
+train_set = ['1000', '2000', '4000', '8000', '10000', '30000']
 n_val = 1000
 n_test = 10000
 op = sys.argv[1]
