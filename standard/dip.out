@@ -1,11 +1,11 @@
 Starting Program
 training starts
-*** JOB 'dftb-ra-st' (ID: 19006337) ***
+*** JOB 'dftb-ra-st' (ID: 19021335) ***
 *** taurusi2046: 1 node(s),  8 core(s) in total ***
 *** Submitted in: /lustre/scratch2/ws/1/medranos-DFTB/raghav/code ***
 
-*** [TIMING] start Aug 20, 08:17:46 ***
-*** [TIMING] walltime 1-23:59:51 [47:59:51] ends Aug 22, 08:17:37 ***
+*** [TIMING] start Aug 21, 07:29:33 ***
+*** [TIMING] walltime 1-23:59:51 [47:59:51] ends Aug 23, 07:29:24 ***
 
 
 
@@ -17,25 +17,10 @@ training starts
 Trainset= 1000
 Perfoming training
 Saved model to disk
-Trainset= 2000
-Perfoming training
-Saved model to disk
-Trainset= 4000
-Perfoming training
-Saved model to disk
-Trainset= 8000
-Perfoming training
-Saved model to disk
-Trainset= 10000
-Perfoming training
-Saved model to disk
-Trainset= 30000
-Perfoming training
-Saved model to disk
 training is over :-)
 
 ###########################################################################
 
-*** [TIMING] end Aug 21, 00:06:33 ***
-*** [TIMING] duration 15:48:56[15:48:47] ***
+*** [TIMING] end Aug 21, 08:15:35 ***
+*** [TIMING] duration 46:11[0:46:02] ***
 
