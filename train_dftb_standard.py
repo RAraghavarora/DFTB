@@ -271,7 +271,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     model.compile(loss='mse', optimizer=opt, metrics=['mae'])
     # fit model
     rlrp = ReduceLROnPlateau(
-        monitor='val_loss', factor=0.57, patience=patience, min_delta=1e-5, min_lr=1e-6
+        monitor='val_loss', factor=0.57, patience=patience, min_delta=1e-5, min_lr=1e-7
     )
     lrm = LearningRateMonitor()
     history = model.fit(
@@ -340,7 +340,7 @@ def load_nnmodel(idir):
     return model
 
 
-def save_plot(n_val):
+def save_plot(n_train):
     f = open("comp-test.dat", 'r')
     lines = f.readlines()
     x = []
@@ -361,13 +361,13 @@ def save_plot(n_val):
     plt.plot(temp, temp)
     plt.xlabel("True EAT")
     plt.ylabel("Predicted EAT")
-    plt.title('Results for training size of %s' % n_val)
+    plt.title('Results for training size of %s' % n_train)
     plt.savefig('Results.png')
     plt.close()
 
 
 # prepare dataset
-train_set = ['1000', '2000', '4000', '8000', '10000', '30000']
+train_set = ['1000', '2000', '4000', '8000', '10000', '20000', '30000']
 n_val = 1000
 n_test = 10000
 op = sys.argv[1]
@@ -415,4 +415,4 @@ for ii in range(len(train_set)):
 
     # Saving results
     plotting_results(model, testX, testy)
-    save_plot(n_val)
+    save_plot(train_set[ii])
