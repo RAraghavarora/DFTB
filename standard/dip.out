@@ -13,3 +13,29 @@ JOB OUTPUT:
 ###########################################################################
 
 training starts
+41537
+Trainset= 1000
+Perfoming training
+Saved model to disk
+Trainset= 2000
+Perfoming training
+Saved model to disk
+Trainset= 4000
+Perfoming training
+Saved model to disk
+Trainset= 8000
+Perfoming training
+Saved model to disk
+Trainset= 10000
+Perfoming training
+Saved model to disk
+Trainset= 30000
+Perfoming training
+Saved model to disk
+training is over :-)
+
+###########################################################################
+
+*** [TIMING] end Aug 21, 00:06:33 ***
+*** [TIMING] duration 15:48:56[15:48:47] ***
+

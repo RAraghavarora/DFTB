@@ -10,7 +10,7 @@
 #SBATCH -A p_biomolecules
 #SBATCH --mail-type=all
 #SBATCH        --mail-user=leonardo.medrano@nano.tu-dresden.de
-#SBATCH --mem-per-cpu=8000MB
+#SBATCH --mem-per-cpu=7000MB
 
 ulimit -s unlimited
 
