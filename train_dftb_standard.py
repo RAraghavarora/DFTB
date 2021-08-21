@@ -382,6 +382,7 @@ current_dir = os.getcwd()
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
     chdir(current_dir + '/standard/')
+    n_train = train_set[ii]
     os.chdir(current_dir + '/standard/')
     try:
         os.mkdir(str(train_set[ii]))
@@ -415,4 +416,4 @@ for ii in range(len(train_set)):
 
     # Saving results
     plotting_results(model, testX, testy)
-    save_plot(train_set[ii])
+    save_plot(n_train)
