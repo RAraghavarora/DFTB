@@ -10,7 +10,7 @@
 #SBATCH -A p_biomolecules
 #SBATCH --mail-type=all
 #SBATCH        --mail-user=leonardo.medrano@nano.tu-dresden.de
-#SBATCH --mem-per-cpu=4000MB
+#SBATCH --mem-per-cpu=6000MB
 ulimit -s unlimited
 echo Starting Program
 module purge                                 # purge if you already have modules loaded
