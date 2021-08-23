@@ -55,8 +55,8 @@ def complete_array(Aprop):
 
 def prepare_data(op):
     # read dataset
-    # data_dir = '../'
-    data_dir = '/scratch/ws/1/medranos-DFTB/props/dftb/data/n1-2/'
+    data_dir = '../'
+    # data_dir = '/scratch/ws/1/medranos-DFTB/props/dftb/data/n1-2/'
     properties = [
         'RMSD',
         'EAT',
@@ -153,10 +153,14 @@ def prepare_data(op):
 
     # Standardize the data property wise
 
+    pdb.set_trace()
     temp = []
     for var in [p1b, p2b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b, p11b]:
         var2 = np.array(var)
-        var2 = var2.reshape(-1, 1)
+        try:
+            _ = var2.shape[1]
+        except IndexError:
+            var2 = var2.reshape(-1, 1)
         scaler = StandardScaler()
         var3 = scaler.fit_transform(var2)
 
@@ -187,6 +191,7 @@ def prepare_data(op):
             )
         )
     reps2 = np.array(reps2)
+    pdb.set_trace()
 
     return reps2, TPROP2
 

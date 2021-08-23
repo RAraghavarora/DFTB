@@ -70,8 +70,8 @@ def complete_array(Aprop):
 
 def prepare_data(op):
     #  # read dataset
-    data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/'
-    # data_dir = '../'
+    # data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/'
+    data_dir = '../'
 
     properties = [
         'RMSD',
@@ -171,7 +171,10 @@ def prepare_data(op):
     temp = []
     for var in [p1b, p2b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b, p11b]:
         var2 = np.array(var)
-        var2 = var2.reshape(-1, 1)
+        try:
+            _ = var2.shape[1]
+        except IndexError:
+            var2 = var2.reshape(-1, 1)
         scaler = StandardScaler()
         var3 = scaler.fit_transform(var2)
         temp.append(var3)
@@ -199,6 +202,8 @@ def prepare_data(op):
                 axis=None,
             )
         )
+
+    pdb.set_trace()
 
     desc = np.array(desc)
     dftb = np.array(dftb)
@@ -313,7 +318,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     model.compile(loss='mse', optimizer=opt, metrics=['mae'])
     # fit model
     rlrp = ReduceLROnPlateau(
-        monitor='val_loss', factor=0.57, patience=patience, min_delta=1e-5, min_lr=1e-7
+        monitor='val_loss', factor=0.59, patience=patience, min_delta=1e-5, min_lr=1e-7
     )
     lrm = LearningRateMonitor()
     history = model.fit(
