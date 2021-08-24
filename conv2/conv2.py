@@ -2,7 +2,6 @@
 import sys
 import pdb
 import os
-import pdb
 from os import path, mkdir, chdir
 import warnings
 import numpy as np
@@ -203,8 +202,6 @@ def prepare_data(op):
             )
         )
 
-    pdb.set_trace()
-
     desc = np.array(desc)
     dftb = np.array(dftb)
 
@@ -217,12 +214,12 @@ def split_data(n_train, n_val, n_test, Repre, Target):
 
     X_train, X_val, X_test = (
         np.array(Repre[:n_train]),
-        np.array(Repre[-n_test - n_val : -n_test]),
+        np.array(Repre[-n_test - n_val: -n_test]),
         np.array(Repre[-n_test:]),
     )
     Y_train, Y_val, Y_test = (
         np.array(Target[:n_train]),
-        np.array(Target[-n_test - n_val : -n_test]),
+        np.array(Target[-n_test - n_val: -n_test]),
         np.array(Target[-n_test:]),
     )
 

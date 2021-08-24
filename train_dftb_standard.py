@@ -153,7 +153,6 @@ def prepare_data(op):
 
     # Standardize the data property wise
 
-    pdb.set_trace()
     temp = []
     for var in [p1b, p2b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b, p11b]:
         var2 = np.array(var)
@@ -191,7 +190,6 @@ def prepare_data(op):
             )
         )
     reps2 = np.array(reps2)
-    pdb.set_trace()
 
     return reps2, TPROP2
 
