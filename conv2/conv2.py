@@ -214,12 +214,12 @@ def split_data(n_train, n_val, n_test, Repre, Target):
 
     X_train, X_val, X_test = (
         np.array(Repre[:n_train]),
-        np.array(Repre[-n_test - n_val: -n_test]),
+        np.array(Repre[-n_test - n_val : -n_test]),
         np.array(Repre[-n_test:]),
     )
     Y_train, Y_val, Y_test = (
         np.array(Target[:n_train]),
-        np.array(Target[-n_test - n_val: -n_test]),
+        np.array(Target[-n_test - n_val : -n_test]),
         np.array(Target[-n_test:]),
     )
 
@@ -419,7 +419,7 @@ op = sys.argv[1]
 iX, iY = prepare_data(op)
 
 # fit model and plot learning curves for a patience
-patience = 1000
+patience = 500
 
 current_dir = '/scratch/ws/1/medranos-DFTB/raghav/code/conv2/new2'
 

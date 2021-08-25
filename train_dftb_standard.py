@@ -378,7 +378,7 @@ op = sys.argv[1]
 iX, iY = prepare_data(op)
 
 # fit model and plot learning curves for a patience
-patience = 100
+patience = 500
 
 current_dir = os.getcwd()
 
