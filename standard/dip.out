@@ -1,11 +1,11 @@
 Starting Program
 training starts
-*** JOB 'dftb-ra-st' (ID: 19029847) ***
+*** JOB 'dftb-ra-st' (ID: 19050929) ***
 *** taurusi2097: 1 node(s),  8 core(s) in total ***
 *** Submitted in: /lustre/scratch2/ws/1/medranos-DFTB/raghav/code ***
 
-*** [TIMING] start Aug 22, 07:21:41 ***
-*** [TIMING] walltime 1-23:59:50 [47:59:50] ends Aug 24, 07:21:31 ***
+*** [TIMING] start Aug 24, 07:48:29 ***
+*** [TIMING] walltime 1-23:59:52 [47:59:52] ends Aug 26, 07:48:21 ***
 
 
 
@@ -39,6 +39,6 @@ training is over :-)
 
 ###########################################################################
 
-*** [TIMING] end Aug 23, 04:04:00 ***
-*** [TIMING] duration 20:42:29[20:42:19] ***
+*** [TIMING] end Aug 25, 04:53:39 ***
+*** [TIMING] duration 21:05:18[21:05:10] ***
 
