@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 
 # Plot the curve of learning rate
 
-lhis = open('cnn/2000/learning-history.dat', 'r')
+lhis = open('conv2/new2/20000/learning-history.dat', 'r')
 
 lines = lhis.readlines()
 x = []
@@ -10,11 +10,11 @@ y = []
 
 
 for line in lines:
-    epoch, lr, loss, mae = line.split()
+    epoch, lr, loss, val_mae, mae = line.split()
     x.append(int(epoch))
-    y.append(float(mae))
+    y.append(float(val_mae))
 
-plt.plot(x[3000:], y[3000:], '.')
+plt.plot(x[10000:], y[10000:], '.')
 plt.xlabel("Training MAE")
 plt.ylabel("Epoch")
 plt.title('Learning history for conv with size of 20000')

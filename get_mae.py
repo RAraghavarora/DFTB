@@ -124,6 +124,20 @@ def prepare_data(op):
 
     p11b = complete_array(p11b)
 
+    temp = []
+    for var in [p1b, p2b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b, p11b]:
+        var2 = np.array(var)
+        try:
+            _ = var2.shape[1]
+        except IndexError:
+            var2 = var2.reshape(-1, 1)
+        scaler = StandardScaler()
+        var3 = scaler.fit_transform(var2)
+
+        temp.append(var3)
+
+    p1b, p2b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b, p11b = temp
+
     desc = []
     dftb = []
     for ii in range(len(idx2)):
@@ -131,6 +145,7 @@ def prepare_data(op):
         dftb.append(
             np.concatenate(
                 (
+                    xyz_reps[ii],
                     p1b[ii],
                     p2b[ii],
                     p3b[ii],
@@ -149,7 +164,7 @@ def prepare_data(op):
     desc = np.array(desc)
     dftb = np.array(dftb)
 
-    return (desc, dftb), TPROP2, atoms_data
+    return dftb, TPROP2, atoms_data
 
 
 train_set = ['1000', '2000', '4000', '8000', '10000', '20000', '30000']
@@ -157,14 +172,10 @@ n_test = 41537
 n_val = 1000
 
 Repre, Target, atoms_data = prepare_data('EAT')
-desc = Repre[0]
-dftb = Repre[1]
-
 
 for n_train in train_set:
     n_train = int(n_train)
-    X_test1 = np.array(desc[-n_test:])
-    X_test2 = np.array(dftb[-n_test:])
+    X_test = np.array(Repre[-n_test:])
     Y_train, Y_val, Y_test = (
         np.array(Target[:n_train]),
         np.array(Target[-n_test - n_val : -n_test]),
@@ -175,13 +186,13 @@ for n_train in train_set:
     Y_val = Y_val.reshape(-1, 1)
     Y_test = Y_test.reshape(-1, 1)
 
-    model = load_model('conv/withdft/new/%s' % n_train + '/model.h5')
-    y_test = model.predict((X_test1, X_test2))  # in eV
+    model = load_model('standard/%s' % n_train + '/model.h5')
+    y_test = model.predict(X_test)  # in eV
     MAE_PROP = float(mean_absolute_error(Y_test, y_test))
     MSE_PROP = float(mean_squared_error(Y_test, y_test))
     STD_PROP = float(Y_test.std())
 
-    out2 = open('conv/withdft/new/%s/errors.dat' % n_train, 'w')
+    out2 = open('standard/%s/errors.dat' % n_train, 'w')
     out2.write(
         '{:>24}'.format(STD_PROP)
         + '{:>24}'.format(MAE_PROP)
@@ -194,7 +205,7 @@ for n_train in train_set:
     dtest = np.array(Y_test - y_test)
     format_list1 = ['{:16f}' for item1 in Y_test[0]]
     s = ' '.join(format_list1)
-    ctest = open('conv/withdft/new/%s/comp.dat' % n_train, 'w')
+    ctest = open('standard/%s/comp.dat' % n_train, 'w')
     for ii in range(0, len(Y_test)):
         ctest.write(
             s.format(*Y_test[ii]) + s.format(*y_test[ii]) + s.format(*dtest[ii]) + '\n'
