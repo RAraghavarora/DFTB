@@ -12,7 +12,7 @@ from qml.representations import generate_coulomb_matrix
 from tensorflow.keras import regularizers, backend
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.initializers import HeNormal
-from tensorflow.keras.layers import Dense, BatchNormalization
+from tensorflow.keras.layers import Dense, BatchNormalization, Conv2D, MaxPooling2D, GlobalMaxPooling2D
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import Callback, ReduceLROnPlateau
 
@@ -71,7 +71,7 @@ def prepare_data(op):
             data_dir + 'totgdb7x_pbe0.db', load_only=properties
         )
     except:
-        data_dir = '..'
+        data_dir = '../'
         dataset = spk.data.AtomsData(
             data_dir + 'totgdb7x_pbe0.db', load_only=properties
         )
@@ -176,39 +176,61 @@ def fit_model_dense(K_train, K_val, K_test, Y_val, Y_train, patience=1000):
 
     n_input = K_train.shape[0]
     n_output = int(1)
-
     # define model
     model = Sequential()
     initializer = HeNormal()
+
+    input_len = [2000,2000,1]
+
     model.add(
-        Dense(
-            128,
-            input_dim=n_input,
+        Conv2D(
+            filters=316,
+            kernel_size=(15,15),
+            input_shape=input_len,
             activation='elu',
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
         )
     )
-    model.add(BatchNormalization())
+
+    model.add(MaxPooling2D(pool_size=4))
+
     model.add(
-        Dense(
-            units=64,
+        Conv2D(
+            filters=128,
+            kernel_size=(15,15),
             activation='elu',
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
         )
     )
-    model.add(BatchNormalization())
+
+    model.add(MaxPooling2D(pool_size=4))
+
     model.add(
-        Dense(
-            units=32,
+        Conv2D(
+            filters=32,
+            kernel_size=(15,15),
             activation='elu',
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
         )
     )
-    model.add(BatchNormalization())
-    model.add(Dense(n_output, activation='linear', kernel_initializer=initializer))
+
+    model.add(MaxPooling2D(pool_size=4))
+
+    model.add(
+        Conv2D(
+            filters=1,
+            kernel_size=(3,3),
+            activation='elu',
+            kernel_initializer=initializer,
+            kernel_regularizer=regularizers.l2(0.001),
+        )
+    )
+
+    model.add(GlobalMaxPooling2D())
+    model.add(Dense(1, activation='linear'))
     # compile model
     opt = Adam(learning_rate=0.01)
     model.compile(loss='mse', optimizer=opt, metrics=['mae'])
