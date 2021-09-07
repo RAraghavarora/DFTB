@@ -293,7 +293,7 @@ gamma = 1.92823619e-05
 n_test = 10000
 n_val = 2000
 
-train_set = [2000, 20000]
+train_set = [2000]
 
 current_dir = getcwd()
 
