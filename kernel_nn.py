@@ -12,7 +12,7 @@ from qml.representations import generate_coulomb_matrix
 from tensorflow.keras import regularizers, backend
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.initializers import HeNormal
-from tensorflow.keras.layers import Dense, BatchNormalization, Conv2D, MaxPooling2D, GlobalMaxPooling2D
+from tensorflow.keras.layers import Dense, BatchNormalization, Conv1D, MaxPooling1D, GlobalMaxPooling1D
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import Callback, ReduceLROnPlateau
 
@@ -180,12 +180,12 @@ def fit_model_dense(K_train, K_val, K_test, Y_val, Y_train, patience=1000):
     model = Sequential()
     initializer = HeNormal()
 
-    input_len = [2000,2000,1]
+    input_len = [2000,1]
 
     model.add(
-        Conv2D(
+        Conv1D(
             filters=316,
-            kernel_size=(15,15),
+            kernel_size=15,
             input_shape=input_len,
             activation='elu',
             kernel_initializer=initializer,
@@ -193,43 +193,48 @@ def fit_model_dense(K_train, K_val, K_test, Y_val, Y_train, patience=1000):
         )
     )
 
-    model.add(MaxPooling2D(pool_size=4))
+    model.add(MaxPooling1D(pool_size=4))
 
     model.add(
-        Conv2D(
+        Conv1D(
             filters=128,
-            kernel_size=(15,15),
+            kernel_size=15,
+            strides=2,
+            input_shape=input_len,
             activation='elu',
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
         )
     )
 
-    model.add(MaxPooling2D(pool_size=4))
+    model.add(MaxPooling1D(pool_size=2))
 
     model.add(
-        Conv2D(
+        Conv1D(
             filters=32,
-            kernel_size=(15,15),
+            kernel_size=3,
+            input_shape=input_len,
             activation='elu',
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
         )
     )
 
-    model.add(MaxPooling2D(pool_size=4))
+    model.add(MaxPooling1D(pool_size=4))
 
     model.add(
-        Conv2D(
+        Conv1D(
             filters=1,
-            kernel_size=(3,3),
+            kernel_size=3,
+            strides=2,
+            input_shape=input_len,
             activation='elu',
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
         )
     )
 
-    model.add(GlobalMaxPooling2D())
+    model.add(GlobalMaxPooling1D())
     model.add(Dense(1, activation='linear'))
     # compile model
     opt = Adam(learning_rate=0.01)
@@ -239,6 +244,7 @@ def fit_model_dense(K_train, K_val, K_test, Y_val, Y_train, patience=1000):
         monitor='val_loss', factor=0.5, patience=patience, min_delta=1e-5, min_lr=1e-6
     )
     lrm = LearningRateMonitor()
+    K_train.shape=(2000,2000,1)
     history = model.fit(
         K_train,
         Y_train,
