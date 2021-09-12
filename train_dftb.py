@@ -17,7 +17,7 @@ from tensorflow.keras.callbacks import Callback, ReduceLROnPlateau
 from tensorflow.keras import backend
 from tensorflow.keras.models import load_model
 from tensorflow.keras.initializers import HeNormal
-from qml.representations import generate_coulomb_matrix
+from qml.representations import generate_bob
 
 import logging
 import schnetpack as spk
@@ -151,26 +151,13 @@ def prepare_data(op):
 
     p11b = complete_array(p11b)
 
-    # Standardize the data property wise
-
-    temp = []
-    for var in [p1b, p2b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b, p11b]:
-        var2 = np.array(var)
-        var2 = var2.reshape(-1, 1)
-        scaler = MinMaxScaler()
-        var3 = scaler.fit_transform(var2)
-
-        temp.append(var3)
-
-    p1b, p2b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b, p11b = temp
-
     reps2 = []
     for ii in range(len(idx2)):
         # reps2.append(xyz_reps[ii])
         reps2.append(
             np.concatenate(
                 (
-                    xyz_reps[ii],
+                    bob_repr[ii],
                     p1b[ii],
                     p2b[ii],
                     p3b[ii],
@@ -273,7 +260,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     model.compile(loss='mse', optimizer=opt, metrics=['mae'])
     # fit model
     rlrp = ReduceLROnPlateau(
-        monitor='val_loss', factor=0.5, patience=patience, min_delta=1e-5, min_lr=1e-6
+        monitor='val_loss', factor=0.59, patience=patience, min_delta=1e-5, min_lr=1e-6
     )
     lrm = LearningRateMonitor()
     history = model.fit(
@@ -369,7 +356,7 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['20000']
+train_set = ['20000', '30000']
 n_val = 1000
 n_test = 10000
 op = sys.argv[1]
@@ -377,7 +364,7 @@ op = sys.argv[1]
 iX, iY = prepare_data(op)
 
 # fit model and plot learning curves for a patience
-patience = 100  # If no improvement is seen for these epochs, Learning rate is reduced
+patience = 700  # If no improvement is seen for these epochs, Learning rate is reduced
 
 current_dir = os.getcwd()
 
