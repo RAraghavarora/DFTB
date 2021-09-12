@@ -245,6 +245,7 @@ def fit_model_dense(K_train, K_val, K_test, Y_val, Y_train, patience=1000):
     )
     lrm = LearningRateMonitor()
     K_train.shape=(2000,2000,1)
+    K_val.shape=(2000,2000,1)
     history = model.fit(
         K_train,
         Y_train,
