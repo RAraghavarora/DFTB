@@ -184,7 +184,7 @@ def fit_model_dense(K_train, K_val, K_test, Y_val, Y_train, patience=1000):
 
     model.add(
         Conv1D(
-            filters=316,
+            filters=32,
             kernel_size=15,
             input_shape=input_len,
             activation='elu',
@@ -197,7 +197,7 @@ def fit_model_dense(K_train, K_val, K_test, Y_val, Y_train, patience=1000):
 
     model.add(
         Conv1D(
-            filters=128,
+            filters=16,
             kernel_size=15,
             strides=2,
             input_shape=input_len,
@@ -211,7 +211,7 @@ def fit_model_dense(K_train, K_val, K_test, Y_val, Y_train, patience=1000):
 
     model.add(
         Conv1D(
-            filters=32,
+            filters=8,
             kernel_size=3,
             input_shape=input_len,
             activation='elu',

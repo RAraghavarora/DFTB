@@ -1,23 +1,24 @@
 #!/bin/bash
-#SBATCH --time=48:00:00
+#SBATCH --time=96:00:00
 #SBATCH --partition=gpu2                        # specify ml partition or gpu2 partition
+#SBATCH --gres=gpu:2                      # use 1 GPU per node (i.e. use one GPU per task)
 #SBATCH --gres=gpu:4                      # use 1 GPU per node (i.e. use one GPU per task)
 #SBATCH --nodes=1                        # request 1 node
 #SBATCH --ntasks=8
-#SBATCH -J dftb-ra-st
-#SBATCH --output=standard/dip.out
-#SBATCH --error=standard/dip.err
+#SBATCH -J kern-ra
+#SBATCH --output=kernel/dip.out
+#SBATCH --error=kernel/dip.err
 #SBATCH -A p_biomolecules
 #SBATCH --mail-type=all
 #SBATCH        --mail-user=leonardo.medrano@nano.tu-dresden.de
-#SBATCH --mem-per-cpu=6000MB
+#SBATCH --mem-per-cpu=4000MB
 ulimit -s unlimited
 echo Starting Program
 module purge                                 # purge if you already have modules loaded
 module load modenv/scs5
 module load Python/3.6.4-intel-2018a
 . /home/medranos/vdftb20/bin/activate
-# module load cuDNN/8.0.4.30-CUDA-11.1.1
+module load cuDNN/8.0.4.30-CUDA-11.1.1
 echo "training starts"
 walltime=$(squeue -h -j $SLURM_JOBID -o "%L")
 IFS=- read daysleft rest <<< "$walltime"
@@ -49,7 +50,7 @@ echo "training starts"
 #export DFTB_PREFIX='/home/medranos/SK-files/3ob-3-1/'
 
 work=/scratch/ws/1/medranos-DFTB/raghav/code
-python3 $work/train_dftb_standard.py EAT fit
+python3 $work/kernel_nn.py
 
 echo "training is over :-)"
 EXTSTAT=$?
