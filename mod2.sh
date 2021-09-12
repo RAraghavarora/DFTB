@@ -5,8 +5,8 @@
 #SBATCH --nodes=1                        # request 1 node
 #SBATCH --ntasks=8
 #SBATCH -J ra-conv2
-#SBATCH --output=conv2/new/dip.out
-#SBATCH --error=conv2/new/dip.err
+#SBATCH --output=conv2/large/dip.out
+#SBATCH --error=conv2/large/dip.err
 #SBATCH -A p_biomolecules
 #SBATCH --mail-type=all
 #SBATCH        --mail-user=leonardo.medrano@nano.tu-dresden.de

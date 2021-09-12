@@ -69,7 +69,7 @@ def complete_array(Aprop):
 
 def prepare_data(op):
     #  # read dataset
-    data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/'
+    data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/n5/'
     # data_dir = '../'
 
     properties = [
@@ -93,7 +93,7 @@ def prepare_data(op):
 
     # data preparation
     logging.info("get dataset")
-    dataset = spk.data.AtomsData(data_dir + 'totgdb7x_pbe0.db', load_only=properties)
+    dataset = spk.data.AtomsData(data_dir + 'qm7x-n5.db', load_only=properties)
 
     n = len(dataset)
     print(n)
@@ -411,7 +411,7 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['1000', '2000', '4000', '8000', '10000', '20000', '30000']
+train_set = ['50000']
 n_val = 1000
 n_test = 10000
 op = sys.argv[1]
@@ -419,9 +419,9 @@ op = sys.argv[1]
 iX, iY = prepare_data(op)
 
 # fit model and plot learning curves for a patience
-patience = 500
+patience = 700
 
-current_dir = '/scratch/ws/1/medranos-DFTB/raghav/code/conv2/new2'
+current_dir = '/scratch/ws/1/medranos-DFTB/raghav/code/conv2/large'
 
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
