@@ -17,7 +17,7 @@ from tensorflow.keras.callbacks import Callback, ReduceLROnPlateau
 from tensorflow.keras import backend
 from tensorflow.keras.models import load_model
 from tensorflow.keras.initializers import HeNormal
-from qml.representations import generate_bob
+from qml.representations import generate_coulomb_matrix
 
 import logging
 import schnetpack as spk
