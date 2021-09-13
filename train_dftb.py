@@ -17,7 +17,7 @@ from tensorflow.keras.callbacks import Callback, ReduceLROnPlateau
 from tensorflow.keras import backend
 from tensorflow.keras.models import load_model
 from tensorflow.keras.initializers import HeNormal
-from qml.representations import generate_coulomb_matrix
+from qml.representations import generate_bob
 
 import logging
 import schnetpack as spk
@@ -117,8 +117,16 @@ def prepare_data(op):
 
     # Generate representations
     # Coulomb matrix
-    xyz_reps = np.array(
-        [generate_coulomb_matrix(Z[mol], xyz[mol], sorting='unsorted') for mol in idx2]
+    bob_repr = np.array(
+        [
+            generate_bob(
+                Z[mol],
+                xyz[mol],
+                atomtypes={'C', 'H', 'N', 'O', 'S', 'Cl'},
+                asize={'C': 7, 'H': 16, 'N': 3, 'O': 3, 'S': 1, 'Cl': 2},
+            )
+            for mol in idx2
+        ]
     )
 
     TPROP2 = []
