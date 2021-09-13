@@ -411,9 +411,9 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['50000']
+train_set = ['100000']
 n_val = 1000
-n_test = 10000
+n_test = 20000
 op = sys.argv[1]
 
 iX, iY = prepare_data(op)
