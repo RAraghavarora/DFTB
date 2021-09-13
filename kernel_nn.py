@@ -12,7 +12,13 @@ from qml.representations import generate_coulomb_matrix
 from tensorflow.keras import regularizers, backend
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.initializers import HeNormal
-from tensorflow.keras.layers import Dense, BatchNormalization, Conv1D, MaxPooling1D, GlobalMaxPooling1D
+from tensorflow.keras.layers import (
+    Dense,
+    BatchNormalization,
+    Conv1D,
+    MaxPooling1D,
+    GlobalMaxPooling1D,
+)
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import Callback, ReduceLROnPlateau
 
@@ -180,7 +186,7 @@ def fit_model_dense(K_train, K_val, K_test, Y_val, Y_train, patience=1000):
     model = Sequential()
     initializer = HeNormal()
 
-    input_len = [2000,1]
+    input_len = [2000, 1]
 
     model.add(
         Conv1D(
@@ -244,8 +250,8 @@ def fit_model_dense(K_train, K_val, K_test, Y_val, Y_train, patience=1000):
         monitor='val_loss', factor=0.5, patience=patience, min_delta=1e-5, min_lr=1e-6
     )
     lrm = LearningRateMonitor()
-    K_train.shape=(2000,2000,1)
-    K_val.shape=(2000,2000,1)
+    K_train.shape = (2000, 2000, 1)
+    K_val.shape = (2000, 2000, 1)
     history = model.fit(
         K_train,
         Y_train,
@@ -261,6 +267,7 @@ def fit_model_dense(K_train, K_val, K_test, Y_val, Y_train, patience=1000):
 
 def plotting_results(model, K_test, testy):
     # applying nn model
+    K_test.shape = (2000, 2000, 1)
     y_test = model.predict(K_test)
     testy.shape = (testy.shape[0], 1)
     # y_test = y_scaler.inverse_transform(y_test)
