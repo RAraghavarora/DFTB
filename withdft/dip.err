@@ -4,33 +4,4 @@ The following modules were not unloaded:
   1) modenv/scs5
 Module Python/3.6.4-intel-2018a and 18 dependencies loaded.
 Module cuDNN/8.0.4.30-CUDA-11.1.1 and 1 dependency loaded.
-2021-07-15 10:46:55.968484: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
-2021-07-15 11:11:48.654441: I tensorflow/compiler/jit/xla_cpu_device.cc:41] Not creating XLA devices, tf_xla_enable_xla_devices not set
-2021-07-15 11:11:48.701107: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcuda.so.1
-2021-07-15 11:11:48.758997: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties: 
-pciBusID: 0000:84:00.0 name: Tesla K80 computeCapability: 3.7
-coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
-2021-07-15 11:11:48.760069: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 1 with properties: 
-pciBusID: 0000:85:00.0 name: Tesla K80 computeCapability: 3.7
-coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
-2021-07-15 11:11:48.760120: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
-2021-07-15 11:11:48.769550: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
-2021-07-15 11:11:48.769654: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
-2021-07-15 11:11:48.772808: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
-2021-07-15 11:11:48.774596: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
-2021-07-15 11:11:48.775010: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcusolver.so.10'; dlerror: libcusolver.so.10: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /sw/installed/cuDNN/8.0.4.30-CUDA-11.1.1/lib:/sw/installed/CUDAcore/11.1.1/nvvm/lib64:/sw/installed/CUDAcore/11.1.1/extras/CUPTI/lib64:/sw/installed/CUDAcore/11.1.1/lib64:/sw/installed/Python/3.6.4-intel-2018a/lib/python3.6/site-packages/numpy-1.14.0-py3.6-linux-x86_64.egg/numpy/core/lib:/sw/installed/Python/3.6.4-intel-2018a/lib:/sw/installed/libffi/3.2.1-GCCcore-6.4.0/lib64:/sw/installed/libffi/3.2.1-GCCcore-6.4.0/lib:/sw/installed/GMP/6.1.2-GCCcore-6.4.0/lib:/sw/installed/XZ/5.2.3-GCCcore-6.4.0/lib:/sw/installed/SQLite/3.21.0-GCCcore-6.4.0/lib:/sw/installed/Tcl/8.6.8-GCCcore-6.4.0/lib:/sw/installed/libreadline/7.0-GCCcore-6.4.0/lib:/sw/installed/ncurses/6.0-GCCcore-6.4.0/lib:/sw/installed/zlib/1.2.11-GCCcore-6.4.0/lib:/sw/installed/bzip2/1.0.6-GCCcore-6.4.0/lib:/sw/installed/imkl/2018.1.163-iimpi-2018a/mkl/lib/intel64:/sw/installed/imkl/2018.1.163-iimpi-2018a/lib/intel64:/sw/installed/impi/2018.1.163-iccifort-2018.1.163-GCC-6.4.0-2.28/lib64:/sw/installed/ifort/2018.1.163-GCC-6.4.0-2.28/debugger_2018/libipt/intel64/lib:/sw/installed/ifort/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/compiler/lib/intel64:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/debugger_2018/libipt/intel64/lib:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/tbb/lib/intel64/gcc4.4:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/compiler/lib/intel64:/sw/installed/binutils/2.28-GCCcore-6.4.0/lib:/sw/installed/GCCcore/6.4.0/lib64:/sw/installed/GCCcore/6.4.0/lib
-2021-07-15 11:11:48.777248: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
-2021-07-15 11:11:48.778400: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
-2021-07-15 11:11:48.778454: W tensorflow/core/common_runtime/gpu/gpu_device.cc:1757] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
-Skipping registering GPU devices...
-2021-07-15 11:11:48.778989: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
-To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
-2021-07-15 11:11:48.779561: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
-2021-07-15 11:11:48.779627: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1261] Device interconnect StreamExecutor with strength 1 edge matrix:
-2021-07-15 11:11:48.779656: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1267]      
-2021-07-15 11:11:49.001171: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
-2021-07-15 11:11:49.001805: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 2499740000 Hz
-/home/h3/medranos/vdftb20/lib/python3.6/site-packages/schnetpack/data/atoms.py:327: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /pytorch/torch/csrc/utils/tensor_numpy.cpp:143.)
-  properties[pname] = torch.FloatTensor(prop)
-/home/h3/medranos/vdftb20/lib/python3.6/site-packages/ase/atoms.py:968: VisibleDeprecationWarning: Use get_global_number_of_atoms() instead
-  np.VisibleDeprecationWarning)
+2021-09-13 05:57:12.106144: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
