@@ -1,11 +1,11 @@
 Starting Program
 training starts
-*** JOB 'ra-conv2' (ID: 19589188) ***
+*** JOB 'ra-conv2' (ID: 19603627) ***
 *** taurusi2048: 1 node(s),  8 core(s) in total ***
 *** Submitted in: /lustre/scratch2/ws/1/medranos-DFTB/raghav/code ***
 
-*** [TIMING] start Sep 12, 06:06:20 ***
-*** [TIMING] walltime 1-23:59:52 [47:59:52] ends Sep 14, 06:06:13 ***
+*** [TIMING] start Sep 13, 15:29:25 ***
+*** [TIMING] walltime 1-23:59:46 [47:59:46] ends Sep 15, 15:29:11 ***
 
 
 
@@ -13,15 +13,3 @@ JOB OUTPUT:
 ###########################################################################
 
 training starts
-207685
-Trainset= 50000
-Perfoming training
-Perfoming training
-Saved model to disk
-training is over :-)
-
-###########################################################################
-
-*** [TIMING] end Sep 12, 23:21:52 ***
-*** [TIMING] duration 17:15:40[17:15:31] ***
-
