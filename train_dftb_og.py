@@ -243,11 +243,12 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
 
     n_inout = n_input + n_output
     # define model
+
     model = Sequential()
     initializer = HeNormal()
     model.add(
         Dense(
-            128,
+            256,
             input_dim=n_input,
             activation='elu',
             kernel_initializer=initializer,
@@ -264,7 +265,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     )
     model.add(
         Dense(
-            units=32,
+            units=256,
             activation='elu',
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
@@ -373,7 +374,7 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['50000', '30000', '20000']
+train_set = ['20000', '50000', '20000']
 n_val = 1000
 n_test = 10000
 op = sys.argv[1]
