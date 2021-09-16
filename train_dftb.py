@@ -56,7 +56,7 @@ def complete_array(Aprop):
 def prepare_data(op):
     # read dataset
     # data_dir = '../'
-    data_dir = '/scratch/ws/1/medranos-DFTB/props/dftb/data/n1-2/'
+    data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/n5/'
     properties = [
         'RMSD',
         'EAT',
@@ -78,7 +78,7 @@ def prepare_data(op):
 
     # data preparation
     logging.info("get dataset")
-    dataset = spk.data.AtomsData(data_dir + 'totgdb7x_pbe0.db', load_only=properties)
+    dataset = spk.data.AtomsData(data_dir + 'qm7x-n5.db', load_only=properties)
 
     n = len(dataset)
     print(n)
@@ -243,7 +243,6 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
             kernel_regularizer=regularizers.l2(0.001),
         )
     )
-    model.add(BatchNormalization())
     model.add(
         Dense(
             units=64,
@@ -252,7 +251,6 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
             kernel_regularizer=regularizers.l2(0.001),
         )
     )
-    model.add(BatchNormalization())
     model.add(
         Dense(
             units=32,
@@ -261,7 +259,6 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
             kernel_regularizer=regularizers.l2(0.001),
         )
     )
-    model.add(BatchNormalization())
     model.add(Dense(n_output, activation='linear', kernel_initializer=initializer))
     # compile model
     opt = Adam(learning_rate=0.01)
@@ -365,8 +362,8 @@ def save_plot(n_val):
 
 # prepare dataset
 train_set = ['20000', '30000']
-n_val = 1000
-n_test = 10000
+n_val = 5000
+n_test = 200000
 op = sys.argv[1]
 
 iX, iY = prepare_data(op)
@@ -378,13 +375,13 @@ current_dir = os.getcwd()
 
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
-    chdir(current_dir + '/normalize/')
-    os.chdir(current_dir + '/normalize/')
+    chdir(current_dir + '/normalize/large/')
+    os.chdir(current_dir + '/normalize/large/')
     try:
         os.mkdir(str(train_set[ii]))
     except FileExistsError:
         pass
-    os.chdir(current_dir + '/normalize/' + str(train_set[ii]))
+    os.chdir(current_dir + '/normalize/large/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 
