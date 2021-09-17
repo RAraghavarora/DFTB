@@ -375,14 +375,14 @@ def save_plot(n_val):
 
 # prepare dataset
 train_set = ['30000', '50000', '20000']
-n_val = 1000
+n_val = 5000
 n_test = 207685  # Test on the entire dataset
 op = sys.argv[1]
 
 iX, iY = prepare_data(op)
 
 # fit model and plot learning curves for a patience
-patience = 100
+patience = 700
 
 current_dir = os.getcwd()
 
