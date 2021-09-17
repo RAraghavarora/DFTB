@@ -1,6 +1,7 @@
 # NN model
 import sys
 import os
+import pdb
 from os import path, mkdir, chdir
 import warnings
 import numpy as np
@@ -69,7 +70,7 @@ def complete_array(Aprop):
 
 def prepare_data(op):
     #  # read dataset
-    data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/n5/'
+    data_dir = '../'
     properties = [
         'RMSD',
         'EAT',
@@ -216,11 +217,13 @@ def split_data(n_train, n_val, n_test, Repre, Target):
         np.array(Target[-n_test - n_val : -n_test]),
         np.array(Target[-n_test:]),
     )
+    print(X_val.shape)
 
     # Data standardization
     Y_train = Y_train.reshape(-1, 1)
     Y_val = Y_val.reshape(-1, 1)
     Y_test = Y_test.reshape(-1, 1)
+    print(Y_val.shape)
 
     x_scaler = StandardScaler().fit(X_train)
     y_scaler = StandardScaler().fit(Y_train)
@@ -376,7 +379,7 @@ def save_plot(n_val):
 # prepare dataset
 train_set = ['30000', '50000', '20000']
 n_val = 5000
-n_test = 207685  # Test on the entire dataset
+n_test = 202685  # Test on the entire dataset
 op = sys.argv[1]
 
 iX, iY = prepare_data(op)
