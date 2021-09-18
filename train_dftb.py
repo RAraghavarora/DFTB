@@ -361,7 +361,7 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['50000', '100000']
+train_set = ['100000']
 n_val = 5000
 n_test = 200000
 op = sys.argv[1]
@@ -375,6 +375,7 @@ current_dir = os.getcwd()
 
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
+    temp = train_set[ii]
     chdir(current_dir + '/normalize/large/')
     os.chdir(current_dir + '/normalize/large/')
     try:
@@ -393,9 +394,10 @@ for ii in range(len(train_set)):
         for ii in range(0, len(lr)):
             lhis.write(
                 '{:8d}'.format(ii)
-                + '{:16f}'.format(lr[ii])
+                + '{:16.8f}'.format(lr[ii])
                 + '{:16f}'.format(loss[ii])
-                + '{:16f}'.format(acc[ii])
+                + '{:16f}'.format(acc[0][ii])
+                + '{:16f}'.format(acc[1][ii])
                 + '\n'
             )
         lhis.close()
@@ -409,4 +411,4 @@ for ii in range(len(train_set)):
 
     # Saving results
     plotting_results(model, testX, testy)
-    save_plot(train_set[ii])
+    save_plot(temp)
