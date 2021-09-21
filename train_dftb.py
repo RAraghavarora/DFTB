@@ -396,8 +396,7 @@ for ii in range(len(train_set)):
                 '{:8d}'.format(ii)
                 + '{:16.8f}'.format(lr[ii])
                 + '{:16f}'.format(loss[ii])
-                + '{:16f}'.format(acc[0][ii])
-                + '{:16f}'.format(acc[1][ii])
+                + '{:16f}'.format(acc[ii])
                 + '\n'
             )
         lhis.close()
