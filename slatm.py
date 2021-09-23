@@ -148,7 +148,7 @@ def prepare_data(op):
 
     # Generate representations
     # SLATM
-    mbtypes = get_slatm_mbtypes(Z)
+    mbtypes = get_slatm_mbtypes([Z[mol] for mol in idx2])
     slatm = [
         generate_slatm(mbtypes=mbtypes, nuclear_charges=Z[mol], coordinates=xyz[mol])
         for mol in idx2

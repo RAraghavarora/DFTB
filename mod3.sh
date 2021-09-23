@@ -2,7 +2,7 @@
 #SBATCH --time=96:00:00
 #SBATCH --partition=gpu2                        # specify ml partition or gpu2 partition
 #SBATCH --gres=gpu:2                      # use 1 GPU per node (i.e. use one GPU per task)
-#SBATCH --gres=gpu:4                      # use 1 GPU per node (i.e. use one GPU per task)
+#SBATCH --gres=gpu:6                      # use 1 GPU per node (i.e. use one GPU per task)
 #SBATCH --nodes=1                        # request 1 node
 #SBATCH --ntasks=8
 #SBATCH -J slatm-ra
@@ -11,7 +11,7 @@
 #SBATCH -A p_biomolecules
 #SBATCH --mail-type=all
 #SBATCH        --mail-user=leonardo.medrano@nano.tu-dresden.de
-#SBATCH --mem-per-cpu=4000MB
+#SBATCH --mem-per-cpu=8000MB
 ulimit -s unlimited
 echo Starting Program
 module purge                                 # purge if you already have modules loaded
