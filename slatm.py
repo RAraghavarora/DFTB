@@ -97,7 +97,7 @@ def prepare_data(op):
 
     # data preparation
     logging.info("get dataset")
-    dataset = spk.data.AtomsData(data_dir + 'qm7x-n5.db', load_only=properties)
+    dataset = spk.data.AtomsData(data_dir + 'qm7x-eq-n1.db', load_only=properties)
 
     n = len(dataset)
     print(n)
@@ -384,9 +384,9 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['30000', '50000']
-n_val = 5000
-n_test = 202685  # Test on the entire dataset
+train_set = ['30000', '20000']
+n_val = 1000
+n_test = 10000  # Test on the entire dataset
 op = sys.argv[1]
 
 iX, iY = prepare_data(op)
