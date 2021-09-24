@@ -75,7 +75,7 @@ def complete_array(Aprop):
 
 def prepare_data(op):
     #  # read dataset
-    data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/n5/'
+    data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/'
     properties = [
         'RMSD',
         'EAT',
