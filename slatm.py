@@ -97,7 +97,7 @@ def prepare_data(op):
 
     # data preparation
     logging.info("get dataset")
-    dataset = spk.data.AtomsData(data_dir + 'qm7x-eq-n1.db', load_only=properties)
+    dataset = spk.data.AtomsData(data_dir + 'totgdb7x_pbe0.db', load_only=properties)
 
     n = len(dataset)
     print(n)
@@ -399,12 +399,12 @@ current_dir = os.getcwd()
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
     chdir(current_dir)
-    os.chdir(current_dir + '/slatm/')
+    os.chdir(current_dir + '/slatm/distorted/')
     try:
         os.mkdir(str(train_set[ii]))
     except:
         pass
-    os.chdir(current_dir + '/slatm/' + str(train_set[ii]))
+    os.chdir(current_dir + '/slatm/distorted/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 
