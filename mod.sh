@@ -5,12 +5,12 @@
 #SBATCH --nodes=1                        # request 1 node
 #SBATCH --ntasks=8
 #SBATCH -J dftb-og
-#SBATCH --output=withdft/dip.out
-#SBATCH --error=withdft/dip.err
+#SBATCH --output=slatm/nodft/dip.out
+#SBATCH --error=slatm/nodft/dip.err
 #SBATCH -A p_biomolecules
 #SBATCH --mail-type=all
 #SBATCH        --mail-user=leonardo.medrano@nano.tu-dresden.de
-#SBATCH --mem-per-cpu=4000MB
+#SBATCH --mem-per-gpu=4000MB
 ulimit -s unlimited
 echo Starting Program
 module purge                                 # purge if you already have modules loaded
@@ -49,7 +49,7 @@ echo "training starts"
 #export DFTB_PREFIX='/home/medranos/SK-files/3ob-3-1/'
 
 work=/scratch/ws/1/medranos-DFTB/raghav/code
-python3 $work/train_dftb_og.py EAT fit
+python3 $work/slatm_nodft.py EAT fit
 
 echo "training is over :-)"
 EXTSTAT=$?
