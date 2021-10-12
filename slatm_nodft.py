@@ -97,7 +97,7 @@ def prepare_data(op):
 
     # data preparation
     logging.info("get dataset")
-    dataset = spk.data.AtomsData(data_dir + 'totgdb7x_pbe0.db', load_only=properties)
+    dataset = spk.data.AtomsData(data_dir + 'qm7x-eq-n1.db', load_only=properties)
 
     n = len(dataset)
     print(n)
@@ -154,6 +154,10 @@ def prepare_data(op):
         for mol in idx2
     ]
 
+    print("SLATM lengths:")
+    print(len(slatm))
+    print(len(slatm[0]))
+
     TPROP2 = []
     p1b, p2b, p11b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b = (
         [],
@@ -198,12 +202,12 @@ def split_data(n_train, n_val, n_test, Repre, Target):
     print("Perfoming training")
     X_train, X_val, X_test = (
         np.array(Repre[:n_train]),
-        np.array(Repre[-n_test - n_val : -n_test]),
+        np.array(Repre[-n_test - n_val: -n_test]),
         np.array(Repre[-n_test:]),
     )
     Y_train, Y_val, Y_test = (
         np.array(Target[:n_train]),
-        np.array(Target[-n_test - n_val : -n_test]),
+        np.array(Target[-n_test - n_val: -n_test]),
         np.array(Target[-n_test:]),
     )
     print(X_val.shape)
@@ -366,7 +370,7 @@ def save_plot(n_val):
 # prepare dataset
 train_set = ['30000', '2000', '1000', '4000']
 n_val = 1000
-n_test = 10000  # Test on the entire dataset
+n_test = 20000  # Test on the entire dataset
 op = sys.argv[1]
 
 iX, iY = prepare_data(op)
@@ -379,12 +383,12 @@ current_dir = os.getcwd()
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
     chdir(current_dir)
-    os.chdir(current_dir + '/slatm/nodft/')
+    os.chdir(current_dir + '/slatm/nodft/eq/')
     try:
         os.mkdir(str(train_set[ii]))
     except:
         pass
-    os.chdir(current_dir + '/slatm/nodft/' + str(train_set[ii]))
+    os.chdir(current_dir + '/slatm/nodft/eq/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 
