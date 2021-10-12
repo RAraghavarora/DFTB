@@ -17,7 +17,6 @@ from tensorflow.keras.callbacks import Callback, ReduceLROnPlateau
 from tensorflow.keras import backend
 from tensorflow.keras.models import load_model
 from tensorflow.keras.initializers import HeNormal
-from qml.representations import generate_coulomb_matrix
 
 import logging
 import schnetpack as spk
@@ -207,12 +206,12 @@ def split_data(n_train, n_val, n_test, Repre, Target):
 
     X_train, X_val, X_test = (
         np.array(Repre[:n_train]),
-        np.array(Repre[-n_test - n_val : -n_test]),
+        np.array(Repre[-n_test - n_val: -n_test]),
         np.array(Repre[-n_test:]),
     )
     Y_train, Y_val, Y_test = (
         np.array(Target[:n_train]),
-        np.array(Target[-n_test - n_val : -n_test]),
+        np.array(Target[-n_test - n_val: -n_test]),
         np.array(Target[-n_test:]),
     )
 
@@ -245,7 +244,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     initializer = HeNormal()
     model.add(
         Dense(
-            128,
+            256,
             input_dim=n_input,
             activation='elu',
             kernel_initializer=initializer,
@@ -254,7 +253,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     )
     model.add(
         Dense(
-            units=32,
+            units=64,
             activation='elu',
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
@@ -262,7 +261,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     )
     model.add(
         Dense(
-            units=16,
+            units=256,
             activation='elu',
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
@@ -283,7 +282,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
         validation_data=(valX, valy),
         batch_size=32,
         epochs=20000,
-        verbose=0,
+        verbose=1,
         callbacks=[rlrp, lrm],
     )
 
@@ -370,12 +369,15 @@ def save_plot(n_train):
 
 
 # prepare dataset
-train_set = ['1000', '2000', '4000', '8000', '10000', '20000', '30000']
+train_set = ['1000', '20000', '2000', '30000', '4000', '8000', '10000']
 n_val = 1000
 n_test = 10000
 op = sys.argv[1]
 
-iX, iY = prepare_data(op)
+# iX, iY = prepare_data(op)
+iX = np.load('iX.npy')
+print(iX.shape)
+iY = np.load('iY.npy')
 
 # fit model and plot learning curves for a patience
 patience = 500
@@ -384,14 +386,14 @@ current_dir = os.getcwd()
 
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
-    chdir(current_dir + '/standard/')
+    chdir(current_dir + '/feature/')
     n_train = train_set[ii]
-    os.chdir(current_dir + '/standard/')
+    os.chdir(current_dir + '/feature/')
     try:
         os.mkdir(str(train_set[ii]))
     except FileExistsError:
         pass
-    os.chdir(current_dir + '/standard/' + str(train_set[ii]))
+    os.chdir(current_dir + '/feature/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 
