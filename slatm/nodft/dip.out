@@ -1,0 +1,43 @@
+Starting Program
+training starts
+*** JOB 'slatm-nodft' (ID: 20024560) ***
+*** taurusi2062: 1 node(s),  8 core(s) in total ***
+*** Submitted in: /lustre/scratch2/ws/1/medranos-DFTB/raghav/code ***
+
+*** [TIMING] start Oct 05, 16:55:13 ***
+*** [TIMING] walltime 3-23:59:03 [95:59:03] ends Oct 09, 16:54:16 ***
+
+
+
+JOB OUTPUT:
+###########################################################################
+
+training starts
+41537
+Trainset= 30000
+Perfoming training
+(1000, 17895)
+(1000, 1)
+Saved model to disk
+Trainset= 2000
+Perfoming training
+(1000, 17895)
+(1000, 1)
+Saved model to disk
+Trainset= 1000
+Perfoming training
+(1000, 17895)
+(1000, 1)
+Saved model to disk
+Trainset= 4000
+Perfoming training
+(1000, 17895)
+(1000, 1)
+Saved model to disk
+training is over :-)
+
+###########################################################################
+
+*** [TIMING] end Oct 09, 01:00:00 ***
+*** [TIMING] duration 3-08:05:44[80:04:47] ***
+
