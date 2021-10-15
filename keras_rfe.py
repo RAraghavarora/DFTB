@@ -409,7 +409,7 @@ for prop in range(11):
 
 
     model, lr, loss, acc, testX, testy = fit_model_dense(
-        int(train_set[ii]), int(n_val), int(n_test), iX, iY, patience, prop
+        int(n_train), int(n_val), int(n_test), iX, iY, patience, prop
     )
 
     lhis = open('learning-history.dat', 'w')
