@@ -56,7 +56,7 @@ def complete_array(Aprop):
 def prepare_data(op):
     # read dataset
     # data_dir = '../'
-    data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/n5/'
+    data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/'
     properties = [
         'RMSD',
         'EAT',
@@ -78,7 +78,7 @@ def prepare_data(op):
 
     # data preparation
     logging.info("get dataset")
-    dataset = spk.data.AtomsData(data_dir + 'qm7x-n5.db', load_only=properties)
+    dataset = spk.data.AtomsData(data_dir + 'totgdb7x_pbe0.db', load_only=properties)
 
     n = len(dataset)
     print(n)
@@ -116,7 +116,6 @@ def prepare_data(op):
     TPROP = np.array(TPROP)
 
     # Generate representations
-    # Coulomb matrix
     bob_repr = np.array(
         [
             generate_bob(
@@ -350,7 +349,7 @@ def save_plot(n_val):
         if float(x1) > maxi:
             maxi = float(x1)
 
-    plt.plot(x, y, '.')
+    plt.plot(x, y, 'ro')
     temp = np.arange(mini, maxi, 0.1)
     plt.plot(temp, temp)
     plt.xlabel("True EAT")
@@ -361,31 +360,31 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['100000']
-n_val = 5000
-n_test = 200000
+train_set = ['1000', '2000', '4000', '8000', '10000']
+n_val = 1000
+n_test = 10000
 op = sys.argv[1]
 
 iX, iY = prepare_data(op)
 
 # fit model and plot learning curves for a patience
-patience = 700  # If no improvement is seen for these epochs, Learning rate is reduced
+patience = 500  # If no improvement is seen for these epochs, Learning rate is reduced
 
 current_dir = os.getcwd()
 
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
-    temp = train_set[ii]
-    chdir(current_dir + '/normalize/large/')
-    os.chdir(current_dir + '/normalize/large/')
+    chdir(current_dir + '/normalize/')
+    os.chdir(current_dir + '/normalize/')
     try:
         os.mkdir(str(train_set[ii]))
     except FileExistsError:
         pass
-    os.chdir(current_dir + '/normalize/large/' + str(train_set[ii]))
+    os.chdir(current_dir + '/normalize/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 
+        temp = train_set[ii]
         model, lr, loss, acc, testX, testy = fit_model_dense(
             int(train_set[ii]), int(n_val), int(n_test), iX, iY, patience
         )
@@ -394,7 +393,7 @@ for ii in range(len(train_set)):
         for ii in range(0, len(lr)):
             lhis.write(
                 '{:8d}'.format(ii)
-                + '{:16.8f}'.format(lr[ii])
+                + '{:16f}'.format(lr[ii])
                 + '{:16f}'.format(loss[ii])
                 + '{:16f}'.format(acc[ii])
                 + '\n'

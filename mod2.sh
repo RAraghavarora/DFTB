@@ -1,12 +1,12 @@
 #!/bin/bash
 #SBATCH --time=48:00:00
 #SBATCH --partition=gpu2                        # specify ml partition or gpu2 partition
-#SBATCH --gres=gpu:2                      # use 1 GPU per node (i.e. use one GPU per task)
+#SBATCH --gres=gpu:4                      # use 1 GPU per node (i.e. use one GPU per task)
 #SBATCH --nodes=1                        # request 1 node
 #SBATCH --ntasks=8
-#SBATCH -J bob-eq
-#SBATCH --output=slatm_dip.out
-#SBATCH --error=slatm_dip.err
+#SBATCH -J bob-dist
+#SBATCH --output=bob_dip.out
+#SBATCH --error=bob_dip.err
 #SBATCH -A p_biomolecules
 #SBATCH --mail-type=all
 #SBATCH        --mail-user=leonardo.medrano@nano.tu-dresden.de
@@ -49,7 +49,7 @@ echo "training starts"
 #export DFTB_PREFIX='/home/medranos/SK-files/3ob-3-1/'
 
 work=/scratch/ws/1/medranos-DFTB/raghav/code
-python3 $work/slatm_len.py EAT fit
+python3 $work/train_dftb.py EAT fit
 
 echo "training is over :-)"
 EXTSTAT=$?
