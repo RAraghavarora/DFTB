@@ -205,15 +205,15 @@ def split_data(n_train, n_val, n_test, Repre, Target, delete_prop):
     Target = Target[indices]
 
     if delete_prop in range(0,9):
-        np.delete_prop(Repre, (276+delete_prop), axis=1)
+        np.delete(Repre, (276+delete_prop), axis=1)
     elif delete_prop == 9:
         # Delete 8 columns for Eigen Values
         for i in range(8):
-            np.delete_prop(Repre, (276+delete_prop), axis=1)
+            np.delete(Repre, (276+delete_prop), axis=1)
     else:
         # Delete 23 columns for Charge
         for i in range(23):
-            np.delete_prop(Repre, (276+delete_prop), axis=1)
+            np.delete(Repre, (276+delete_prop), axis=1)
 
 
 
