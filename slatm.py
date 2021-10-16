@@ -384,7 +384,7 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['30000', '20000']
+train_set = ['20000','10000','8000','4000','2000','1000']
 n_val = 1000
 n_test = 10000  # Test on the entire dataset
 op = sys.argv[1]
@@ -421,7 +421,7 @@ for ii in range(len(train_set)):
                 + '{:16f}'.format(acc[ii])
                 + '\n'
             )
-        lhis.close
+        lhis.close()
 
         # Saving NN model
         save_nnmodel(model)

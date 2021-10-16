@@ -4,6 +4,5 @@ The following modules were not unloaded:
   1) modenv/scs5
 Module Python/3.6.4-intel-2018a and 18 dependencies loaded.
 Module cuDNN/8.0.4.30-CUDA-11.1.1 and 1 dependency loaded.
-2021-09-22 06:54:18.436447: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
-/var/spool/slurmd/job19853648/slurm_script: line 53: 10855 Killed                  python3 $work/slatm.py EAT fit
-slurmstepd: error: Detected 1 oom-kill event(s) in step 19853648.batch cgroup. Some of your processes may have been killed by the cgroup out-of-memory handler.
+2021-10-15 13:39:24.264097: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+slurmstepd: error: *** JOB 20249265 ON taurusi2050 CANCELLED AT 2021-10-15T13:41:24 ***
