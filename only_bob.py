@@ -123,7 +123,7 @@ def prepare_data(op):
 
     reps2 = []
     for ii in range(len(idx2)):
-        reps2.append(xyz_reps[ii])
+        reps2.append(bob_repr[ii])
         
     reps2 = np.array(reps2)
 
