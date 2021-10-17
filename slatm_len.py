@@ -119,11 +119,16 @@ TPROP = np.array(TPROP)
 # Generate representations
 # SLATM
 mbtypes = get_slatm_mbtypes([Z[mol] for mol in idx2])
-slatm = [
-    generate_slatm(mbtypes=mbtypes, nuclear_charges=Z[mol], coordinates=xyz[mol])
-    for mol in idx2
-]
 
-print("SLATM lengths:")
-print(len(slatm))
-print(len(slatm[0]))
+x1 = generate_slatm(mbtypes=mbtypes, nuclear_charges=Z[0], coordinates=xyz[0])
+print(len(x1))
+
+x1 = generate_slatm(mbtypes=mbtypes, nuclear_charges=Z[1], coordinates=xyz[1])
+print(len(x1))
+
+x1 = generate_slatm(mbtypes=mbtypes, nuclear_charges=Z[2], coordinates=xyz[2])
+print(len(x1))
+
+x1 = generate_slatm(mbtypes=mbtypes, nuclear_charges=Z[idx2[-1]], coordinates=xyz[idx2[-1]])
+print(len(x1))
+
