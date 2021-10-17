@@ -4,9 +4,9 @@
 #SBATCH --gres=gpu:4                      # use 1 GPU per node (i.e. use one GPU per task)
 #SBATCH --nodes=1                        # request 1 node
 #SBATCH --ntasks=8
-#SBATCH -J bob-eq
-#SBATCH --output=normalize/eq/dip.out
-#SBATCH --error=normalize/eq/dip.err
+#SBATCH -J cm-eq
+#SBATCH --output=withdft/eq/dip.out
+#SBATCH --error=withdft/eq/dip.err
 #SBATCH -A p_biomolecules
 #SBATCH --mail-type=all
 #SBATCH        --mail-user=leonardo.medrano@nano.tu-dresden.de

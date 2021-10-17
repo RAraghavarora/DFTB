@@ -17,7 +17,7 @@ from tensorflow.keras.callbacks import Callback, ReduceLROnPlateau
 from tensorflow.keras import backend
 from tensorflow.keras.models import load_model
 from tensorflow.keras.initializers import HeNormal
-from qml.representations import generate_bob
+from qml.representations import generate_coulomb_matrix
 
 import logging
 import schnetpack as spk
@@ -117,16 +117,8 @@ def prepare_data(op):
 
     # Generate representations
     # Coulomb matrix
-    bob_repr = np.array(
-        [
-            generate_bob(
-                Z[mol],
-                xyz[mol],
-                atomtypes={'C', 'H', 'N', 'O', 'S', 'Cl'},
-                asize={'C': 7, 'H': 16, 'N': 3, 'O': 3, 'S': 1, 'Cl': 2},
-            )
-            for mol in idx2
-        ]
+    xyz_reps = np.array(
+        [generate_coulomb_matrix(Z[mol], xyz[mol], sorting='unsorted') for mol in idx2]
     )
 
     TPROP2 = []
@@ -165,7 +157,7 @@ def prepare_data(op):
         reps2.append(
             np.concatenate(
                 (
-                    bob_repr[ii],
+                    xyz_reps[ii],
                     p1b[ii],
                     p2b[ii],
                     p3b[ii],
@@ -361,7 +353,7 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['1000','2000','4000','8000','10000','20000', '30000']
+train_set = ['30000', '1000','2000','4000','8000','10000','20000']
 n_val = 2000
 n_test = 20000
 op = sys.argv[1]
@@ -376,13 +368,13 @@ current_dir = os.getcwd()
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
     temp = train_set[ii]
-    chdir(current_dir + '/normalize/eq/')
-    os.chdir(current_dir + '/normalize/eq/')
+    chdir(current_dir + '/withdft/eq/')
+    os.chdir(current_dir + '/withdft/eq/')
     try:
         os.mkdir(str(train_set[ii]))
     except FileExistsError:
         pass
-    os.chdir(current_dir + '/normalize/eq/' + str(train_set[ii]))
+    os.chdir(current_dir + '/withdft/eq/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 
