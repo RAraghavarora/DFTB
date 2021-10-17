@@ -36,3 +36,7 @@ To enable them in other operations, rebuild TensorFlow with the appropriate comp
 2021-10-15 14:18:29.670691: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1267]      
 2021-10-15 14:18:29.974670: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
 2021-10-15 14:18:29.990553: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 2499875000 Hz
+/home/h3/medranos/vdftb20/lib/python3.6/site-packages/schnetpack/data/atoms.py:327: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /pytorch/torch/csrc/utils/tensor_numpy.cpp:143.)
+  properties[pname] = torch.FloatTensor(prop)
+/home/h3/medranos/vdftb20/lib/python3.6/site-packages/ase/atoms.py:968: VisibleDeprecationWarning: Use get_global_number_of_atoms() instead
+  np.VisibleDeprecationWarning)
