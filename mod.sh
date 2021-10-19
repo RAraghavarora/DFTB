@@ -4,7 +4,7 @@
 #SBATCH --gres=gpu:4                      # use 1 GPU per node (i.e. use one GPU per task)
 #SBATCH --nodes=1                        # request 1 node
 #SBATCH --ntasks=8
-#SBATCH -J check-gpu
+#SBATCH -J schnet-ra
 #SBATCH --output=dip.out
 #SBATCH --error=dip.err
 #SBATCH -A p_biomolecules
@@ -49,7 +49,7 @@ echo "training starts"
 #export DFTB_PREFIX='/home/medranos/SK-files/3ob-3-1/'
 
 work=/scratch/ws/1/medranos-DFTB/raghav/code
-python3 $work/check_gpu.py
+python3 $work/schnet/train.py
 
 echo "training is over :-)"
 EXTSTAT=$?
