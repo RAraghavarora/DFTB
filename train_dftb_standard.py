@@ -285,7 +285,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
 
     p = {'layer1':[4, 8, 16, 32, 64,128,256],
          'layer2':[4, 8, 16, 32, 64,128,256],
-         'layer2':[4, 8, 16, 32, 64,128,256],
+         'layer3':[4, 8, 16, 32, 64,128,256],
          'batch_size': (16,32,64),
          'epochs': [8000],
         }
@@ -294,8 +294,8 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
             y=trainy,
             model=egap_model,
             params=p,
-#            dataset_name='distorted',
             experiment_name='1')
+
     return t
     # return (
     #     model,
