@@ -177,7 +177,7 @@ def objective(params):
 
         # Writing the true and predicted EAT values
         dtest = np.array(Y_test - Y_predicted)
-        format_list1 = ['{:16f}' for item1 in Y_test[0]]
+        format_list1 = ['{:16f}']
         s = ' '.join(format_list1)
         ctest = open('comp-test_%s.dat'%n_train, 'w')
         for ii in range(0, len(Y_test)):
