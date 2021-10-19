@@ -294,9 +294,8 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
             y=trainy,
             model=egap_model,
             params=p,
-            dataset_name='distorted',
-            experiment_no='1')
-
+#            dataset_name='distorted',
+            experiment_name='1')
     return t
     # return (
     #     model,
