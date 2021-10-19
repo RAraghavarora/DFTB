@@ -291,7 +291,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
         }
 
     t = ta.Scan(x=trainX,
-            y=trainY,
+            y=trainy,
             model=egap_model,
             grid_downsample=0.01, 
             params=p,
