@@ -222,7 +222,7 @@ def split_data(n_train, n_val, n_test, Repre, Target):
     return X_train, Y_train, X_val, Y_val, X_test, Y_test, x_scaler, y_scaler
 
 
-def egap_model(x_train, y_train, x_val,y_val, params, patience=100):
+def egap_model(x_train, y_train, x_val, y_val, params, patience=100):
     model = Sequential()
     initializer = HeNormal()
     model.add(
@@ -283,11 +283,10 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     # n_output = int(len(iY[0]))
     n_output = int(1)
 
-
-    p = {'layer1':[4, 8, 16, 32, 64,128,256],
-         'layer2':[4, 8, 16, 32, 64,128,256],
-         'layer3':[4, 8, 16, 32, 64,128,256],
-         'batch_size': (16,32,64),
+    p = {'layer1': [4, 8, 16, 32, 64, 128, 256],
+         'layer2': [4, 8, 16, 32, 64, 128, 256],
+         'layer3': [4, 8, 16, 32, 64, 128, 256],
+         'batch_size': (16, 32, 64),
          'epochs': [8000],
         }
 
