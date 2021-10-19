@@ -385,10 +385,7 @@ n_val = 1000
 n_test = 10000
 op = sys.argv[1]
 
-# iX, iY = prepare_data(op)
-iX = np.load('iX.npy')
-print(iX.shape)
-iY = np.load('iY.npy')
+iX, iY = prepare_data(op)
 
 # fit model and plot learning curves for a patience
 patience = 500
