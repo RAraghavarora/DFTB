@@ -260,10 +260,10 @@ def egap_model(x_train, y_train, x_val,y_val, params, patience=100):
     )
     lrm = LearningRateMonitor()
     history = model.fit(
-        trainX,
-        trainy,
-        validation_data=(valX, valy),
-        batch_size=32,
+        x_train,
+        y_train,
+        validation_data=(x_val, y_val),
+        batch_size=params['batch_size'],
         epochs=20000,
         verbose=1,
         callbacks=[rlrp, lrm],
