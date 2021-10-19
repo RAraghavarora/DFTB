@@ -49,6 +49,7 @@ echo "training starts"
 #export DFTB_PREFIX='/home/medranos/SK-files/3ob-3-1/'
 
 work=/scratch/ws/1/medranos-DFTB/raghav/code
+pip install talos
 python3 $work/train_dftb_standard.py EGAP fit
 
 echo "training is over :-)"
