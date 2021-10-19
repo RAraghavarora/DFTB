@@ -20,6 +20,7 @@ from tensorflow.keras.initializers import HeNormal
 
 import logging
 import schnetpack as spk
+import talos as ta
 
 # monitor the learning rate
 
@@ -55,7 +56,7 @@ def complete_array(Aprop):
 def prepare_data(op):
     # read dataset
     # data_dir = '../'
-    data_dir = '/scratch/ws/1/medranos-DFTB/props/dftb/data/n1-2/'
+    data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/'
     properties = [
         'RMSD',
         'EAT',
@@ -198,12 +199,6 @@ def split_data(n_train, n_val, n_test, Repre, Target):
     print("Perfoming training")
     Target = np.array(Target)
 
-    # Shuffle the data
-    indices = np.arange(Repre.shape[0])
-    np.random.shuffle(indices)
-    Repre = Repre[indices]
-    Target = Target[indices]
-
     X_train, X_val, X_test = (
         np.array(Repre[:n_train]),
         np.array(Repre[-n_test - n_val: -n_test]),
@@ -226,26 +221,22 @@ def split_data(n_train, n_val, n_test, Repre, Target):
     return X_train, Y_train, X_val, Y_val, X_test, Y_test, x_scaler, y_scaler
 
 
-# fit a model and plot learning curve
-
-
-def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
-
-    trainX, trainy, valX, valy, testX, testy, x_scaler, y_scaler = split_data(
-        n_train, n_val, n_test, iX, iY
-    )
-
-    n_input = int(len(iX[0]))
-    # n_output = int(len(iY[0]))
-    n_output = int(1)
-
-    # define model
+def egap_model(x_train, y_train, x_val,y_val, params, patience=100):
     model = Sequential()
     initializer = HeNormal()
     model.add(
         Dense(
-            256,
-            input_dim=n_input,
+            params['layer1'],
+            input_dim=316,
+            activation='elu',
+            kernel_initializer=initializer,
+            kernel_regularizer=regularizers.l2(0.001),
+        )
+    )
+
+    model.add(
+        Dense(
+            units=params['layer2'],
             activation='elu',
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
@@ -253,21 +244,13 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     )
     model.add(
         Dense(
-            units=64,
+            units=params['layer3'],
             activation='elu',
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
         )
     )
-    model.add(
-        Dense(
-            units=256,
-            activation='elu',
-            kernel_initializer=initializer,
-            kernel_regularizer=regularizers.l2(0.001),
-        )
-    )
-    model.add(Dense(n_output, activation='linear', kernel_initializer=initializer))
+    model.add(Dense(1, activation='linear', kernel_initializer=initializer))
     # compile model
     opt = Adam(learning_rate=0.01)
     model.compile(loss='mse', optimizer=opt, metrics=['mae'])
@@ -286,14 +269,44 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
         callbacks=[rlrp, lrm],
     )
 
-    return (
-        model,
-        lrm.lrates,
-        history.history['loss'],
-        history.history['mae'],
-        testX,
-        testy,
+    return history, model
+
+
+def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
+
+    trainX, trainy, valX, valy, testX, testy, x_scaler, y_scaler = split_data(
+        n_train, n_val, n_test, iX, iY
     )
+
+    n_input = int(len(iX[0]))
+    # n_output = int(len(iY[0]))
+    n_output = int(1)
+
+
+    p = {'layer1':[4, 8, 16, 32, 64,128,256],
+         'layer2':[4, 8, 16, 32, 64,128,256],
+         'layer2':[4, 8, 16, 32, 64,128,256],
+         'batch_size': (16,32,64),
+         'epochs': [8000],
+        }
+
+    t = ta.Scan(x=trainX,
+            y=trainY,
+            model=egap_model,
+            grid_downsample=0.01, 
+            params=p,
+            dataset_name='distorted',
+            experiment_no='1')
+
+    return t
+    # return (
+    #     model,
+    #     lrm.lrates,
+    #     history.history['loss'],
+    #     history.history['mae'],
+    #     testX,
+    #     testy,
+    # )
 
 
 def plotting_results(model, testX, testy):
@@ -386,39 +399,47 @@ current_dir = os.getcwd()
 
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
-    chdir(current_dir + '/feature/')
+    chdir(current_dir + '/talos/')
     n_train = train_set[ii]
-    os.chdir(current_dir + '/feature/')
+    os.chdir(current_dir + '/talos/')
     try:
         os.mkdir(str(train_set[ii]))
     except FileExistsError:
         pass
-    os.chdir(current_dir + '/feature/' + str(train_set[ii]))
+    os.chdir(current_dir + '/talos/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 
-        model, lr, loss, acc, testX, testy = fit_model_dense(
+        scan_object = fit_model_dense(
             int(train_set[ii]), int(n_val), int(n_test), iX, iY, patience
         )
+        # accessing the results data frame
+        scan_object.data.head()
 
-        lhis = open('learning-history.dat', 'w')
-        for ii in range(0, len(lr)):
-            lhis.write(
-                '{:8d}'.format(ii)
-                + '{:16.8f}'.format(lr[ii])
-                + '{:16f}'.format(loss[ii])
-                + '{:16f}'.format(acc[ii])
-                + '\n'
-            )
-        lhis.close()
+        # accessing epoch entropy values for each round
+        scan_object.learning_entropy
 
-        # Saving NN model
-        save_nnmodel(model)
-    else:
-        cfile = 'ncomp-test.dat'
-        # to evaluate new test
-        model = load_nnmodel(current_dir + '/%s' % train_set[ii])
+        # access the summary details
+        scan_object.details
 
-    # Saving results
-    plotting_results(model, testX, testy)
-    save_plot(n_train)
+    #     lhis = open('learning-history.dat', 'w')
+    #     for ii in range(0, len(lr)):
+    #         lhis.write(
+    #             '{:8d}'.format(ii)
+    #             + '{:16.8f}'.format(lr[ii])
+    #             + '{:16f}'.format(loss[ii])
+    #             + '{:16f}'.format(acc[ii])
+    #             + '\n'
+    #         )
+    #     lhis.close()
+
+    #     # Saving NN model
+    #     save_nnmodel(model)
+    # else:
+    #     cfile = 'ncomp-test.dat'
+    #     # to evaluate new test
+    #     model = load_nnmodel(current_dir + '/%s' % train_set[ii])
+
+    # # Saving results
+    # plotting_results(model, testX, testy)
+    # save_plot(n_train)
