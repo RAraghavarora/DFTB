@@ -7,6 +7,8 @@ import schnetpack as spk
 from qml.math import cho_solve
 from qml.kernels import gaussian_kernel
 from scipy.optimize import dual_annealing
+from sklearn.metrics import mean_squared_error, mean_absolute_error
+
 import random
 
 
