@@ -182,7 +182,7 @@ def objective(params):
 
         ctest = open('comp-test_%s.dat'%n_train, 'w')
         for ii in range(0, len(Y_test)):
-            ctest.write(str(Y_test[ii]) + str(Y_predicted[ii]) + str(dtest[ii]) + '\n'
+            ctest.write(str(Y_test[ii]) +'\t' + str(Y_predicted[ii]) + '\t' +str(dtest[ii]) + '\n'
             )
         ctest.close()
 
@@ -192,9 +192,9 @@ def objective(params):
 
         out2 = open('errors_test%s.dat'%n_train, 'w')
         out2.write(
-            str(STD_PROP)
-            + str(MAE_PROP)
-            + str(MSE_PROP)
+            str(STD_PROP) + "\t"
+            + str(MAE_PROP) + "\t"
+            + str(MSE_PROP) + "\t"
             + "\n"
         )
         out2.close()
