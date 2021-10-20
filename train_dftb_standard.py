@@ -265,7 +265,7 @@ def egap_model(x_train, y_train, x_val, y_val, params, patience=100):
         y_train,
         validation_data=(x_val, y_val),
         batch_size=params['batch_size'],
-        epochs=20000,
+        epochs=params["epochs"],
         verbose=1,
         callbacks=[rlrp, lrm],
     )
@@ -380,7 +380,7 @@ def save_plot(n_train):
 
 
 # prepare dataset
-train_set = ['1000', '20000', '2000', '30000', '4000', '8000', '10000']
+train_set = ['30000', '20000', '2000', '1000', '4000', '8000', '10000']
 n_val = 1000
 n_test = 10000
 op = sys.argv[1]
