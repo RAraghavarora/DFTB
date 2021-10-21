@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.metrics import mean_squared_error, mean_absolute_error
+from sklearn.model_selection import KFold, cross_val_score
+from sklearn.pipeline import Pipeline
 
 from tensorflow.keras.layers import Dense, BatchNormalization
 from tensorflow.keras.models import Sequential
@@ -17,6 +19,7 @@ from tensorflow.keras.callbacks import Callback, ReduceLROnPlateau
 from tensorflow.keras import backend
 from tensorflow.keras.models import load_model
 from tensorflow.keras.initializers import HeNormal
+from tensorflow.keras.wrappers.scikit_learn import KerasRegressor
 from qml.representations import generate_coulomb_matrix
 
 import logging
@@ -212,24 +215,13 @@ def split_data(n_train, n_val, n_test, Repre, Target):
 
 # fit a model and plot learning curve
 
-
-def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
-
-    trainX, trainy, valX, valy, testX, testy, x_scaler, y_scaler = split_data(
-        n_train, n_val, n_test, iX, iY
-    )
-
-    n_input = int(len(iX[0]))
-    # n_output = int(len(iY[0]))
-    n_output = int(1)
-
-    # define model
+def obtain_model():
     model = Sequential()
     initializer = HeNormal()
     model.add(
         Dense(
             256,
-            input_dim=n_input,
+            input_dim=316,
             activation='elu',
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
@@ -251,33 +243,54 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
             kernel_regularizer=regularizers.l2(0.001),
         )
     )
-    model.add(Dense(n_output, activation='linear', kernel_initializer=initializer))
+    model.add(Dense(1, activation='linear', kernel_initializer=initializer))
     # compile model
-    opt = Adam(learning_rate=0.01)
+    opt = Adam(learning_rate=1e-5)
     model.compile(loss='mse', optimizer=opt, metrics=['mae'])
-    # fit model
-    rlrp = ReduceLROnPlateau(
-        monitor='val_loss', factor=0.59, patience=patience, min_delta=1e-5, min_lr=1e-6
-    )
-    lrm = LearningRateMonitor()
-    history = model.fit(
-        trainX,
-        trainy,
-        validation_data=(valX, valy),
-        batch_size=32,
-        epochs=20000,
-        verbose=1,
-        callbacks=[rlrp, lrm],
+    return model
+
+def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
+
+    trainX, trainy, valX, valy, testX, testy, x_scaler, y_scaler = split_data(
+        n_train, n_val, n_test, iX, iY
     )
 
-    return (
-        model,
-        lrm.lrates,
-        history.history['loss'],
-        history.history['mae'],
-        testX,
-        testy,
-    )
+    # define model
+    # fit model
+    # rlrp = ReduceLROnPlateau(
+    #     monitor='val_loss', factor=0.59, patience=patience, min_delta=1e-5, min_lr=1e-6
+    # )
+    # lrm = LearningRateMonitor()
+
+    estimators = []
+    estimators.append(('standardize', StandardScaler()))
+    estimators.append(('mlp', KerasRegressor(build_fn=obtain_model, epochs=20000, batch_size=16, verbose=1)))
+    pipeline = Pipeline(estimators)
+    kfold = KFold(n_splits=10, random_state=42, shuffle=True)
+    results = cross_val_score(pipeline, iX, iY, cv=kfold, n_jobs=-1, scoring='neg_mean_absolute_error')
+    print(results)
+    print("Larger: %.2f (%.2f) MSE" % (results.mean(), results.std()))
+
+    return results
+
+    # history = model.fit(
+    #     trainX,
+    #     trainy,
+    #     validation_data=(valX, valy),
+    #     batch_size=32,
+    #     epochs=20000,
+    #     verbose=1,
+    #     callbacks=[rlrp, lrm],
+    # )
+
+    # return (
+    #     model,
+    #     lrm.lrates,
+    #     history.history['loss'],
+    #     history.history['mae'],
+    #     testX,
+    #     testy,
+    # )
 
 
 def plotting_results(model, testX, testy):
@@ -378,28 +391,16 @@ for ii in range(len(train_set)):
 
     if sys.argv[2] == 'fit':
 
-        model, lr, loss, acc, testX, testy = fit_model_dense(
+        results = fit_model_dense(
             int(train_set[ii]), int(n_val), int(n_test), iX, iY, patience
         )
 
-        lhis = open('learning-history.dat', 'w')
-        for ii in range(0, len(lr)):
-            lhis.write(
-                '{:8d}'.format(ii)
-                + '{:16.8f}'.format(lr[ii])
-                + '{:16f}'.format(loss[ii])
-                + '{:16f}'.format(acc[ii])
-                + '\n'
-            )
-        lhis.close()
+        out2 = open('errors_test.dat', 'w')
+        for res in results:
+            out2.write(results + "\n")
+        out2.close()
 
-        # Saving NN model
-        save_nnmodel(model)
     else:
         cfile = 'ncomp-test.dat'
         # to evaluate new test
         model = load_nnmodel(current_dir + '/%s' % train_set[ii])
-
-    # Saving results
-    plotting_results(model, testX, testy)
-    save_plot(temp)
