@@ -1,12 +1,12 @@
 #!/bin/bash
-#SBATCH --time=48:00:00
+#SBATCH --time=96:00:00
 #SBATCH --partition=gpu2                        # specify ml partition or gpu2 partition
 #SBATCH --gres=gpu:4                      # use 1 GPU per node (i.e. use one GPU per task)
 #SBATCH --nodes=1                        # request 1 node
 #SBATCH --ntasks=8
-#SBATCH -J dftb-bob
-#SBATCH --output=talos.out
-#SBATCH --error=talos.err
+#SBATCH -J talos-EAT
+#SBATCH --output=talos_EAT/talos.out
+#SBATCH --error=talos_EAT/talos.err
 #SBATCH -A p_biomolecules
 #SBATCH --mail-type=all
 #SBATCH        --mail-user=leonardo.medrano@nano.tu-dresden.de
@@ -50,7 +50,7 @@ echo "training starts"
 
 work=/scratch/ws/1/medranos-DFTB/raghav/code
 pip install talos
-python3 $work/train_dftb_standard.py EGAP fit
+python3 $work/train_dftb_standard.py EAT fit
 
 echo "training is over :-)"
 EXTSTAT=$?

@@ -95,7 +95,7 @@ def prepare_data(op):
     for i in idx2[:n]:
         atoms, props = dataset.get_properties(i)
         AE.append(float(props['EAT']))
-        EGAP.append(float(props['EGAP']))
+        EGAP.append(float(props['EAT']))
         KSE.append(props['KSE'])
         TPROP.append(float(props[op]))
         xyz.append(atoms.get_positions())
@@ -257,7 +257,7 @@ def egap_model(x_train, y_train, x_val, y_val, params, patience=100):
     model.compile(loss='mse', optimizer=opt, metrics=['mae'])
     # fit model
     rlrp = ReduceLROnPlateau(
-        monitor='val_loss', factor=0.59, patience=patience, min_delta=1e-5, min_lr=1e-7
+        monitor='val_loss', factor=0.59, patience=patience, min_delta=1e-5, min_lr=1e-6
     )
     lrm = LearningRateMonitor()
     history = model.fit(
@@ -287,7 +287,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
          'layer2': [4, 8, 16, 32, 64, 128, 256],
          'layer3': [4, 8, 16, 32, 64, 128, 256],
          'batch_size': (16, 32, 64),
-         'epochs': [8000],
+         'epochs': [5000],
         }
 
     t = ta.Scan(x=trainX,
@@ -380,7 +380,7 @@ def save_plot(n_train):
 
 
 # prepare dataset
-train_set = ['30000', '20000', '2000', '1000', '4000', '8000', '10000']
+train_set = ['10000']
 n_val = 1000
 n_test = 10000
 op = sys.argv[1]
@@ -394,14 +394,14 @@ current_dir = os.getcwd()
 
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
-    chdir(current_dir + '/talos/')
+    chdir(current_dir + '/talos_EAT/')
     n_train = train_set[ii]
-    os.chdir(current_dir + '/talos/')
+    os.chdir(current_dir + '/talos_EAT/')
     try:
         os.mkdir(str(train_set[ii]))
     except FileExistsError:
         pass
-    os.chdir(current_dir + '/talos/' + str(train_set[ii]))
+    os.chdir(current_dir + '/talos_EAT/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 
