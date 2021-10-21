@@ -261,6 +261,8 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     #     monitor='val_loss', factor=0.59, patience=patience, min_delta=1e-5, min_lr=1e-6
     # )
     # lrm = LearningRateMonitor()
+    iX = np.array(iX)
+    iY = np.array(iY)
 
     estimators = []
     estimators.append(('standardize', StandardScaler()))
