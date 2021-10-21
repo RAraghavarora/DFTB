@@ -397,7 +397,7 @@ for ii in range(len(train_set)):
 
         out2 = open('errors_test.dat', 'w')
         for res in results:
-            out2.write(results + "\n")
+            out2.write(str(res) + "\n")
         out2.close()
 
     else:
