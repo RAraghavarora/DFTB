@@ -4,39 +4,217 @@ The following modules were not unloaded:
   1) modenv/scs5
 Module Python/3.6.4-intel-2018a and 18 dependencies loaded.
 Module cuDNN/8.0.4.30-CUDA-11.1.1 and 1 dependency loaded.
-2021-10-17 12:40:20.591326: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
-2021-10-17 13:06:56.933118: I tensorflow/compiler/jit/xla_cpu_device.cc:41] Not creating XLA devices, tf_xla_enable_xla_devices not set
-2021-10-17 13:06:57.125519: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcuda.so.1
-2021-10-17 13:06:57.361177: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties: 
-pciBusID: 0000:04:00.0 name: Tesla K80 computeCapability: 3.7
-coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
-2021-10-17 13:06:57.362394: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 1 with properties: 
-pciBusID: 0000:05:00.0 name: Tesla K80 computeCapability: 3.7
-coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
-2021-10-17 13:06:57.363467: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 2 with properties: 
-pciBusID: 0000:84:00.0 name: Tesla K80 computeCapability: 3.7
-coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
-2021-10-17 13:06:57.364566: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 3 with properties: 
-pciBusID: 0000:85:00.0 name: Tesla K80 computeCapability: 3.7
-coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
-2021-10-17 13:06:57.364635: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
-2021-10-17 13:06:57.539512: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
-2021-10-17 13:06:57.539633: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
-2021-10-17 13:06:57.596653: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
-2021-10-17 13:06:57.632972: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
-2021-10-17 13:06:57.640111: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcusolver.so.10'; dlerror: libcusolver.so.10: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /sw/installed/cuDNN/8.0.4.30-CUDA-11.1.1/lib:/sw/installed/CUDAcore/11.1.1/nvvm/lib64:/sw/installed/CUDAcore/11.1.1/extras/CUPTI/lib64:/sw/installed/CUDAcore/11.1.1/lib64:/sw/installed/Python/3.6.4-intel-2018a/lib/python3.6/site-packages/numpy-1.14.0-py3.6-linux-x86_64.egg/numpy/core/lib:/sw/installed/Python/3.6.4-intel-2018a/lib:/sw/installed/libffi/3.2.1-GCCcore-6.4.0/lib64:/sw/installed/libffi/3.2.1-GCCcore-6.4.0/lib:/sw/installed/GMP/6.1.2-GCCcore-6.4.0/lib:/sw/installed/XZ/5.2.3-GCCcore-6.4.0/lib:/sw/installed/SQLite/3.21.0-GCCcore-6.4.0/lib:/sw/installed/Tcl/8.6.8-GCCcore-6.4.0/lib:/sw/installed/libreadline/7.0-GCCcore-6.4.0/lib:/sw/installed/ncurses/6.0-GCCcore-6.4.0/lib:/sw/installed/zlib/1.2.11-GCCcore-6.4.0/lib:/sw/installed/bzip2/1.0.6-GCCcore-6.4.0/lib:/sw/installed/imkl/2018.1.163-iimpi-2018a/mkl/lib/intel64:/sw/installed/imkl/2018.1.163-iimpi-2018a/lib/intel64:/sw/installed/impi/2018.1.163-iccifort-2018.1.163-GCC-6.4.0-2.28/lib64:/sw/installed/ifort/2018.1.163-GCC-6.4.0-2.28/debugger_2018/libipt/intel64/lib:/sw/installed/ifort/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/compiler/lib/intel64:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/debugger_2018/libipt/intel64/lib:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/tbb/lib/intel64/gcc4.4:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/compiler/lib/intel64:/sw/installed/binutils/2.28-GCCcore-6.4.0/lib:/sw/installed/GCCcore/6.4.0/lib64:/sw/installed/GCCcore/6.4.0/lib
-2021-10-17 13:06:57.687663: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
-2021-10-17 13:06:57.691524: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
-2021-10-17 13:06:57.691592: W tensorflow/core/common_runtime/gpu/gpu_device.cc:1757] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
-Skipping registering GPU devices...
-2021-10-17 13:06:57.692210: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
-To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
-2021-10-17 13:06:57.692945: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
-2021-10-17 13:06:57.693035: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1261] Device interconnect StreamExecutor with strength 1 edge matrix:
-2021-10-17 13:06:57.693084: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1267]      
-2021-10-17 13:06:58.068420: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
-2021-10-17 13:06:58.107584: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 2499850000 Hz
+2021-10-21 16:02:54.836760: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
 /home/h3/medranos/vdftb20/lib/python3.6/site-packages/schnetpack/data/atoms.py:327: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /pytorch/torch/csrc/utils/tensor_numpy.cpp:143.)
   properties[pname] = torch.FloatTensor(prop)
 /home/h3/medranos/vdftb20/lib/python3.6/site-packages/ase/atoms.py:968: VisibleDeprecationWarning: Use get_global_number_of_atoms() instead
   np.VisibleDeprecationWarning)
+2021-10-21 16:14:08.253220: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-10-21 16:14:08.253221: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-10-21 16:14:08.253569: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-10-21 16:14:08.253586: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-10-21 16:14:08.253595: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-10-21 16:14:08.253609: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-10-21 16:14:08.253610: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-10-21 16:14:08.253616: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-10-21 16:14:15.258129: I tensorflow/compiler/jit/xla_cpu_device.cc:41] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-10-21 16:14:15.259854: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcuda.so.1
+2021-10-21 16:14:15.278150: I tensorflow/compiler/jit/xla_cpu_device.cc:41] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-10-21 16:14:15.279821: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcuda.so.1
+2021-10-21 16:14:15.282979: I tensorflow/compiler/jit/xla_cpu_device.cc:41] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-10-21 16:14:15.283712: I tensorflow/compiler/jit/xla_cpu_device.cc:41] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-10-21 16:14:15.284480: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcuda.so.1
+2021-10-21 16:14:15.285011: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcuda.so.1
+2021-10-21 16:14:15.286521: I tensorflow/compiler/jit/xla_cpu_device.cc:41] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-10-21 16:14:15.286794: I tensorflow/compiler/jit/xla_cpu_device.cc:41] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-10-21 16:14:15.287806: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcuda.so.1
+2021-10-21 16:14:15.287858: I tensorflow/compiler/jit/xla_cpu_device.cc:41] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-10-21 16:14:15.288017: I tensorflow/compiler/jit/xla_cpu_device.cc:41] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-10-21 16:14:15.288118: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcuda.so.1
+2021-10-21 16:14:15.289184: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcuda.so.1
+2021-10-21 16:14:15.289330: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcuda.so.1
+2021-10-21 16:14:15.362209: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties: 
+pciBusID: 0000:04:00.0 name: Tesla K80 computeCapability: 3.7
+coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
+2021-10-21 16:14:15.364294: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 1 with properties: 
+pciBusID: 0000:84:00.0 name: Tesla K80 computeCapability: 3.7
+coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
+2021-10-21 16:14:15.364366: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-10-21 16:14:15.370807: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2021-10-21 16:14:15.370904: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2021-10-21 16:14:15.372583: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties: 
+pciBusID: 0000:04:00.0 name: Tesla K80 computeCapability: 3.7
+coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
+2021-10-21 16:14:15.373638: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2021-10-21 16:14:15.375363: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2021-10-21 16:14:15.375783: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcusolver.so.10'; dlerror: libcusolver.so.10: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /sw/installed/cuDNN/8.0.4.30-CUDA-11.1.1/lib:/sw/installed/CUDAcore/11.1.1/nvvm/lib64:/sw/installed/CUDAcore/11.1.1/extras/CUPTI/lib64:/sw/installed/CUDAcore/11.1.1/lib64:/sw/installed/Python/3.6.4-intel-2018a/lib/python3.6/site-packages/numpy-1.14.0-py3.6-linux-x86_64.egg/numpy/core/lib:/sw/installed/Python/3.6.4-intel-2018a/lib:/sw/installed/libffi/3.2.1-GCCcore-6.4.0/lib64:/sw/installed/libffi/3.2.1-GCCcore-6.4.0/lib:/sw/installed/GMP/6.1.2-GCCcore-6.4.0/lib:/sw/installed/XZ/5.2.3-GCCcore-6.4.0/lib:/sw/installed/SQLite/3.21.0-GCCcore-6.4.0/lib:/sw/installed/Tcl/8.6.8-GCCcore-6.4.0/lib:/sw/installed/libreadline/7.0-GCCcore-6.4.0/lib:/sw/installed/ncurses/6.0-GCCcore-6.4.0/lib:/sw/installed/zlib/1.2.11-GCCcore-6.4.0/lib:/sw/installed/bzip2/1.0.6-GCCcore-6.4.0/lib:/sw/installed/imkl/2018.1.163-iimpi-2018a/mkl/lib/intel64:/sw/installed/imkl/2018.1.163-iimpi-2018a/lib/intel64:/sw/installed/impi/2018.1.163-iccifort-2018.1.163-GCC-6.4.0-2.28/lib64:/sw/installed/ifort/2018.1.163-GCC-6.4.0-2.28/debugger_2018/libipt/intel64/lib:/sw/installed/ifort/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/compiler/lib/intel64:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/debugger_2018/libipt/intel64/lib:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/tbb/lib/intel64/gcc4.4:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/compiler/lib/intel64:/sw/installed/binutils/2.28-GCCcore-6.4.0/lib:/sw/installed/GCCcore/6.4.0/lib64:/sw/installed/GCCcore/6.4.0/lib
+2021-10-21 16:14:15.376385: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 1 with properties: 
+pciBusID: 0000:84:00.0 name: Tesla K80 computeCapability: 3.7
+coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
+2021-10-21 16:14:15.376461: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-10-21 16:14:15.376785: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties: 
+pciBusID: 0000:04:00.0 name: Tesla K80 computeCapability: 3.7
+coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
+2021-10-21 16:14:15.377890: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2021-10-21 16:14:15.379223: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2021-10-21 16:14:15.379277: W tensorflow/core/common_runtime/gpu/gpu_device.cc:1757] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
+Skipping registering GPU devices...
+2021-10-21 16:14:15.381673: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-10-21 16:14:15.381748: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 1 with properties: 
+pciBusID: 0000:84:00.0 name: Tesla K80 computeCapability: 3.7
+coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
+2021-10-21 16:14:15.381754: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2021-10-21 16:14:15.381845: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-10-21 16:14:15.381895: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2021-10-21 16:14:15.382343: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-10-21 16:14:15.382402: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1261] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-10-21 16:14:15.382432: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1267]      
+2021-10-21 16:14:15.383290: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties: 
+pciBusID: 0000:04:00.0 name: Tesla K80 computeCapability: 3.7
+coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
+2021-10-21 16:14:15.384084: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2021-10-21 16:14:15.385011: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2021-10-21 16:14:15.385380: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcusolver.so.10'; dlerror: libcusolver.so.10: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /sw/installed/cuDNN/8.0.4.30-CUDA-11.1.1/lib:/sw/installed/CUDAcore/11.1.1/nvvm/lib64:/sw/installed/CUDAcore/11.1.1/extras/CUPTI/lib64:/sw/installed/CUDAcore/11.1.1/lib64:/sw/installed/Python/3.6.4-intel-2018a/lib/python3.6/site-packages/numpy-1.14.0-py3.6-linux-x86_64.egg/numpy/core/lib:/sw/installed/Python/3.6.4-intel-2018a/lib:/sw/installed/libffi/3.2.1-GCCcore-6.4.0/lib64:/sw/installed/libffi/3.2.1-GCCcore-6.4.0/lib:/sw/installed/GMP/6.1.2-GCCcore-6.4.0/lib:/sw/installed/XZ/5.2.3-GCCcore-6.4.0/lib:/sw/installed/SQLite/3.21.0-GCCcore-6.4.0/lib:/sw/installed/Tcl/8.6.8-GCCcore-6.4.0/lib:/sw/installed/libreadline/7.0-GCCcore-6.4.0/lib:/sw/installed/ncurses/6.0-GCCcore-6.4.0/lib:/sw/installed/zlib/1.2.11-GCCcore-6.4.0/lib:/sw/installed/bzip2/1.0.6-GCCcore-6.4.0/lib:/sw/installed/imkl/2018.1.163-iimpi-2018a/mkl/lib/intel64:/sw/installed/imkl/2018.1.163-iimpi-2018a/lib/intel64:/sw/installed/impi/2018.1.163-iccifort-2018.1.163-GCC-6.4.0-2.28/lib64:/sw/installed/ifort/2018.1.163-GCC-6.4.0-2.28/debugger_2018/libipt/intel64/lib:/sw/installed/ifort/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/compiler/lib/intel64:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/debugger_2018/libipt/intel64/lib:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/tbb/lib/intel64/gcc4.4:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/compiler/lib/intel64:/sw/installed/binutils/2.28-GCCcore-6.4.0/lib:/sw/installed/GCCcore/6.4.0/lib64:/sw/installed/GCCcore/6.4.0/lib
+2021-10-21 16:14:15.386832: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2021-10-21 16:14:15.387403: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2021-10-21 16:14:15.387448: W tensorflow/core/common_runtime/gpu/gpu_device.cc:1757] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
+Skipping registering GPU devices...
+2021-10-21 16:14:15.387810: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2021-10-21 16:14:15.387913: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 1 with properties: 
+pciBusID: 0000:84:00.0 name: Tesla K80 computeCapability: 3.7
+coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
+2021-10-21 16:14:15.387933: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2021-10-21 16:14:15.387992: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-10-21 16:14:15.389729: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-10-21 16:14:15.389953: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2021-10-21 16:14:15.390382: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-10-21 16:14:15.390446: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1261] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-10-21 16:14:15.390473: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1267]      
+2021-10-21 16:14:15.390833: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties: 
+pciBusID: 0000:04:00.0 name: Tesla K80 computeCapability: 3.7
+coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
+2021-10-21 16:14:15.391047: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2021-10-21 16:14:15.391413: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcusolver.so.10'; dlerror: libcusolver.so.10: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /sw/installed/cuDNN/8.0.4.30-CUDA-11.1.1/lib:/sw/installed/CUDAcore/11.1.1/nvvm/lib64:/sw/installed/CUDAcore/11.1.1/extras/CUPTI/lib64:/sw/installed/CUDAcore/11.1.1/lib64:/sw/installed/Python/3.6.4-intel-2018a/lib/python3.6/site-packages/numpy-1.14.0-py3.6-linux-x86_64.egg/numpy/core/lib:/sw/installed/Python/3.6.4-intel-2018a/lib:/sw/installed/libffi/3.2.1-GCCcore-6.4.0/lib64:/sw/installed/libffi/3.2.1-GCCcore-6.4.0/lib:/sw/installed/GMP/6.1.2-GCCcore-6.4.0/lib:/sw/installed/XZ/5.2.3-GCCcore-6.4.0/lib:/sw/installed/SQLite/3.21.0-GCCcore-6.4.0/lib:/sw/installed/Tcl/8.6.8-GCCcore-6.4.0/lib:/sw/installed/libreadline/7.0-GCCcore-6.4.0/lib:/sw/installed/ncurses/6.0-GCCcore-6.4.0/lib:/sw/installed/zlib/1.2.11-GCCcore-6.4.0/lib:/sw/installed/bzip2/1.0.6-GCCcore-6.4.0/lib:/sw/installed/imkl/2018.1.163-iimpi-2018a/mkl/lib/intel64:/sw/installed/imkl/2018.1.163-iimpi-2018a/lib/intel64:/sw/installed/impi/2018.1.163-iccifort-2018.1.163-GCC-6.4.0-2.28/lib64:/sw/installed/ifort/2018.1.163-GCC-6.4.0-2.28/debugger_2018/libipt/intel64/lib:/sw/installed/ifort/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/compiler/lib/intel64:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/debugger_2018/libipt/intel64/lib:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/tbb/lib/intel64/gcc4.4:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/compiler/lib/intel64:/sw/installed/binutils/2.28-GCCcore-6.4.0/lib:/sw/installed/GCCcore/6.4.0/lib64:/sw/installed/GCCcore/6.4.0/lib
+2021-10-21 16:14:15.392921: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2021-10-21 16:14:15.393077: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2021-10-21 16:14:15.393181: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2021-10-21 16:14:15.393605: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2021-10-21 16:14:15.393651: W tensorflow/core/common_runtime/gpu/gpu_device.cc:1757] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
+Skipping registering GPU devices...
+2021-10-21 16:14:15.395535: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2021-10-21 16:14:15.395951: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-10-21 16:14:15.396291: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2021-10-21 16:14:15.396538: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-10-21 16:14:15.396622: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1261] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-10-21 16:14:15.396658: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1267]      
+2021-10-21 16:14:15.396659: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcusolver.so.10'; dlerror: libcusolver.so.10: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /sw/installed/cuDNN/8.0.4.30-CUDA-11.1.1/lib:/sw/installed/CUDAcore/11.1.1/nvvm/lib64:/sw/installed/CUDAcore/11.1.1/extras/CUPTI/lib64:/sw/installed/CUDAcore/11.1.1/lib64:/sw/installed/Python/3.6.4-intel-2018a/lib/python3.6/site-packages/numpy-1.14.0-py3.6-linux-x86_64.egg/numpy/core/lib:/sw/installed/Python/3.6.4-intel-2018a/lib:/sw/installed/libffi/3.2.1-GCCcore-6.4.0/lib64:/sw/installed/libffi/3.2.1-GCCcore-6.4.0/lib:/sw/installed/GMP/6.1.2-GCCcore-6.4.0/lib:/sw/installed/XZ/5.2.3-GCCcore-6.4.0/lib:/sw/installed/SQLite/3.21.0-GCCcore-6.4.0/lib:/sw/installed/Tcl/8.6.8-GCCcore-6.4.0/lib:/sw/installed/libreadline/7.0-GCCcore-6.4.0/lib:/sw/installed/ncurses/6.0-GCCcore-6.4.0/lib:/sw/installed/zlib/1.2.11-GCCcore-6.4.0/lib:/sw/installed/bzip2/1.0.6-GCCcore-6.4.0/lib:/sw/installed/imkl/2018.1.163-iimpi-2018a/mkl/lib/intel64:/sw/installed/imkl/2018.1.163-iimpi-2018a/lib/intel64:/sw/installed/impi/2018.1.163-iccifort-2018.1.163-GCC-6.4.0-2.28/lib64:/sw/installed/ifort/2018.1.163-GCC-6.4.0-2.28/debugger_2018/libipt/intel64/lib:/sw/installed/ifort/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/compiler/lib/intel64:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/debugger_2018/libipt/intel64/lib:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/tbb/lib/intel64/gcc4.4:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/compiler/lib/intel64:/sw/installed/binutils/2.28-GCCcore-6.4.0/lib:/sw/installed/GCCcore/6.4.0/lib64:/sw/installed/GCCcore/6.4.0/lib
+2021-10-21 16:14:15.397107: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 1 with properties: 
+pciBusID: 0000:84:00.0 name: Tesla K80 computeCapability: 3.7
+coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
+2021-10-21 16:14:15.397187: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-10-21 16:14:15.398178: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2021-10-21 16:14:15.399212: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2021-10-21 16:14:15.399261: W tensorflow/core/common_runtime/gpu/gpu_device.cc:1757] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
+Skipping registering GPU devices...
+2021-10-21 16:14:15.400054: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties: 
+pciBusID: 0000:04:00.0 name: Tesla K80 computeCapability: 3.7
+coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
+2021-10-21 16:14:15.401596: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-10-21 16:14:15.401841: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2021-10-21 16:14:15.401938: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2021-10-21 16:14:15.402313: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-10-21 16:14:15.402418: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1261] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-10-21 16:14:15.402464: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1267]      
+2021-10-21 16:14:15.403868: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2021-10-21 16:14:15.404621: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2021-10-21 16:14:15.404781: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties: 
+pciBusID: 0000:04:00.0 name: Tesla K80 computeCapability: 3.7
+coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
+2021-10-21 16:14:15.404835: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 1 with properties: 
+pciBusID: 0000:84:00.0 name: Tesla K80 computeCapability: 3.7
+coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
+2021-10-21 16:14:15.404949: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-10-21 16:14:15.404992: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcusolver.so.10'; dlerror: libcusolver.so.10: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /sw/installed/cuDNN/8.0.4.30-CUDA-11.1.1/lib:/sw/installed/CUDAcore/11.1.1/nvvm/lib64:/sw/installed/CUDAcore/11.1.1/extras/CUPTI/lib64:/sw/installed/CUDAcore/11.1.1/lib64:/sw/installed/Python/3.6.4-intel-2018a/lib/python3.6/site-packages/numpy-1.14.0-py3.6-linux-x86_64.egg/numpy/core/lib:/sw/installed/Python/3.6.4-intel-2018a/lib:/sw/installed/libffi/3.2.1-GCCcore-6.4.0/lib64:/sw/installed/libffi/3.2.1-GCCcore-6.4.0/lib:/sw/installed/GMP/6.1.2-GCCcore-6.4.0/lib:/sw/installed/XZ/5.2.3-GCCcore-6.4.0/lib:/sw/installed/SQLite/3.21.0-GCCcore-6.4.0/lib:/sw/installed/Tcl/8.6.8-GCCcore-6.4.0/lib:/sw/installed/libreadline/7.0-GCCcore-6.4.0/lib:/sw/installed/ncurses/6.0-GCCcore-6.4.0/lib:/sw/installed/zlib/1.2.11-GCCcore-6.4.0/lib:/sw/installed/bzip2/1.0.6-GCCcore-6.4.0/lib:/sw/installed/imkl/2018.1.163-iimpi-2018a/mkl/lib/intel64:/sw/installed/imkl/2018.1.163-iimpi-2018a/lib/intel64:/sw/installed/impi/2018.1.163-iccifort-2018.1.163-GCC-6.4.0-2.28/lib64:/sw/installed/ifort/2018.1.163-GCC-6.4.0-2.28/debugger_2018/libipt/intel64/lib:/sw/installed/ifort/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/compiler/lib/intel64:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/debugger_2018/libipt/intel64/lib:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/tbb/lib/intel64/gcc4.4:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/compiler/lib/intel64:/sw/installed/binutils/2.28-GCCcore-6.4.0/lib:/sw/installed/GCCcore/6.4.0/lib64:/sw/installed/GCCcore/6.4.0/lib
+2021-10-21 16:14:15.406414: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2021-10-21 16:14:15.406829: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties: 
+pciBusID: 0000:04:00.0 name: Tesla K80 computeCapability: 3.7
+coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
+2021-10-21 16:14:15.407001: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2021-10-21 16:14:15.407045: W tensorflow/core/common_runtime/gpu/gpu_device.cc:1757] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
+Skipping registering GPU devices...
+2021-10-21 16:14:15.407081: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 1 with properties: 
+pciBusID: 0000:84:00.0 name: Tesla K80 computeCapability: 3.7
+coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
+2021-10-21 16:14:15.407160: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-10-21 16:14:15.408360: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 1 with properties: 
+pciBusID: 0000:84:00.0 name: Tesla K80 computeCapability: 3.7
+coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
+2021-10-21 16:14:15.408446: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2021-10-21 16:14:15.409282: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-10-21 16:14:15.409628: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-10-21 16:14:15.409698: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1261] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-10-21 16:14:15.409725: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1267]      
+2021-10-21 16:14:15.410985: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2021-10-21 16:14:15.411150: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2021-10-21 16:14:15.411915: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2021-10-21 16:14:15.412057: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2021-10-21 16:14:15.413655: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2021-10-21 16:14:15.413753: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2021-10-21 16:14:15.413914: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2021-10-21 16:14:15.413982: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2021-10-21 16:14:15.414608: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2021-10-21 16:14:15.414778: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2021-10-21 16:14:15.415094: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcusolver.so.10'; dlerror: libcusolver.so.10: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /sw/installed/cuDNN/8.0.4.30-CUDA-11.1.1/lib:/sw/installed/CUDAcore/11.1.1/nvvm/lib64:/sw/installed/CUDAcore/11.1.1/extras/CUPTI/lib64:/sw/installed/CUDAcore/11.1.1/lib64:/sw/installed/Python/3.6.4-intel-2018a/lib/python3.6/site-packages/numpy-1.14.0-py3.6-linux-x86_64.egg/numpy/core/lib:/sw/installed/Python/3.6.4-intel-2018a/lib:/sw/installed/libffi/3.2.1-GCCcore-6.4.0/lib64:/sw/installed/libffi/3.2.1-GCCcore-6.4.0/lib:/sw/installed/GMP/6.1.2-GCCcore-6.4.0/lib:/sw/installed/XZ/5.2.3-GCCcore-6.4.0/lib:/sw/installed/SQLite/3.21.0-GCCcore-6.4.0/lib:/sw/installed/Tcl/8.6.8-GCCcore-6.4.0/lib:/sw/installed/libreadline/7.0-GCCcore-6.4.0/lib:/sw/installed/ncurses/6.0-GCCcore-6.4.0/lib:/sw/installed/zlib/1.2.11-GCCcore-6.4.0/lib:/sw/installed/bzip2/1.0.6-GCCcore-6.4.0/lib:/sw/installed/imkl/2018.1.163-iimpi-2018a/mkl/lib/intel64:/sw/installed/imkl/2018.1.163-iimpi-2018a/lib/intel64:/sw/installed/impi/2018.1.163-iccifort-2018.1.163-GCC-6.4.0-2.28/lib64:/sw/installed/ifort/2018.1.163-GCC-6.4.0-2.28/debugger_2018/libipt/intel64/lib:/sw/installed/ifort/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/compiler/lib/intel64:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/debugger_2018/libipt/intel64/lib:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/tbb/lib/intel64/gcc4.4:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/compiler/lib/intel64:/sw/installed/binutils/2.28-GCCcore-6.4.0/lib:/sw/installed/GCCcore/6.4.0/lib64:/sw/installed/GCCcore/6.4.0/lib
+2021-10-21 16:14:15.415138: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcusolver.so.10'; dlerror: libcusolver.so.10: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /sw/installed/cuDNN/8.0.4.30-CUDA-11.1.1/lib:/sw/installed/CUDAcore/11.1.1/nvvm/lib64:/sw/installed/CUDAcore/11.1.1/extras/CUPTI/lib64:/sw/installed/CUDAcore/11.1.1/lib64:/sw/installed/Python/3.6.4-intel-2018a/lib/python3.6/site-packages/numpy-1.14.0-py3.6-linux-x86_64.egg/numpy/core/lib:/sw/installed/Python/3.6.4-intel-2018a/lib:/sw/installed/libffi/3.2.1-GCCcore-6.4.0/lib64:/sw/installed/libffi/3.2.1-GCCcore-6.4.0/lib:/sw/installed/GMP/6.1.2-GCCcore-6.4.0/lib:/sw/installed/XZ/5.2.3-GCCcore-6.4.0/lib:/sw/installed/SQLite/3.21.0-GCCcore-6.4.0/lib:/sw/installed/Tcl/8.6.8-GCCcore-6.4.0/lib:/sw/installed/libreadline/7.0-GCCcore-6.4.0/lib:/sw/installed/ncurses/6.0-GCCcore-6.4.0/lib:/sw/installed/zlib/1.2.11-GCCcore-6.4.0/lib:/sw/installed/bzip2/1.0.6-GCCcore-6.4.0/lib:/sw/installed/imkl/2018.1.163-iimpi-2018a/mkl/lib/intel64:/sw/installed/imkl/2018.1.163-iimpi-2018a/lib/intel64:/sw/installed/impi/2018.1.163-iccifort-2018.1.163-GCC-6.4.0-2.28/lib64:/sw/installed/ifort/2018.1.163-GCC-6.4.0-2.28/debugger_2018/libipt/intel64/lib:/sw/installed/ifort/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/compiler/lib/intel64:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/debugger_2018/libipt/intel64/lib:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/tbb/lib/intel64/gcc4.4:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/compiler/lib/intel64:/sw/installed/binutils/2.28-GCCcore-6.4.0/lib:/sw/installed/GCCcore/6.4.0/lib64:/sw/installed/GCCcore/6.4.0/lib
+2021-10-21 16:14:15.416075: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2021-10-21 16:14:15.416557: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2021-10-21 16:14:15.416635: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2021-10-21 16:14:15.417555: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2021-10-21 16:14:15.417563: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2021-10-21 16:14:15.417599: W tensorflow/core/common_runtime/gpu/gpu_device.cc:1757] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
+Skipping registering GPU devices...
+2021-10-21 16:14:15.417627: W tensorflow/core/common_runtime/gpu/gpu_device.cc:1757] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
+Skipping registering GPU devices...
+2021-10-21 16:14:15.417725: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2021-10-21 16:14:15.418079: W tensorflow/stream_executor/platform/default/dso_loader.cc:60] Could not load dynamic library 'libcusolver.so.10'; dlerror: libcusolver.so.10: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /sw/installed/cuDNN/8.0.4.30-CUDA-11.1.1/lib:/sw/installed/CUDAcore/11.1.1/nvvm/lib64:/sw/installed/CUDAcore/11.1.1/extras/CUPTI/lib64:/sw/installed/CUDAcore/11.1.1/lib64:/sw/installed/Python/3.6.4-intel-2018a/lib/python3.6/site-packages/numpy-1.14.0-py3.6-linux-x86_64.egg/numpy/core/lib:/sw/installed/Python/3.6.4-intel-2018a/lib:/sw/installed/libffi/3.2.1-GCCcore-6.4.0/lib64:/sw/installed/libffi/3.2.1-GCCcore-6.4.0/lib:/sw/installed/GMP/6.1.2-GCCcore-6.4.0/lib:/sw/installed/XZ/5.2.3-GCCcore-6.4.0/lib:/sw/installed/SQLite/3.21.0-GCCcore-6.4.0/lib:/sw/installed/Tcl/8.6.8-GCCcore-6.4.0/lib:/sw/installed/libreadline/7.0-GCCcore-6.4.0/lib:/sw/installed/ncurses/6.0-GCCcore-6.4.0/lib:/sw/installed/zlib/1.2.11-GCCcore-6.4.0/lib:/sw/installed/bzip2/1.0.6-GCCcore-6.4.0/lib:/sw/installed/imkl/2018.1.163-iimpi-2018a/mkl/lib/intel64:/sw/installed/imkl/2018.1.163-iimpi-2018a/lib/intel64:/sw/installed/impi/2018.1.163-iccifort-2018.1.163-GCC-6.4.0-2.28/lib64:/sw/installed/ifort/2018.1.163-GCC-6.4.0-2.28/debugger_2018/libipt/intel64/lib:/sw/installed/ifort/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/compiler/lib/intel64:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/debugger_2018/libipt/intel64/lib:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/tbb/lib/intel64/gcc4.4:/sw/installed/icc/2018.1.163-GCC-6.4.0-2.28/compilers_and_libraries_2018.1.163/linux/compiler/lib/intel64:/sw/installed/binutils/2.28-GCCcore-6.4.0/lib:/sw/installed/GCCcore/6.4.0/lib64:/sw/installed/GCCcore/6.4.0/lib
+2021-10-21 16:14:15.419474: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2021-10-21 16:14:15.419938: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-10-21 16:14:15.419938: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-10-21 16:14:15.420043: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2021-10-21 16:14:15.420087: W tensorflow/core/common_runtime/gpu/gpu_device.cc:1757] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
+Skipping registering GPU devices...
+2021-10-21 16:14:15.420285: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-10-21 16:14:15.420305: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-10-21 16:14:15.420339: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1261] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-10-21 16:14:15.420362: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1267]      
+2021-10-21 16:14:15.420363: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1261] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-10-21 16:14:15.420396: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1267]      
+2021-10-21 16:14:15.422361: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-10-21 16:14:15.422727: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2021-10-21 16:14:15.422783: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1261] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-10-21 16:14:15.422808: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1267]      
+2021-10-21 16:14:15.750740: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
+2021-10-21 16:14:15.750740: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
+2021-10-21 16:14:15.750743: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
+2021-10-21 16:14:15.750742: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
+2021-10-21 16:14:15.750750: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
+2021-10-21 16:14:15.752577: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
+2021-10-21 16:14:15.759276: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
+2021-10-21 16:14:15.761515: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
+2021-10-21 16:14:15.772879: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 2499795000 Hz
+2021-10-21 16:14:15.772882: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 2499795000 Hz
+2021-10-21 16:14:15.772883: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 2499795000 Hz
+2021-10-21 16:14:15.772888: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 2499795000 Hz
+2021-10-21 16:14:15.772888: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 2499795000 Hz
+2021-10-21 16:14:15.772888: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 2499795000 Hz
+2021-10-21 16:14:15.772888: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 2499795000 Hz
+2021-10-21 16:14:15.772891: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 2499795000 Hz
+slurmstepd: error: *** JOB 20379048 ON taurusi2048 CANCELLED AT 2021-10-23T16:02:32 DUE TO TIME LIMIT ***
