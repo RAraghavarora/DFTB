@@ -266,7 +266,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
 
     estimators = []
     estimators.append(('standardize', StandardScaler()))
-    estimators.append(('mlp', KerasRegressor(build_fn=obtain_model, epochs=20000, batch_size=16, verbose=1)))
+    estimators.append(('mlp', KerasRegressor(build_fn=obtain_model, epochs=20000, batch_size=16, verbose=2)))
     pipeline = Pipeline(estimators)
     kfold = KFold(n_splits=5, random_state=42, shuffle=True)
     results = cross_val_score(pipeline, iX, iY, cv=kfold, n_jobs=-1, scoring='neg_mean_absolute_error')
