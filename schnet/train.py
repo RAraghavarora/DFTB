@@ -14,7 +14,7 @@ logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
 # basic settings
 model_dir = '/scratch/ws/1/medranos-DFTB/raghav/code/schnet/model/'
 # model_dir = './model/'
-os.makedirs(model_dir)
+# os.makedirs(model_dir)
 properties = ['EAT']
 
 idir = '/scratch/ws/1/medranos-DFTB/raghav/data/'
