@@ -268,7 +268,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     estimators.append(('standardize', StandardScaler()))
     estimators.append(('mlp', KerasRegressor(build_fn=obtain_model, epochs=20000, batch_size=16, verbose=1)))
     pipeline = Pipeline(estimators)
-    kfold = KFold(n_splits=10, random_state=42, shuffle=True)
+    kfold = KFold(n_splits=5, random_state=42, shuffle=True)
     results = cross_val_score(pipeline, iX, iY, cv=kfold, n_jobs=-1, scoring='neg_mean_absolute_error')
     print(results)
     print("Larger: %.2f (%.2f) MSE" % (results.mean(), results.std()))
@@ -368,7 +368,7 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['30000', '1000','2000','4000','8000','10000','20000']
+train_set = ['1000', '30000','2000','4000','8000','10000','20000']
 n_val = 2000
 n_test = 20000
 op = sys.argv[1]
