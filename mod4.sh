@@ -5,8 +5,8 @@
 #SBATCH --nodes=1                        # request 1 node
 #SBATCH --ntasks=8
 #SBATCH -J talos-EAT2
-#SBATCH --output=talos_EAT/talos2.out
-#SBATCH --error=talos_EAT/talos2.err
+#SBATCH --output=talos_EAT/talos2_dip.out
+#SBATCH --error=talos_EAT/talos2_dip.err
 #SBATCH -A p_biomolecules
 #SBATCH --mail-type=all
 #SBATCH        --mail-user=leonardo.medrano@nano.tu-dresden.de
@@ -49,7 +49,7 @@ echo "training starts"
 #export DFTB_PREFIX='/home/medranos/SK-files/3ob-3-1/'
 
 work=/scratch/ws/1/medranos-DFTB/raghav/code
-python3 $work/train_dftb_standard.py EAT fit
+python3 $work/talos_EAT2.py EAT fit
 
 echo "training is over :-)"
 EXTSTAT=$?
