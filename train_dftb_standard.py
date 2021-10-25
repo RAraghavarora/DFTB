@@ -283,8 +283,8 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     # n_output = int(len(iY[0]))
     n_output = int(1)
 
-    p = {'layer1': [128, 256],
-         'layer2': [64, 128, 256],
+    p = {'layer1': [16,32,64],
+         'layer2': [4,8,16,32,64,256],
          'layer3': [4, 8, 16, 32, 64, 128, 256],
          'batch_size': (16, 32, 64),
          'epochs': [5000],
