@@ -22,6 +22,7 @@ def get_model(hp):
     model.add(
         Conv1D(
             hp.Choice("layer1", [4, 8, 16, 32]),
+            kernel_size=3,
             input_shape=(316, 1),
             activation='relu',
             kernel_initializer=initializer,
@@ -32,6 +33,7 @@ def get_model(hp):
     model.add(
         Conv1D(
             hp.Choice("layer2", [4, 8, 16, 32]),
+            kernel_size=3,
             activation='relu',
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
