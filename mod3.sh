@@ -49,7 +49,7 @@ echo "training starts"
 #export DFTB_PREFIX='/home/medranos/SK-files/3ob-3-1/'
 
 work=/scratch/ws/1/medranos-DFTB/raghav/code
-python3 $work/only_CM.py
+python3 $work/only_CM.py EGAP fit
 
 echo "training is over :-)"
 EXTSTAT=$?
