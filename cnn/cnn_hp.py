@@ -235,9 +235,9 @@ trainX, trainY, valX, valY, testX, testY = split_data(
 )
 
 trainX.shape = (trainX.shape[0], trainX.shape[1])
-trainY.shape = (trainY.shape[0], trainY.shape[1], 1)
+trainY.shape = (trainY.shape[0], 1)
 valX.shape = (valX.shape[0], valX.shape[1], 1)
-valY.shape = (valY.shape[0], valY.shape[1], 1)
+valY.shape = (valY.shape[0], 1)
 
 
 tuner.search(trainX, trainY, epochs=2000, validation_data=(valX, valY))
