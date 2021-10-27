@@ -246,7 +246,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
         trainX,
         trainy,
         validation_data=(valX, valy),
-        batch_size=32,
+        batch_size=16,
         epochs=20000,
         verbose=0,
         callbacks=[rlrp, lrm],
