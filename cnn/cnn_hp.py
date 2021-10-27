@@ -73,6 +73,12 @@ def split_data(n_train, n_val, n_test, Repre, Target):
     return X_train, Y_train, X_val, Y_val, X_test, Y_test
 
 
+
+from tensorflow.python.client import device_lib
+local_device_protos = device_lib.list_local_devices()
+print(local_device_protos)
+
+
 tuner = RandomSearch(
     get_model,
     objective="val_mae",
@@ -87,6 +93,8 @@ print(tuner.search_space_summary())
 
 iX = np.load('/scratch/ws/1/medranos-DFTB/raghav/data/iX.npy')
 iY = np.load('/scratch/ws/1/medranos-DFTB/raghav/data/iY.npy')
+print(iX.shape)
+print(iY.shape)
 
 n_train = 5000
 n_val = 2000
