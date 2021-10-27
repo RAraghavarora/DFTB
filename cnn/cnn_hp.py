@@ -12,6 +12,8 @@ from tensorflow.keras.optimizers import Adam
 
 from keras_tuner import RandomSearch
 import numpy as np
+import schnetpack as spk
+from qml.representations import generate_coulomb_matrix
 
 
 def get_model(hp):
