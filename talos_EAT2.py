@@ -227,9 +227,9 @@ def egap_model(x_train, y_train, x_val, y_val, params, patience=100):
     initializer = HeNormal()
     model.add(
         Dense(
-            params['layer1'],
+            4,
             input_dim=316,
-            activation='elu',
+            activation=params['activation1'],
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
         )
@@ -237,16 +237,16 @@ def egap_model(x_train, y_train, x_val, y_val, params, patience=100):
 
     model.add(
         Dense(
-            units=params['layer2'],
-            activation='elu',
+            32,
+            activation=params['activation2'],
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
         )
     )
     model.add(
         Dense(
-            units=params['layer3'],
-            activation='elu',
+            32,
+            activation=params['activation3'],
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
         )
@@ -283,10 +283,10 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     # n_output = int(len(iY[0]))
     n_output = int(1)
 
-    p = {'layer1': [128, 256],
-         'layer2': [4,8,16,32],
-         'layer3': [4, 8, 16, 32, 64, 128, 256],
-         'batch_size': (16, 32, 64),
+    p = {'activation1': ['relu','tanh','sigmoid','elu'],
+         'activation2': ['relu','tanh','sigmoid','elu'],
+         'activation3': ['relu','tanh','sigmoid','elu'],
+         'batch_size': [16],
          'epochs': [5000],
         }
 
