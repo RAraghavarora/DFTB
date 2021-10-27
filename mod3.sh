@@ -4,10 +4,10 @@
 #SBATCH --gres=gpu:2                      # use 1 GPU per node (i.e. use one GPU per task)
 #SBATCH --nodes=1                        # request 1 node
 #SBATCH --ntasks=8
-#SBATCH -J kernel-ra
-#SBATCH --output=kernel_dip.out
-#SBATCH --error=kernel_dip.err
-#SBATCH -A p_biomolecules
+#SBATCH -J egap
+#SBATCH --output=egap.out
+#SBATCH --error=egap.err
+#SBATCH -A p_phononics
 #SBATCH --mail-type=all
 #SBATCH        --mail-user=leonardo.medrano@nano.tu-dresden.de
 #SBATCH --mem-per-gpu=8000MB
@@ -49,7 +49,7 @@ echo "training starts"
 #export DFTB_PREFIX='/home/medranos/SK-files/3ob-3-1/'
 
 work=/scratch/ws/1/medranos-DFTB/raghav/code
-python3 $work/kernel.py
+python3 $work/only_CM.py
 
 echo "training is over :-)"
 EXTSTAT=$?
