@@ -70,7 +70,7 @@ def complete_array(Aprop):
 
 def prepare_data(op):
     #  # read dataset
-    data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/n5/'
+    data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/'
     properties = [
         'RMSD',
         'EAT',
@@ -92,7 +92,7 @@ def prepare_data(op):
 
     # data preparation
     logging.info("get dataset")
-    dataset = spk.data.AtomsData(data_dir + 'qm7x-n5.db', load_only=properties)
+    dataset = spk.data.AtomsData(data_dir + 'totgdb7x_pbe0.db', load_only=properties)
 
     n = len(dataset)
     print(n)
@@ -177,6 +177,22 @@ def prepare_data(op):
 
     p11b = complete_array(p11b)
 
+    # Standardize the data property wise
+
+    temp = []
+    for var in [p1b, p2b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b, p11b]:
+        var2 = np.array(var)
+        try:
+            _ = var2.shape[1]
+        except IndexError:
+            var2 = var2.reshape(-1, 1)
+        scaler = StandardScaler()
+        var3 = scaler.fit_transform(var2)
+
+        temp.append(var3)
+
+    p1b, p2b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b, p11b = temp
+
     reps2 = []
     for ii in range(len(idx2)):
         # reps2.append(xyz_reps[ii])
@@ -251,7 +267,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     initializer = HeNormal()
     model.add(
         Dense(
-            256,
+            4,
             input_dim=n_input,
             activation='elu',
             kernel_initializer=initializer,
@@ -260,7 +276,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     )
     model.add(
         Dense(
-            units=64,
+            units=32,
             activation='elu',
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
@@ -268,7 +284,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     )
     model.add(
         Dense(
-            units=256,
+            units=32,
             activation='elu',
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
@@ -276,7 +292,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     )
     model.add(Dense(n_output, activation='linear', kernel_initializer=initializer))
     # compile model
-    opt = Adam(learning_rate=0.01)
+    opt = Adam(learning_rate=1e-4)
     model.compile(loss='mse', optimizer=opt, metrics=['mae'])
     # fit model
     rlrp = ReduceLROnPlateau(
@@ -287,7 +303,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
         trainX,
         trainy,
         validation_data=(valX, valy),
-        batch_size=32,
+        batch_size=16,
         epochs=20000,
         verbose=2,
         callbacks=[rlrp, lrm],
@@ -377,27 +393,27 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['1000', '2000', '4000', '8000', '10000']
+train_set = ['1000', '2000', '4000', '8000', '10000', '20000', '30000']
 n_val = 5000
-n_test = 202685  # Test on the entire dataset
+n_test = 20000  # Test on the entire dataset
 op = sys.argv[1]
 
 iX, iY = prepare_data(op)
 
 # fit model and plot learning curves for a patience
-patience = 700
+patience = 500
 
 current_dir = os.getcwd()
 
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
     chdir(current_dir)
-    os.chdir(current_dir + '/withdft/large/')
+    os.chdir(current_dir + '/withdft/egap/')
     try:
         os.mkdir(str(train_set[ii]))
     except:
         pass
-    os.chdir(current_dir + '/withdft/large/' + str(train_set[ii]))
+    os.chdir(current_dir + '/withdft/egap/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 
