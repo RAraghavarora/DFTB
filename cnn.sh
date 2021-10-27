@@ -15,9 +15,8 @@ ulimit -s unlimited
 echo Starting Program
 module purge                                 # purge if you already have modules loaded
 module load modenv/scs5
-module load Python
-. ../env/bin/activate
-module load Python
+module load Python/3.6.4-intel-2018a
+. /home/medranos/vdftb20/bin/activate
 module load cuDNN/8.0.4.30-CUDA-11.1.1
 echo "training starts"
 walltime=$(squeue -h -j $SLURM_JOBID -o "%L")
