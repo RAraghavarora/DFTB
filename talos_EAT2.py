@@ -214,9 +214,6 @@ n_val = 1000
 n_test = 10000
 op = sys.argv[1]
 
-iX = np.load('/scratch/ws/1/medranos-DFTB/raghav/data/iX.npy')
-iY = np.load('/scratch/ws/1/medranos-DFTB/raghav/data/iY.npy')
-
 # fit model and plot learning curves for a patience
 patience = 500
 
