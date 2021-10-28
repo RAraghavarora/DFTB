@@ -59,11 +59,7 @@ def split_data(n_train, n_val, n_test, Repre, Target):
     Y_train = Y_train.reshape(-1, 1)
     Y_val = Y_val.reshape(-1, 1)
     Y_test = Y_test.reshape(-1, 1)
-
-    x_scaler = StandardScaler().fit(X_train)
-    y_scaler = StandardScaler().fit(Y_train)
-
-    return X_train, Y_train, X_val, Y_val, X_test, Y_test, x_scaler, y_scaler
+    return X_train, Y_train, X_val, Y_val, X_test, Y_test
 
 
 def egap_model(hp):
