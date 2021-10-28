@@ -22,6 +22,7 @@ from tensorflow.keras.initializers import HeNormal
 import logging
 # import schnetpack as spk
 from keras_tuner import RandomSearch
+import tensorflow as tf
 
 
 # monitor the learning rate
@@ -219,11 +220,6 @@ patience = 500
 
 current_dir = os.getcwd()
 
-from tensorflow.python.client import device_lib
-local_device_protos = device_lib.list_local_devices()
-print(local_device_protos)
-
-
 tuner = RandomSearch(
     egap_model,
     objective="val_mae",
@@ -248,7 +244,22 @@ trainX, trainY, valX, valY, testX, testY = split_data(
     n_train, n_val, n_test, iX, iY
 )
 
-tuner.search(trainX, trainY, epochs=2000, validation_data=(valX, valY))
+
+train_data = tf.data.Dataset.from_tensor_slices((trainX, trainY))
+val_data = tf.data.Dataset.from_tensor_slices((valX, valY))
+
+# The batch size must now be set on the Dataset objects.
+batch_size = 16
+train_data = train_data.batch(batch_size)
+val_data = val_data.batch(batch_size)
+
+# Disable AutoShard.
+options = tf.data.Options()
+options.experimental_distribute.auto_shard_policy = tf.data.experimental.AutoShardPolicy.OFF
+train_data = train_data.with_options(options)
+val_data = val_data.with_options(options)
+
+tuner.search(train_data=train_data, epochs=2000, validation_data=val_data)
 models = tuner.get_best_models(num_models=2)
 tuner.results_summary()
 print(models)
