@@ -232,7 +232,8 @@ tuner = RandomSearch(
     overwrite=True,
     directory="my_dir2",
     project_name="act",
-    seed=42
+    seed=2314,
+    distribution_strategy=tf.distribute.MirroredStrategy()
 )
 print(tuner.search_space_summary())
 
