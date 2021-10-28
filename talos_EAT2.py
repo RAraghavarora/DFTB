@@ -21,7 +21,8 @@ from tensorflow.keras.initializers import HeNormal
 
 import logging
 # import schnetpack as spk
-import talos as ta
+from keras_tuner import RandomSearch
+
 
 # monitor the learning rate
 
@@ -65,14 +66,17 @@ def split_data(n_train, n_val, n_test, Repre, Target):
     return X_train, Y_train, X_val, Y_val, X_test, Y_test, x_scaler, y_scaler
 
 
-def egap_model(x_train, y_train, x_val, y_val, params, patience=100):
+def egap_model(hp):
     model = Sequential()
     initializer = HeNormal()
+    act1 = hp.Choice('activation1',['relu','sigmoid','tanh','elu'])
+    act2 = hp.Choice('activation3',['relu','sigmoid','tanh','elu'])
+
     model.add(
         Dense(
             4,
             input_dim=316,
-            activation=params['activation1'],
+            activation=act1,
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
         )
@@ -81,7 +85,7 @@ def egap_model(x_train, y_train, x_val, y_val, params, patience=100):
     model.add(
         Dense(
             32,
-            activation=params['activation1'],
+            activation=act1,
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
         )
@@ -89,31 +93,18 @@ def egap_model(x_train, y_train, x_val, y_val, params, patience=100):
     model.add(
         Dense(
             32,
-            activation=params['activation3'],
+            activation=act2,
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
         )
     )
     model.add(Dense(1, activation='linear', kernel_initializer=initializer))
     # compile model
-    opt = Adam(learning_rate=0.01)
+    opt = Adam(learning_rate=1e-5)
     model.compile(loss='mse', optimizer=opt, metrics=['mae'])
     # fit model
-    rlrp = ReduceLROnPlateau(
-        monitor='val_loss', factor=0.59, patience=patience, min_delta=1e-5, min_lr=1e-6
-    )
-    lrm = LearningRateMonitor()
-    history = model.fit(
-        x_train,
-        y_train,
-        validation_data=(x_val, y_val),
-        batch_size=params['batch_size'],
-        epochs=params["epochs"],
-        verbose=1,
-        callbacks=[rlrp, lrm],
-    )
 
-    return history, model
+    return model
 
 
 def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
@@ -235,49 +226,36 @@ patience = 500
 
 current_dir = os.getcwd()
 
-for ii in range(len(train_set)):
-    print('Trainset= {:}'.format(train_set[ii]))
-    chdir(current_dir + '/talos_EAT/')
-    n_train = train_set[ii]
-    os.chdir(current_dir + '/talos_EAT/')
-    try:
-        os.mkdir(str(train_set[ii]))
-    except FileExistsError:
-        pass
-    os.chdir(current_dir + '/talos_EAT/' + str(train_set[ii]))
+tuner = RandomSearch(
+    egap_model,
+    objective="val_mae",
+    max_trials=30,
+    executions_per_trial=2,
+    overwrite=True,
+    directory="my_dir2",
+    project_name="act",
+    seed=42
+)
+print(tuner.search_space_summary())
 
-    if sys.argv[2] == 'fit':
+iX = np.load('/scratch/ws/1/medranos-DFTB/raghav/data/iX.npy')
+iY = np.load('/scratch/ws/1/medranos-DFTB/raghav/data/iY.npy')
 
-        scan_object = fit_model_dense(
-            int(train_set[ii]), int(n_val), int(n_test), iX, iY, patience
-        )
-        # accessing the results data frame
-        scan_object.data.head()
+n_train = 5000
+n_val = 2000
+n_test = 2000
 
-        # accessing epoch entropy values for each round
-        scan_object.learning_entropy
+trainX, trainY, valX, valY, testX, testY = split_data(
+    n_train, n_val, n_test, iX, iY
+)
 
-        # access the summary details
-        scan_object.details
+trainX.shape = (trainX.shape[0], trainX.shape[1], 1)
+trainY.shape = (trainY.shape[0], 1)
+valX.shape = (valX.shape[0], valX.shape[1], 1)
+valY.shape = (valY.shape[0], 1)
 
-    #     lhis = open('learning-history.dat', 'w')
-    #     for ii in range(0, len(lr)):
-    #         lhis.write(
-    #             '{:8d}'.format(ii)
-    #             + '{:16.8f}'.format(lr[ii])
-    #             + '{:16f}'.format(loss[ii])
-    #             + '{:16f}'.format(acc[ii])
-    #             + '\n'
-    #         )
-    #     lhis.close()
 
-    #     # Saving NN model
-    #     save_nnmodel(model)
-    # else:
-    #     cfile = 'ncomp-test.dat'
-    #     # to evaluate new test
-    #     model = load_nnmodel(current_dir + '/%s' % train_set[ii])
-
-    # # Saving results
-    # plotting_results(model, testX, testy)
-    # save_plot(n_train)
+tuner.search(trainX, trainY, epochs=2000, validation_data=(valX, valY))
+models = tuner.get_best_models(num_models=2)
+tuner.results_summary()
+print(models)
