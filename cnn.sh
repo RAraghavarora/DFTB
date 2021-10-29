@@ -1,12 +1,12 @@
 #!/bin/bash
 #SBATCH --time=96:00:00
 #SBATCH --partition=gpu2                        # specify ml partition or gpu2 partition
-#SBATCH --gres=gpu:1                      # use 1 GPU per node (i.e. use one GPU per task)
+#SBATCH --gres=gpu:2                      # use 1 GPU per node (i.e. use one GPU per task)
 #SBATCH --nodes=1                        # request 1 node
 #SBATCH --ntasks=8
 #SBATCH -J gpu
-#SBATCH --output=cnn/dip.out
-#SBATCH --error=cnn/dip.err
+#SBATCH --output=cnn/dip2.out
+#SBATCH --error=cnn/dip2.err
 #SBATCH -A p_biomolecules
 #SBATCH --mail-type=all
 #SBATCH        --mail-user=leonardo.medrano@nano.tu-dresden.de

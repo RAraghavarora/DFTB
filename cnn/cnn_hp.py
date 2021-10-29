@@ -1,3 +1,4 @@
+from tensorflow.python.client import device_lib
 from tensorflow.keras.layers import (
     Dense,
     Conv1D,
@@ -12,6 +13,12 @@ from tensorflow.keras.optimizers import Adam
 
 from keras_tuner import RandomSearch
 import numpy as np
+
+import tensorflow as tf
+
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
+sess = tf.Session(config=config)
 
 
 def get_model(hp):
@@ -73,8 +80,6 @@ def split_data(n_train, n_val, n_test, Repre, Target):
     return X_train, Y_train, X_val, Y_val, X_test, Y_test
 
 
-
-from tensorflow.python.client import device_lib
 local_device_protos = device_lib.list_local_devices()
 print(local_device_protos)
 
