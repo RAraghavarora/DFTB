@@ -16,7 +16,7 @@ echo Starting Program
 module purge                                 # purge if you already have modules loaded
 module load modenv/scs5
 module load Python/3.6.4-intel-2018a
-. ../env/bin/activate
+. /home/medranos/vdftb20/bin/activate
 module load cuDNN/8.0.4.30-CUDA-11.1.1
 echo "training starts"
 walltime=$(squeue -h -j $SLURM_JOBID -o "%L")
@@ -49,6 +49,7 @@ echo "training starts"
 #export DFTB_PREFIX='/home/medranos/SK-files/3ob-3-1/'
 
 work=/scratch/ws/1/medranos-DFTB/raghav/code
+pip install tensorflow==2.6
 python3 $work/train_new.py EAT fit
 
 echo "training is over :-)"
