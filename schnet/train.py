@@ -52,7 +52,7 @@ output_modules = [
     )
 ]
 model = spk.AtomisticModel(representation, output_modules)
-model = model.to("cuda")
+model = model.to("cuda:0")
 model = nn.DataParallel(model)
 
 # build optimizer
@@ -77,4 +77,4 @@ trainer = Trainer(
 
 # run training
 logging.info("training")
-trainer.train(device="cuda")
+trainer.train(device="cuda:0")
