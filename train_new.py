@@ -27,7 +27,7 @@ from tensorflow.keras.models import load_model
 from qml.representations import generate_coulomb_matrix
 from qml.representations import generate_bob
 from tensorflow.keras.initializers import HeNormal
-import tensorflow as tf
+
 
 import logging
 import schnetpack as spk
@@ -195,26 +195,26 @@ def prepare_data(op):
 
     reps2 = []
     for ii in range(len(idx2)):
-        reps2.append(xyz_reps[ii])
-        # reps2.append(
-        #     np.concatenate(
-        #         (
-        #             xyz_reps[ii],
-        #             p1b[ii],
-        #             p2b[ii],
-        #             p3b[ii],
-        #             p4b[ii],
-        #             p5b[ii],
-        #             p6b[ii],
-        #             p7b[ii],
-        #             p8b[ii],
-        #             np.linalg.norm(p9b[ii]),
-        #             p10b[ii],
-        #             p11b[ii],
-        #         ),
-        #         axis=None,
-        #     )
-        # )
+        # reps2.append(xyz_reps[ii])
+        reps2.append(
+            np.concatenate(
+                (
+                    xyz_reps[ii],
+                    p1b[ii],
+                    p2b[ii],
+                    p3b[ii],
+                    p4b[ii],
+                    p5b[ii],
+                    p6b[ii],
+                    p7b[ii],
+                    p8b[ii],
+                    np.linalg.norm(p9b[ii]),
+                    p10b[ii],
+                    p11b[ii],
+                ),
+                axis=None,
+            )
+        )
     reps2 = np.array(reps2)
 
     return reps2, TPROP2
@@ -265,7 +265,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
 
     mirrored_strategy = tf.distribute.MirroredStrategy()
 
-    with mirrored_strategy.scope():
+    with mirrored_strategy.scope()
         model = Sequential()
         initializer = HeNormal()
         model.add(
@@ -396,7 +396,7 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['1000', '2000', '4000', '8000', '10000', '20000', '30000']
+train_set = ['4000', '8000', '10000', '20000', '30000']
 n_val = 5000
 n_test = 20000  # Test on the entire dataset
 op = sys.argv[1]
@@ -411,12 +411,12 @@ current_dir = os.getcwd()
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
     chdir(current_dir)
-    os.chdir(current_dir + '/only_CM/new/')
+    os.chdir(current_dir + '/withdft/new/')
     try:
         os.mkdir(str(train_set[ii]))
     except:
         pass
-    os.chdir(current_dir + '/only_CM/new/' + str(train_set[ii]))
+    os.chdir(current_dir + '/withdft/new/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 
