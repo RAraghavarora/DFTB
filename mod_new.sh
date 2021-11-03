@@ -4,7 +4,7 @@
 #SBATCH --gres=gpu:2                      # use 1 GPU per node (i.e. use one GPU per task)
 #SBATCH --nodes=1                        # request 1 node
 #SBATCH --ntasks=8
-#SBATCH -J egap
+#SBATCH -J withdft-new
 #SBATCH --output=withdft/new.out
 #SBATCH --error=withdft/new.err
 #SBATCH -A p_biomolecules
@@ -49,7 +49,6 @@ echo "training starts"
 #export DFTB_PREFIX='/home/medranos/SK-files/3ob-3-1/'
 
 work=/scratch/ws/1/medranos-DFTB/raghav/code
-pip install tensorflow==2.6
 python3 $work/train_new.py EAT fit
 
 echo "training is over :-)"

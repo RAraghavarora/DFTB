@@ -27,7 +27,7 @@ from tensorflow.keras.models import load_model
 from qml.representations import generate_coulomb_matrix
 from qml.representations import generate_bob
 from tensorflow.keras.initializers import HeNormal
-
+import tensorflow as tf
 
 import logging
 import schnetpack as spk
@@ -265,7 +265,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
 
     mirrored_strategy = tf.distribute.MirroredStrategy()
 
-    with mirrored_strategy.scope()
+    with mirrored_strategy.scope():
         model = Sequential()
         initializer = HeNormal()
         model.add(
