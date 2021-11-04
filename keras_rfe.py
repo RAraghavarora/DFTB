@@ -55,7 +55,8 @@ def complete_array(Aprop):
 def prepare_data(op):
     # read dataset
     # data_dir = '../'
-    data_dir = '/scratch/ws/1/medranos-DFTB/props/dftb/data/n1-2/'
+    data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/'
+
     properties = [
         'RMSD',
         'EAT',
@@ -77,7 +78,7 @@ def prepare_data(op):
 
     # data preparation
     logging.info("get dataset")
-    dataset = spk.data.AtomsData(data_dir + 'totgdb7x_pbe0.db', load_only=properties)
+    dataset = spk.data.AtomsData(data_dir + 'qm7x-eq-n1.db', load_only=properties)
 
     n = len(dataset)
     print(n)
@@ -115,10 +116,10 @@ def prepare_data(op):
     TPROP = np.array(TPROP)
 
     # Generate representations
-    # Coulomb matrix
-    xyz_reps = np.array(
-        [generate_coulomb_matrix(Z[mol], xyz[mol], sorting='unsorted') for mol in idx2]
-    )
+    # # Coulomb matrix
+    # xyz_reps = np.array(
+    #     [generate_coulomb_matrix(Z[mol], xyz[mol], sorting='unsorted') for mol in idx2]
+    # )
 
     TPROP2 = []
     p1b, p2b, p11b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b = (
@@ -172,7 +173,7 @@ def prepare_data(op):
         reps2.append(
             np.concatenate(
                 (
-                    xyz_reps[ii],
+                    # xyz_reps[ii],
                     p1b[ii],
                     p2b[ii],
                     p3b[ii],
@@ -257,7 +258,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience, delete_prop):
     initializer = HeNormal()
     model.add(
         Dense(
-            256,
+            4,
             input_dim=n_input,
             activation='elu',
             kernel_initializer=initializer,
@@ -266,7 +267,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience, delete_prop):
     )
     model.add(
         Dense(
-            units=64,
+            units=32,
             activation='elu',
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
@@ -274,7 +275,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience, delete_prop):
     )
     model.add(
         Dense(
-            units=256,
+            units=32,
             activation='elu',
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
@@ -381,32 +382,31 @@ def save_plot(n_train):
     plt.close()
 
 
-# prepare dataset
-n_train = '10000'
-n_val = 1000
-n_test = 10000
 op = sys.argv[1]
 
-# iX, iY = prepare_data(op)
-iX = np.load('iX.npy')
-print(iX.shape)
-iY = np.load('iY.npy')
+iX, iY = prepare_data(op)
+# iX = np.load('iX.npy')
+# print(iX.shape)
+# iY = np.load('iY.npy')
 
 # fit model and plot learning curves for a patience
 patience = 100
 
 current_dir = os.getcwd()
+chdir(current_dir + '/rfe/')
 
-for prop in range(-1,0):
+def compute(prop):
     print('Prop number= {:}'.format(prop))
-    chdir(current_dir + '/rfe/')
-    os.chdir(current_dir + '/rfe/')
     try:
         os.mkdir(str(prop))
     except FileExistsError:
         pass
     os.chdir(current_dir + '/rfe/' + str(prop))
 
+    n_train = '10000',
+    n_val = 1000
+    n_test = 10000
+    patience = 100
 
     model, lr, loss, acc, testX, testy = fit_model_dense(
         int(n_train), int(n_val), int(n_test), iX, iY, patience, prop
@@ -423,9 +423,16 @@ for prop in range(-1,0):
         )
     lhis.close()
 
-        # Saving NN model
     save_nnmodel(model)
 
     # Saving results
     plotting_results(model, testX, testy)
     save_plot(prop)
+
+
+if __name__ == "__main__":
+    import multiprocessing as mp
+    print("Number of processors = ", mp.cpu_count())
+
+    with mp.Pool(4) as pool:
+        pool.map(compute, list(range(-1,11)))
