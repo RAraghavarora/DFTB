@@ -92,7 +92,7 @@ def prepare_data(op):
 
     # data preparation
     logging.info("get dataset")
-    dataset = spk.data.AtomsData(data_dir + 'qm7x-eq-n1.db', load_only=properties)
+    dataset = spk.data.AtomsData(data_dir + 'totgdb7x_pbe0.db', load_only=properties)
 
     n = len(dataset)
     print(n)
@@ -142,9 +142,16 @@ def prepare_data(op):
     TPROP = np.array(TPROP)
 
     # Generate representations
-    # Coulomb matrix
-    xyz_reps = np.array(
-        [generate_coulomb_matrix(Z[mol], xyz[mol], sorting='unsorted') for mol in idx2]
+    bob_repr = np.array(
+        [
+            generate_bob(
+                Z[mol],
+                xyz[mol],
+                atomtypes={'C', 'H', 'N', 'O', 'S', 'Cl'},
+                asize={'C': 7, 'H': 16, 'N': 3, 'O': 3, 'S': 1, 'Cl': 2},
+            )
+            for mol in idx2
+        ]
     )
 
     TPROP2 = []
@@ -199,7 +206,7 @@ def prepare_data(op):
         reps2.append(
             np.concatenate(
                 (
-                    xyz_reps[ii],
+                    bob_repr[ii],
                     p1b[ii],
                     p2b[ii],
                     p3b[ii],
@@ -408,12 +415,12 @@ current_dir = os.getcwd()
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
     chdir(current_dir)
-    os.chdir(current_dir + '/withdft/eq/egap/')
+    os.chdir(current_dir + '/normalize/egap/')
     try:
         os.mkdir(str(train_set[ii]))
     except:
         pass
-    os.chdir(current_dir + '/withdft/eq/egap/' + str(train_set[ii]))
+    os.chdir(current_dir + '/normlaize/egap/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 
