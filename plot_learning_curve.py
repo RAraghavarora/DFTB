@@ -10,14 +10,16 @@ y1 = []  # Only molecular descriptors
 y2 = []  # Mol Desc + DFTB
 y3 = []  # Kernel
 y4 = []  # Desc + DFTB (with standard)
+y5 = []
 
 
 for i in train_set:
     try:
-        f1 = open("only_CM/%s/errors.dat" % i, 'r')
-        f2 = open("withdft/%s/errors.dat" % i, 'r')
-        f3 = open("errors_test%s.dat" % i, 'r')
+        f1 = open("only_CM/%s/errors_test.dat" % i, 'r')
+        f2 = open("withdft/%s/errors_test.dat" % i, 'r')
+        f3 = open("normalize/%s/errors_test.dat" % i, 'r')
         f4 = open("standard/%s/errors_test.dat" % i, 'r')
+        f5 = open("normalize/only_bob/%s/errors_test.dat"%i,'r')
     except Exception as e:
         print("*******\n")
         print(e)
@@ -39,17 +41,24 @@ for i in train_set:
     a, b, c = lines4[0].split()
     y4.append(round(float(b), 3))  # Rounded upto 3 decimal places
 
+    lines5 = f5.readlines()
+    a, b, c = lines5[0].split()
+    y5.append(round(float(b), 3))  # Rounded upto 3 decimal places
+
 print(y1)
 print(y2)
 print(y3)
 print(y4)
+print(y5)
 
 # plt.yscale("log") 
 plt.grid(True, which="both")
-plt.loglog(train_set, y1, 's-', label='Architecture 1')
-plt.loglog(train_set, y2, 's-', label='Architecture 2 Without standardization')
-plt.loglog(train_set, y3, 'o:', label='Kernel')
-plt.loglog(train_set, y4, 'o:', label='Architecture 2 With Data Standardization')
+# plt.loglog(train_set, y1, 's-', label='Architecture 1')
+# plt.loglog(train_set, y2, 's-', label='Architecture 2')
+# plt.loglog(train_set, y4, 'o:', label='Architecture 2 With Data Standardization')
+plt.loglog(train_set, y5, 's-', label='BOB')
+plt.loglog(train_set, y3, 'o-', label='BOB+DFTB')
+
 
 # plt.annotate('(%s, %s)' % (30000, y1[-1]), xy=(30000, y1[-1]), textcoords='data')
 # plt.annotate('(%s, %s)' % (20000, y1[-2]), xy=(20000, y1[-2]), textcoords='data')
@@ -62,7 +71,7 @@ plt.loglog(train_set, y4, 'o:', label='Architecture 2 With Data Standardization'
 
 
 plt.xlabel('Training size')
-plt.ylabel('MAE (eV)')
-plt.title('Learning Curve of simple Sequential network')
+plt.ylabel('MAE [EAT] (eV)')
+plt.title('Learning Curve of simple Sequential network (Strongly distorted Molecules)')
 plt.legend()
 plt.show()
