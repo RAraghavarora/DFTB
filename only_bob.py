@@ -56,7 +56,7 @@ def complete_array(Aprop):
 def prepare_data(op):
     # read dataset
     # data_dir = '../'
-    data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/'
+    data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/n5/'
     properties = [
         'RMSD',
         'EAT',
@@ -78,7 +78,7 @@ def prepare_data(op):
 
     # data preparation
     logging.info("get dataset")
-    dataset = spk.data.AtomsData(data_dir + 'totgdb7x_pbe0.db', load_only=properties)
+    dataset = spk.data.AtomsData(data_dir + 'qm7x-n5.db', load_only=properties)
 
     n = len(dataset)
     print(n)
@@ -176,37 +176,40 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     n_output = int(1)
 
     # define model
-    model = Sequential()
-    initializer = HeNormal()
-    model.add(
-        Dense(
-            256,
-            input_dim=n_input,
-            activation='elu',
-            kernel_initializer=initializer,
-            kernel_regularizer=regularizers.l2(0.001),
+    import tensorflow as tf
+    mirrored_strategy = tf.distribute.MirroredStrategy()
+    with mirrored_strategy.scope():
+        model = Sequential()
+        initializer = HeNormal()
+        model.add(
+            Dense(
+                4,
+                input_dim=n_input,
+                activation='elu',
+                kernel_initializer=initializer,
+                kernel_regularizer=regularizers.l2(0.001),
+            )
         )
-    )
-    model.add(
-        Dense(
-            units=64,
-            activation='elu',
-            kernel_initializer=initializer,
-            kernel_regularizer=regularizers.l2(0.001),
+        model.add(
+            Dense(
+                units=32,
+                activation='elu',
+                kernel_initializer=initializer,
+                kernel_regularizer=regularizers.l2(0.001),
+            )
         )
-    )
-    model.add(
-        Dense(
-            units=256,
-            activation='elu',
-            kernel_initializer=initializer,
-            kernel_regularizer=regularizers.l2(0.001),
+        model.add(
+            Dense(
+                units=32,
+                activation='elu',
+                kernel_initializer=initializer,
+                kernel_regularizer=regularizers.l2(0.001),
+            )
         )
-    )
-    model.add(Dense(n_output, activation='linear', kernel_initializer=initializer))
-    # compile model
-    opt = Adam(learning_rate=0.01)
-    model.compile(loss='mse', optimizer=opt, metrics=['mae'])
+        model.add(Dense(n_output, activation='linear', kernel_initializer=initializer))
+        # compile model
+        opt = Adam(learning_rate=1e-4)
+        model.compile(loss='mse', optimizer=opt, metrics=['mae'])
     # fit model
     rlrp = ReduceLROnPlateau(
         monitor='val_loss', factor=0.59, patience=patience, min_delta=1e-5, min_lr=1e-6
@@ -216,7 +219,7 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
         trainX,
         trainy,
         validation_data=(valX, valy),
-        batch_size=32,
+        batch_size=16,
         epochs=20000,
         verbose=0,
         callbacks=[rlrp, lrm],
@@ -305,7 +308,7 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['20000', '30000']
+train_set = ['1000','2000','4000','8000','10000','20000','30000', '50000', '100000']
 n_val = 1000
 n_test = 10000
 op = sys.argv[1]
@@ -319,13 +322,13 @@ current_dir = os.getcwd()
 
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
-    chdir(current_dir + '/normalize/only_bob/')
-    os.chdir(current_dir + '/normalize/only_bob/')
+    chdir(current_dir + '/normalize/large/only_bob/')
+    os.chdir(current_dir + '/normalize/large/only_bob/')
     try:
         os.mkdir(str(train_set[ii]))
     except FileExistsError:
         pass
-    os.chdir(current_dir + '/normalize/only_bob/' + str(train_set[ii]))
+    os.chdir(current_dir + '/normalize/large/only_bob/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 
