@@ -78,7 +78,7 @@ def prepare_data(op):
 
     # data preparation
     logging.info("get dataset")
-    dataset = spk.data.AtomsData(data_dir + 'totgdb7x_pbe0.db', load_only=properties)
+    dataset = spk.data.AtomsData(data_dir + 'qm7x-eq-n1.db', load_only=properties)
 
     n = len(dataset)
     print(n)
@@ -160,26 +160,26 @@ def prepare_data(op):
 
     reps2 = []
     for ii in range(len(idx2)):
-        # reps2.append(xyz_reps[ii])
-        reps2.append(
-            np.concatenate(
-                (
-                    bob_repr[ii],
-                    p1b[ii],
-                    p2b[ii],
-                    p3b[ii],
-                    p4b[ii],
-                    p5b[ii],
-                    p6b[ii],
-                    p7b[ii],
-                    p8b[ii],
-                    np.linalg.norm(p9b[ii]),
-                    p10b[ii],
-                    p11b[ii],
-                ),
-                axis=None,
-            )
-        )
+        reps2.append(bob_repr[ii])
+        # reps2.append(
+        #     np.concatenate(
+        #         (
+        #             bob_repr[ii],
+        #             p1b[ii],
+        #             p2b[ii],
+        #             p3b[ii],
+        #             p4b[ii],
+        #             p5b[ii],
+        #             p6b[ii],
+        #             p7b[ii],
+        #             p8b[ii],
+        #             np.linalg.norm(p9b[ii]),
+        #             p10b[ii],
+        #             p11b[ii],
+        #         ),
+        #         axis=None,
+        #     )
+        # )
     reps2 = np.array(reps2)
 
     return reps2, TPROP2
@@ -231,37 +231,41 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     n_output = int(1)
 
     # define model
-    model = Sequential()
-    initializer = HeNormal()
-    model.add(
-        Dense(
-            128,
-            input_dim=n_input,
-            activation='elu',
-            kernel_initializer=initializer,
-            kernel_regularizer=regularizers.l2(0.001),
+    import tensorflow as tf
+    mirrored_strategy = tf.distribute.MirroredStrategy()
+
+    with mirrored_strategy.scope():
+        model = Sequential()
+        initializer = HeNormal()
+        model.add(
+            Dense(
+                256,
+                input_dim=n_input,
+                activation='elu',
+                kernel_initializer=initializer,
+                kernel_regularizer=regularizers.l2(0.001),
+            )
         )
-    )
-    model.add(
-        Dense(
-            units=64,
-            activation='elu',
-            kernel_initializer=initializer,
-            kernel_regularizer=regularizers.l2(0.001),
+        model.add(
+            Dense(
+                units=64,
+                activation='elu',
+                kernel_initializer=initializer,
+                kernel_regularizer=regularizers.l2(0.001),
+            )
         )
-    )
-    model.add(
-        Dense(
-            units=32,
-            activation='elu',
-            kernel_initializer=initializer,
-            kernel_regularizer=regularizers.l2(0.001),
+        model.add(
+            Dense(
+                units=256,
+                activation='elu',
+                kernel_initializer=initializer,
+                kernel_regularizer=regularizers.l2(0.001),
+            )
         )
-    )
-    model.add(Dense(n_output, activation='linear', kernel_initializer=initializer))
-    # compile model
-    opt = Adam(learning_rate=0.01)
-    model.compile(loss='mse', optimizer=opt, metrics=['mae'])
+        model.add(Dense(n_output, activation='linear', kernel_initializer=initializer))
+        # compile model
+        opt = Adam(learning_rate=1e-4)
+        model.compile(loss='mse', optimizer=opt, metrics=['mae'])
     # fit model
     rlrp = ReduceLROnPlateau(
         monitor='val_loss', factor=0.59, patience=patience, min_delta=1e-5, min_lr=1e-6
@@ -360,7 +364,7 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['1000', '2000', '4000', '8000', '10000']
+train_set = ['1000', '2000', '4000', '8000', '10000', '20000','30000']
 n_val = 1000
 n_test = 10000
 op = sys.argv[1]
@@ -374,13 +378,13 @@ current_dir = os.getcwd()
 
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
-    chdir(current_dir + '/normalize/')
-    os.chdir(current_dir + '/normalize/')
+    chdir(current_dir + '/normalize/eq/only_bob/')
+    os.chdir(current_dir + '/normalize/eq/only_bob/')
     try:
         os.mkdir(str(train_set[ii]))
     except FileExistsError:
         pass
-    os.chdir(current_dir + '/normalize/' + str(train_set[ii]))
+    os.chdir(current_dir + '/normalize/eq/only_bob/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 
