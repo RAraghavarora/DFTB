@@ -382,20 +382,18 @@ def save_plot(n_train):
     plt.close()
 
 
-op = sys.argv[1]
-
-iX, iY = prepare_data(op)
-# iX = np.load('iX.npy')
-# print(iX.shape)
-# iY = np.load('iY.npy')
-
-# fit model and plot learning curves for a patience
-patience = 100
-
-current_dir = os.getcwd()
-chdir(current_dir + '/rfe/')
-
 def compute(prop):
+    op = sys.argv[1]
+    iX, iY = prepare_data(op)
+    # iX = np.load('iX.npy')
+    # print(iX.shape)
+    # iY = np.load('iY.npy')
+
+    # fit model and plot learning curves for a patience
+    patience = 100
+
+    current_dir = "/scratch/ws/1/medranos-DFTB/raghav/code"
+    chdir(current_dir + '/rfe/')
     print('Prop number= {:}'.format(prop))
     try:
         os.mkdir(str(prop))
@@ -407,6 +405,11 @@ def compute(prop):
     n_val = 1000
     n_test = 10000
     patience = 100
+
+    print(int(n_train))
+    print(int(n_val))
+    print(int(n_test))
+    print(prop)
 
     model, lr, loss, acc, testX, testy = fit_model_dense(
         int(n_train), int(n_val), int(n_test), iX, iY, patience, prop
