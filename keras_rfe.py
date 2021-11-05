@@ -207,16 +207,16 @@ def split_data(n_train, n_val, n_test, Repre, Target, delete_prop):
 
     if delete_prop == -1:
         pass
-    elif delete_prop in range(0,9):
-        np.delete(Repre, (276+delete_prop), axis=1)
+    elif delete_prop in range(0, 9):
+        np.delete(Repre, (delete_prop), axis=1)
     elif delete_prop == 9:
         # Delete 8 columns for Eigen Values
         for i in range(8):
-            np.delete(Repre, (276+delete_prop), axis=1)
+            np.delete(Repre, (delete_prop), axis=1)
     else:
         # Delete 23 columns for Charge
         for i in range(23):
-            np.delete(Repre, (276+delete_prop), axis=1)
+            np.delete(Repre, (delete_prop), axis=1)
 
     X_train, X_val, X_test = (
         np.array(Repre[:n_train]),
@@ -403,7 +403,7 @@ def compute(prop):
         pass
     os.chdir(current_dir + '/rfe/' + str(prop))
 
-    n_train = '10000',
+    n_train = 10000,
     n_val = 1000
     n_test = 10000
     patience = 100
