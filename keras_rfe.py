@@ -404,7 +404,7 @@ def compute(prop):
         pass
     os.chdir(current_dir + '/rfe/' + str(prop))
 
-    n_train = 10000,
+    n_train = 10000
     n_val = 1000
     n_test = 10000
     patience = 100
