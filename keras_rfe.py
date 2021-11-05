@@ -78,7 +78,8 @@ def prepare_data(op):
 
     # data preparation
     logging.info("get dataset")
-    dataset = spk.data.AtomsData(data_dir + 'qm7x-eq-n1.db', load_only=properties)
+    dataset = spk.data.AtomsData(
+        data_dir + 'qm7x-eq-n1.db', load_only=properties)
 
     n = len(dataset)
     print(n)
@@ -281,7 +282,8 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience, delete_prop):
             kernel_regularizer=regularizers.l2(0.001),
         )
     )
-    model.add(Dense(n_output, activation='linear', kernel_initializer=initializer))
+    model.add(Dense(n_output, activation='linear',
+                    kernel_initializer=initializer))
     # compile model
     opt = Adam(learning_rate=0.01)
     model.compile(loss='mse', optimizer=opt, metrics=['mae'])
@@ -334,7 +336,8 @@ def plotting_results(model, testX, testy):
     ctest = open('comp-test.dat', 'w')
     for ii in range(0, len(testy)):
         ctest.write(
-            s.format(*testy[ii]) + s.format(*y_test[ii]) + s.format(*dtest[ii]) + '\n'
+            s.format(*testy[ii]) + s.format(*y_test[ii]) +
+            s.format(*dtest[ii]) + '\n'
         )
     ctest.close()
 
@@ -438,4 +441,4 @@ if __name__ == "__main__":
     print("Number of processors = ", mp.cpu_count())
 
     with mp.Pool(4) as pool:
-        pool.map(compute, list(range(-1,11)))
+        pool.map(compute, list(range(-1, 11)))
