@@ -386,12 +386,6 @@ def save_plot(n_train):
 
 
 def compute(prop):
-    op = sys.argv[1]
-    iX, iY = prepare_data(op)
-    # iX = np.load('iX.npy')
-    # print(iX.shape)
-    # iY = np.load('iY.npy')
-
     # fit model and plot learning curves for a patience
     patience = 100
 
@@ -436,9 +430,8 @@ def compute(prop):
     save_plot(prop)
 
 
-if __name__ == "__main__":
-    import multiprocessing as mp
-    print("Number of processors = ", mp.cpu_count())
+op = sys.argv[1]
+iX, iY = prepare_data(op)
 
-    with mp.Pool(4) as pool:
-        pool.map(compute, list(range(-1, 11)))
+for prop in range(-1, 11):
+    compute(prop)
