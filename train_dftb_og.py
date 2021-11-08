@@ -202,26 +202,26 @@ def prepare_data(op):
 
     reps2 = []
     for ii in range(len(idx2)):
-        # reps2.append(xyz_reps[ii])
-        reps2.append(
-            np.concatenate(
-                (
-                    bob_repr[ii],
-                    p1b[ii],
-                    p2b[ii],
-                    p3b[ii],
-                    p4b[ii],
-                    p5b[ii],
-                    p6b[ii],
-                    p7b[ii],
-                    p8b[ii],
-                    np.linalg.norm(p9b[ii]),
-                    p10b[ii],
-                    p11b[ii],
-                ),
-                axis=None,
-            )
-        )
+        reps2.append(bob_repr[ii])
+        # reps2.append(
+        #     np.concatenate(
+        #         (
+        #             bob_repr[ii],
+        #             p1b[ii],
+        #             p2b[ii],
+        #             p3b[ii],
+        #             p4b[ii],
+        #             p5b[ii],
+        #             p6b[ii],
+        #             p7b[ii],
+        #             p8b[ii],
+        #             np.linalg.norm(p9b[ii]),
+        #             p10b[ii],
+        #             p11b[ii],
+        #         ),
+        #         axis=None,
+        #     )
+        # )
     reps2 = np.array(reps2)
 
     return reps2, TPROP2
@@ -400,7 +400,7 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['1000', '2000', '4000', '8000', '10000', '20000', '30000']
+train_set = ['30000', '1000', '2000', '4000', '8000', '10000', '20000']
 n_val = 5000
 n_test = 20000  # Test on the entire dataset
 op = sys.argv[1]
@@ -415,12 +415,12 @@ current_dir = os.getcwd()
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
     chdir(current_dir)
-    os.chdir(current_dir + '/normalize/egap/')
+    os.chdir(current_dir + '/normalize/egap/nodft/')
     try:
         os.mkdir(str(train_set[ii]))
     except:
         pass
-    os.chdir(current_dir + '/normlaize/egap/' + str(train_set[ii]))
+    os.chdir(current_dir + '/normlaize/egap/nodft/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 

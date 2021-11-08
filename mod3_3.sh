@@ -4,9 +4,9 @@
 #SBATCH --gres=gpu:2                      # use 1 GPU per node (i.e. use one GPU per task)
 #SBATCH --nodes=1                        # request 1 node
 #SBATCH --ntasks=8
-#SBATCH -J egap-eq
-#SBATCH --output=normalize/egap/dip.out
-#SBATCH --error=normalize/egap/dip.err
+#SBATCH -J egap-nodft-bob
+#SBATCH --output=normalize/egap/nodft/dip.out
+#SBATCH --error=normalize/egap/nodft/dip.err
 #SBATCH -A p_phononics
 #SBATCH --mail-type=all
 #SBATCH        --mail-user=leonardo.medrano@nano.tu-dresden.de
