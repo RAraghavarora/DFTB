@@ -396,7 +396,7 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['4000', '8000', '10000', '20000', '30000']
+train_set = ['30000']
 n_val = 5000
 n_test = 20000  # Test on the entire dataset
 op = sys.argv[1]
