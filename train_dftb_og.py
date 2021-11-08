@@ -420,7 +420,7 @@ for ii in range(len(train_set)):
         os.mkdir(str(train_set[ii]))
     except:
         pass
-    os.chdir(current_dir + '/normlaize/egap/nodft/' + str(train_set[ii]))
+    os.chdir(current_dir + '/normalize/egap/nodft/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 
