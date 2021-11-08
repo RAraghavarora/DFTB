@@ -264,35 +264,30 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     iX = np.array(iX)
     iY = np.array(iY)
 
-    estimators = []
-    estimators.append(('standardize', StandardScaler()))
-    estimators.append(('mlp', KerasRegressor(build_fn=obtain_model, epochs=20000, batch_size=16, verbose=2)))
-    pipeline = Pipeline(estimators)
-    kfold = KFold(n_splits=5, random_state=42, shuffle=True)
-    results = cross_val_score(pipeline, trainX, trainy, cv=kfold, n_jobs=-1, scoring='neg_mean_absolute_error')
-    print(results)
-    print("Larger: %.2f (%.2f) MSE" % (results.mean(), results.std()))
+    model = obtain_model()
 
-    return results
+    rlrp = ReduceLROnPlateau(
+        monitor='val_loss', factor=0.59, patience=patience, min_delta=1e-5, min_lr=1e-6
+    )
+    lrm = LearningRateMonitor()
+    history = model.fit(
+        trainX,
+        trainy,
+        validation_data=(valX, valy),
+        batch_size=16,
+        epochs=20000,
+        verbose=1,
+        callbacks=[rlrp, lrm],
+    )
 
-    # history = model.fit(
-    #     trainX,
-    #     trainy,
-    #     validation_data=(valX, valy),
-    #     batch_size=32,
-    #     epochs=20000,
-    #     verbose=1,
-    #     callbacks=[rlrp, lrm],
-    # )
-
-    # return (
-    #     model,
-    #     lrm.lrates,
-    #     history.history['loss'],
-    #     history.history['mae'],
-    #     testX,
-    #     testy,
-    # )
+    return (
+        model,
+        lrm.lrates,
+        history.history['loss'],
+        history.history['mae'],
+        testX,
+        testy,
+    )
 
 
 def plotting_results(model, testX, testy):
@@ -368,41 +363,66 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['1250', '2500','5000','10000','12500','25000','37500']
-n_val = 2000
-n_test = 20000
-op = sys.argv[1]
+# train_set = ['1250', '2500','5000','10000','12500','25000','37500']
+# n_val = 2000
+# n_test = 20000
+# op = sys.argv[1]
 
+# iX, iY = prepare_data(op)
+
+# # fit model and plot learning curves for a patience
+# patience = 700  # If no improvement is seen for these epochs, Learning rate is reduced
+
+# current_dir = os.getcwd()
+
+# for ii in range(len(train_set)):
+#     print('Trainset= {:}'.format(train_set[ii]))
+#     temp = train_set[ii]
+#     chdir(current_dir + '/withdft/eq/')
+#     os.chdir(current_dir + '/withdft/eq/')
+#     try:
+#         os.mkdir(str(train_set[ii]) + '_cv')
+#     except FileExistsError:
+#         pass
+#     os.chdir(current_dir + '/withdft/eq/' + str(train_set[ii]) + '_cv')
+
+#     if sys.argv[2] == 'fit':
+
+#         results = fit_model_dense(
+#             int(train_set[ii]), int(n_val), int(n_test), iX, iY, patience
+#         )
+
+#         out2 = open('errors_test.dat', 'w')
+#         for res in results:
+#             out2.write(str(res) + "\n")
+#         out2.close()
+
+#     else:
+#         cfile = 'ncomp-test.dat'
+#         # to evaluate new test
+#         model = load_nnmodel(current_dir + '/%s' % train_set[ii])
+
+
+n_train = 30000
+n_val=2000
+n_test = 20000
+
+op = 'EAT'
 iX, iY = prepare_data(op)
 
-# fit model and plot learning curves for a patience
-patience = 700  # If no improvement is seen for these epochs, Learning rate is reduced
-
 current_dir = os.getcwd()
+chdir(current_dir + '/withdft/eq/')
+os.chdir(current_dir + '/withdft/eq/')
+try:
+    os.mkdir(n_train)
+except FileExistsError:
+    pass
+os.chdir(current_dir + '/withdft/eq/' + n_train)
 
-for ii in range(len(train_set)):
-    print('Trainset= {:}'.format(train_set[ii]))
-    temp = train_set[ii]
-    chdir(current_dir + '/withdft/eq/')
-    os.chdir(current_dir + '/withdft/eq/')
-    try:
-        os.mkdir(str(train_set[ii]) + '_cv')
-    except FileExistsError:
-        pass
-    os.chdir(current_dir + '/withdft/eq/' + str(train_set[ii]) + '_cv')
 
-    if sys.argv[2] == 'fit':
+model, lr, loss, acc, testX, testy = fit_model_dense(
+    n_train, int(n_val), int(n_test), iX, iY, patience=100
+)
 
-        results = fit_model_dense(
-            int(train_set[ii]), int(n_val), int(n_test), iX, iY, patience
-        )
-
-        out2 = open('errors_test.dat', 'w')
-        for res in results:
-            out2.write(str(res) + "\n")
-        out2.close()
-
-    else:
-        cfile = 'ncomp-test.dat'
-        # to evaluate new test
-        model = load_nnmodel(current_dir + '/%s' % train_set[ii])
+plotting_results(model, testX, testy)
+save_plot(n_train)
