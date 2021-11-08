@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --time=96:00:00
 #SBATCH --partition=gpu2                        # specify ml partition or gpu2 partition
-#SBATCH --gres=gpu:4                      # use 1 GPU per node (i.e. use one GPU per task)
+#SBATCH --gres=gpu:1                      # use 1 GPU per node (i.e. use one GPU per task)
 #SBATCH --nodes=1                        # request 1 node
 #SBATCH --ntasks=8
 #SBATCH -J nodft-large-bob
