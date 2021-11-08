@@ -4,9 +4,9 @@
 #SBATCH --gres=gpu:2                      # use 1 GPU per node (i.e. use one GPU per task)
 #SBATCH --nodes=1                        # request 1 node
 #SBATCH --ntasks=8
-#SBATCH -J nodft-new
-#SBATCH --output=withdft/new.out
-#SBATCH --error=withdft/new.err
+#SBATCH -J withdft-new
+#SBATCH --output=withdft/new2.out
+#SBATCH --error=withdft/new2.err
 #SBATCH -A p_biomolecules
 #SBATCH --mail-type=all
 #SBATCH        --mail-user=leonardo.medrano@nano.tu-dresden.de
