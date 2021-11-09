@@ -414,10 +414,10 @@ current_dir = os.getcwd()
 chdir(current_dir + '/withdft/eq/')
 os.chdir(current_dir + '/withdft/eq/')
 try:
-    os.mkdir(n_train)
+    os.mkdir(str(n_train))
 except FileExistsError:
     pass
-os.chdir(current_dir + '/withdft/eq/' + n_train)
+os.chdir(current_dir + '/withdft/eq/' + str(n_train))
 
 
 model, lr, loss, acc, testX, testy = fit_model_dense(
