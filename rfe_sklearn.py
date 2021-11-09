@@ -407,55 +407,20 @@ def compute(prop):
     plotting_results(model, testX, testy)
     save_plot(prop)
 
-def def_model():
-    model = Sequential()
-    initializer = HeNormal()
-    model.add(
-        Dense(
-            4,
-            input_dim=40,
-            activation='elu',
-            kernel_initializer=initializer,
-            kernel_regularizer=regularizers.l2(0.001),
-        )
-    )
-    model.add(
-        Dense(
-            units=32,
-            activation='elu',
-            kernel_initializer=initializer,
-            kernel_regularizer=regularizers.l2(0.001),
-        )
-    )
-    model.add(
-        Dense(
-            units=32,
-            activation='elu',
-            kernel_initializer=initializer,
-            kernel_regularizer=regularizers.l2(0.001),
-        )
-    )
-    model.add(Dense(1, activation='linear',
-                    kernel_initializer=initializer))
-    # compile model
-    opt = Adam(learning_rate=1e-5)
-    model.compile(loss='mse', optimizer=opt, metrics=['mae'])
-    return model
-
 
 op = sys.argv[1]
-# iX = np.load("../iX.npy")
-# iY = np.load("../iY.npy")
-iX, iY = prepare_data(op)
+iX = np.load("../iX.npy")
+iY = np.load("../iY.npy")
+# iX, iY = prepare_data(op)
 print(iX.shape)
 print(iY.shape)
 
-from keras.wrappers.scikit_learn import KerasRegressor
+from sklearn.linear_model import SGDRegressor
 from sklearn.feature_selection import RFE
 
-k_model = KerasRegressor(def_model, epochs=8000, batch_size=16, verbose=2)
-selector = RFE(k_model, step=1)
-selector = selector.fit(iX[:2000], iY[:2000])
+k_model = SGDRegressor(max_iter=20000, verbose=2, learning_rate='optimal', eta0=1e-4)
+selector = RFE(k_model, step=2)
+selector = selector.fit(iX, iY)
 
 print(selector.support_)
 print(selector.ranking_)
