@@ -1,0 +1,25 @@
+The following modules were not unloaded:
+  (Use "module --force purge" to unload all):
+
+  1) modenv/scs5
+Module Python/3.6.4-intel-2018a and 18 dependencies loaded.
+Module cuDNN/8.0.4.30-CUDA-11.1.1 and 1 dependency loaded.
+2021-11-08 15:16:49.902761: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-11-08 15:16:56.107518: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 10800 MB memory:  -> device: 0, name: Tesla K80, pci bus id: 0000:84:00.0, compute capability: 3.7
+2021-11-08 15:16:56.118289: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:1 with 10800 MB memory:  -> device: 1, name: Tesla K80, pci bus id: 0000:85:00.0, compute capability: 3.7
+2021-11-08 15:16:59.699791: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:185] None of the MLIR Optimization Passes are enabled (registered 2)
+/home/h3/medranos/vdftb20/lib/python3.6/site-packages/schnetpack/data/atoms.py:327: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /pytorch/torch/csrc/utils/tensor_numpy.cpp:143.)
+  properties[pname] = torch.FloatTensor(prop)
+/home/h3/medranos/vdftb20/lib/python3.6/site-packages/ase/atoms.py:968: VisibleDeprecationWarning: Use get_global_number_of_atoms() instead
+  np.VisibleDeprecationWarning)
+Traceback (most recent call last):
+  File "/scratch/ws/1/medranos-DFTB/raghav/code/rfe_sklearn.py", line 458, in <module>
+    selector = selector.fit(iX[:2000], iY[:2000])
+  File "/home/h3/medranos/vdftb20/lib/python3.6/site-packages/sklearn/feature_selection/_rfe.py", line 184, in fit
+    return self._fit(X, y)
+  File "/home/h3/medranos/vdftb20/lib/python3.6/site-packages/sklearn/feature_selection/_rfe.py", line 245, in _fit
+    estimator, self.importance_getter, transform_func="square",
+  File "/home/h3/medranos/vdftb20/lib/python3.6/site-packages/sklearn/feature_selection/_base.py", line 174, in _get_feature_importances
+    f"when `importance_getter=='auto'`, the underlying "
+ValueError: when `importance_getter=='auto'`, the underlying estimator KerasRegressor should have `coef_` or `feature_importances_` attribute. Either pass a fitted estimator to feature selector or call fit before calling transform.
