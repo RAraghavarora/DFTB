@@ -409,11 +409,11 @@ def compute(prop):
 
 
 op = sys.argv[1]
-iX = np.load("../iX.npy")
-iY = np.load("../iY.npy")
-# iX, iY = prepare_data(op)
-print(iX.shape)
-print(iY.shape)
+# iX = np.load("../iX.npy")
+# iY = np.load("../iY.npy")
+iX, iY = prepare_data(op)
+# print(iX.shape)
+# print(iY.shape)
 
 from sklearn.linear_model import SGDRegressor
 from sklearn.feature_selection import RFE
