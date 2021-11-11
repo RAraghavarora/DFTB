@@ -118,9 +118,9 @@ def prepare_data(op):
 
     # Generate representations
     # Coulomb matrix
-    xyz_reps = np.array(
-        [generate_coulomb_matrix(Z[mol], xyz[mol], sorting='unsorted') for mol in idx2]
-    )
+    # xyz_reps = np.array(
+    #     [generate_coulomb_matrix(Z[mol], xyz[mol], sorting='unsorted') for mol in idx2]
+    # )
 
     TPROP2 = []
     p1b, p2b, p11b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b = (
@@ -174,7 +174,7 @@ def prepare_data(op):
         reps2.append(
             np.concatenate(
                 (
-                    xyz_reps[ii],
+                    # xyz_reps[ii],
                     p1b[ii],
                     p2b[ii],
                     p3b[ii],
@@ -283,28 +283,61 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience):
     # n_output = int(len(iY[0]))
     n_output = int(1)
 
-    p = {'layer1': [16,32,64],
-         'layer2': [4,8,16,32,64,256],
-         'layer3': [4, 8, 16, 32, 64, 128, 256],
-         'batch_size': (16, 32, 64),
-         'epochs': [5000],
-        }
+    model = Sequential()
+    initializer = HeNormal()
+    model.add(
+        Dense(
+            4,
+            input_dim=n_input,
+            activation='elu',
+            kernel_initializer=initializer,
+            kernel_regularizer=regularizers.l2(0.001),
+        )
+    )
 
-    t = ta.Scan(x=trainX,
-            y=trainy,
-            model=egap_model,
-            params=p,
-            experiment_name='1')
+    model.add(
+        Dense(
+            units=32,
+            activation='elu',
+            kernel_initializer=initializer,
+            kernel_regularizer=regularizers.l2(0.001),
+        )
+    )
+    model.add(
+        Dense(
+            units=32,
+            activation='elu',
+            kernel_initializer=initializer,
+            kernel_regularizer=regularizers.l2(0.001),
+        )
+    )
+    model.add(Dense(1, activation='linear', kernel_initializer=initializer))
+    # compile model
+    opt = Adam(learning_rate=1e-4)
+    model.compile(loss='mse', optimizer=opt, metrics=['mae'])
+    # fit model
+    rlrp = ReduceLROnPlateau(
+        monitor='val_loss', factor=0.59, patience=patience, min_delta=1e-5, min_lr=1e-6
+    )
+    lrm = LearningRateMonitor()
+    history = model.fit(
+        trainX,
+        trainy,
+        validation_data=(valX, valy),
+        batch_size=16,
+        epochs=20000,
+        verbose=1,
+        callbacks=[rlrp, lrm],
+    )
 
-    return t
-    # return (
-    #     model,
-    #     lrm.lrates,
-    #     history.history['loss'],
-    #     history.history['mae'],
-    #     testX,
-    #     testy,
-    # )
+    return (
+        model,
+        lrm.lrates,
+        history.history['loss'],
+        history.history['mae'],
+        testX,
+        testy,
+    )
 
 
 def plotting_results(model, testX, testy):
@@ -380,9 +413,9 @@ def save_plot(n_train):
 
 
 # prepare dataset
-train_set = ['10000']
+train_set = ['1000', '2000','4000','8000','10000','20000','30000']
 n_val = 1000
-n_test = 10000
+n_test = 20000
 op = sys.argv[1]
 
 iX, iY = prepare_data(op)
@@ -394,47 +427,32 @@ current_dir = os.getcwd()
 
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
-    chdir(current_dir + '/talos_EAT/')
+    chdir(current_dir + '/only_dftb/')
     n_train = train_set[ii]
-    os.chdir(current_dir + '/talos_EAT/')
+    os.chdir(current_dir + '/only_dftb/')
     try:
         os.mkdir(str(train_set[ii]))
     except FileExistsError:
         pass
-    os.chdir(current_dir + '/talos_EAT/' + str(train_set[ii]))
+    os.chdir(current_dir + '/only_dftb/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 
-        scan_object = fit_model_dense(
+        model, lr, loss, acc, testX, testy = fit_model_dense(
             int(train_set[ii]), int(n_val), int(n_test), iX, iY, patience
         )
+
+        plotting_results(model, testX, testy)
+        save_plot(n_train)
         # accessing the results data frame
-        scan_object.data.head()
 
-        # accessing epoch entropy values for each round
-        scan_object.learning_entropy
-
-        # access the summary details
-        scan_object.details
-
-    #     lhis = open('learning-history.dat', 'w')
-    #     for ii in range(0, len(lr)):
-    #         lhis.write(
-    #             '{:8d}'.format(ii)
-    #             + '{:16.8f}'.format(lr[ii])
-    #             + '{:16f}'.format(loss[ii])
-    #             + '{:16f}'.format(acc[ii])
-    #             + '\n'
-    #         )
-    #     lhis.close()
-
-    #     # Saving NN model
-    #     save_nnmodel(model)
-    # else:
-    #     cfile = 'ncomp-test.dat'
-    #     # to evaluate new test
-    #     model = load_nnmodel(current_dir + '/%s' % train_set[ii])
-
-    # # Saving results
-    # plotting_results(model, testX, testy)
-    # save_plot(n_train)
+        lhis = open('learning-history.dat', 'w')
+        for ii in range(0, len(lr)):
+            lhis.write(
+                '{:8d}'.format(ii)
+                + '{:16f}'.format(lr[ii])
+                + '{:16f}'.format(loss[ii])
+                + '{:16f}'.format(acc[ii])
+                + '\n'
+            )
+        lhis.close()
