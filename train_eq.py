@@ -230,7 +230,7 @@ def obtain_model():
     model.add(
         Dense(
             256,
-            input_dim=316,
+            input_dim=568,
             activation='elu',
             kernel_initializer=initializer,
             kernel_regularizer=regularizers.l2(0.001),
