@@ -20,7 +20,7 @@ from tensorflow.keras import backend
 from tensorflow.keras.models import load_model
 from tensorflow.keras.initializers import HeNormal
 from tensorflow.keras.wrappers.scikit_learn import KerasRegressor
-from qml.representations import generate_coulomb_matrix
+from qml.representations import generate_bob
 
 import logging
 import schnetpack as spk
@@ -121,8 +121,17 @@ def prepare_data(op):
     # Generate representations
     # Coulomb matrix
     xyz_reps = np.array(
-        [generate_coulomb_matrix(Z[mol], xyz[mol], sorting='unsorted') for mol in idx2]
+        [
+            generate_bob(
+                Z[mol],
+                xyz[mol],
+                atomtypes={'C', 'H', 'N', 'O', 'S', 'Cl'},
+                asize={'C': 7, 'H': 16, 'N': 3, 'O': 3, 'S': 1, 'Cl': 2},
+            )
+            for mol in idx2
+        ]
     )
+
 
     TPROP2 = []
     p1b, p2b, p11b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b = (
@@ -411,13 +420,13 @@ op = 'EAT'
 iX, iY = prepare_data(op)
 
 current_dir = os.getcwd()
-chdir(current_dir + '/withdft/eq/')
-os.chdir(current_dir + '/withdft/eq/')
+chdir(current_dir + '/normalize/new/')
+os.chdir(current_dir + '/normalize/new/')
 try:
     os.mkdir(str(n_train))
 except FileExistsError:
     pass
-os.chdir(current_dir + '/withdft/eq/' + str(n_train))
+os.chdir(current_dir + '/normalize/new/' + str(n_train))
 
 
 model, lr, loss, acc, testX, testy = fit_model_dense(
