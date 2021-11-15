@@ -222,7 +222,7 @@ def fit_model_dense(trainX, trainY, valX, valY):
         history.history['loss'],
         history.history['mae'],
         testX,
-        testy,
+        testY,
     )
 
 
