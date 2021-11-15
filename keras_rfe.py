@@ -20,6 +20,7 @@ from tensorflow.keras.initializers import HeNormal
 
 import logging
 import schnetpack as spk
+import pandas as pd
 
 # monitor the learning rate
 
@@ -58,11 +59,7 @@ def prepare_data(op):
     data_dir = '/scratch/ws/1/medranos-DFTB/raghav/data/'
 
     properties = [
-        'RMSD',
         'EAT',
-        'EMBD',
-        'EGAP',
-        'KSE',
         'FermiEne',
         'BandEne',
         'NumElec',
@@ -75,6 +72,11 @@ def prepare_data(op):
         'TBeig',
         'TBchg',
     ]
+
+    input_data = {}
+
+    for prop in properties:
+        input_data[prop] = []
 
     # data preparation
     logging.info("get dataset")
@@ -91,29 +93,19 @@ def prepare_data(op):
     logging.info("get predicted property")
     AE, xyz, Z = [], [], []
     EGAP, KSE, TPROP = [], [], []
-    p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11 = ([] for i in range(11))
     for i in idx2[:n]:
         atoms, props = dataset.get_properties(i)
-        AE.append(float(props['EAT']))
-        EGAP.append(float(props['EGAP']))
-        KSE.append(props['KSE'])
+        for prop in properties:
+            if prop not in ['TBchg', 'TBeig', 'TBdip']:
+                input_data[prop].append(float(props[prop]))
+            elif prop == 'TBdip':
+                input_data[prop].append(np.linalg.norm(props[prop]))
+            else:
+                input_data[prop].append(props[prop].numpy())
         TPROP.append(float(props[op]))
         xyz.append(atoms.get_positions())
         Z.append(atoms.get_atomic_numbers())
-        p1.append(float(props['FermiEne']))
-        p2.append(float(props['BandEne']))
-        p3.append(float(props['NumElec']))
-        p4.append(float(props['h0Ene']))
-        p5.append(float(props['sccEne']))
-        p6.append(float(props['3rdEne']))
-        p7.append(float(props['RepEne']))
-        p8.append(float(props['mbdEne']))
-        p9.append(props['TBdip'])
-        p10.append(props['TBeig'])
-        p11.append(props['TBchg'])
 
-    AE = np.array(AE)
-    EGAP = np.array(EGAP)
     TPROP = np.array(TPROP)
 
     # Generate representations
@@ -122,89 +114,20 @@ def prepare_data(op):
     #     [generate_coulomb_matrix(Z[mol], xyz[mol], sorting='unsorted') for mol in idx2]
     # )
 
-    TPROP2 = []
-    p1b, p2b, p11b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b = (
-        [],
-        [],
-        [],
-        [],
-        [],
-        [],
-        [],
-        [],
-        [],
-        [],
-        [],
-    )
-    for nn in idx2:
-        p1b.append(p1[nn])
-        p2b.append(p2[nn])
-        p3b.append(p3[nn])
-        p4b.append(p4[nn])
-        p5b.append(p5[nn])
-        p6b.append(p6[nn])
-        p7b.append(p7[nn])
-        p8b.append(p8[nn])
-        p9b.append(p9[nn].numpy())
-        p10b.append(p10[nn].numpy())
-        p11b.append(p11[nn].numpy())
-        TPROP2.append(TPROP[nn])
+    input_data['TBchg'] = complete_array(input_data['TBchg'])
 
-    p11b = complete_array(p11b)
-
+    df = pd.DataFrame.from_dict(input_data)
     # Standardize the data property wise
 
-    temp = []
-    for var in [p1b, p2b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b, p11b]:
-        var2 = np.array(var)
-        try:
-            _ = var2.shape[1]
-        except IndexError:
-            var2 = var2.reshape(-1, 1)
-        scaler = StandardScaler()
-        var3 = scaler.fit_transform(var2)
+    df = (df-df.mean())/df.std()
 
-        temp.append(var3)
-
-    p1b, p2b, p3b, p4b, p5b, p6b, p7b, p8b, p9b, p10b, p11b = temp
-
-    reps2 = []
-    for ii in range(len(idx2)):
-        # reps2.append(xyz_reps[ii])
-        reps2.append(
-            np.concatenate(
-                (
-                    # xyz_reps[ii],
-                    p1b[ii],
-                    p2b[ii],
-                    p3b[ii],
-                    p4b[ii],
-                    p5b[ii],
-                    p6b[ii],
-                    p7b[ii],
-                    p8b[ii],
-                    np.linalg.norm(p9b[ii]),
-                    p10b[ii],
-                    p11b[ii],
-                ),
-                axis=None,
-            )
-        )
-    reps2 = np.array(reps2)
-
-    return reps2, TPROP2
+    return df, TPROP
 
 
 def split_data(n_train, n_val, n_test, Repre, Target, delete_prop):
     # Training
     print("Perfoming training")
     Target = np.array(Target)
-
-    # Shuffle the data
-    indices = np.arange(Repre.shape[0])
-    np.random.shuffle(indices)
-    Repre = Repre[indices]
-    Target = Target[indices]
 
     if delete_prop == -1:
         pass
@@ -244,15 +167,10 @@ def split_data(n_train, n_val, n_test, Repre, Target, delete_prop):
 # fit a model and plot learning curve
 
 
-def fit_model_dense(n_train, n_val, n_test, iX, iY, patience, delete_prop):
+def fit_model_dense(trainX, trainY, valX, valY):
 
-    trainX, trainy, valX, valy, testX, testy, x_scaler, y_scaler = split_data(
-        n_train, n_val, n_test, iX, iY, delete_prop
-    )
-
-    n_input = int(len(iX[0]))
-    # n_output = int(len(iY[0]))
-    n_output = int(1)
+    n_input = int(len(trainX[0]))
+    n_output = 1
 
     # define model
     model = Sequential()
@@ -285,21 +203,17 @@ def fit_model_dense(n_train, n_val, n_test, iX, iY, patience, delete_prop):
     model.add(Dense(n_output, activation='linear',
                     kernel_initializer=initializer))
     # compile model
-    opt = Adam(learning_rate=0.01)
+    opt = Adam(learning_rate=1e-5)
     model.compile(loss='mse', optimizer=opt, metrics=['mae'])
-    # fit model
-    rlrp = ReduceLROnPlateau(
-        monitor='val_loss', factor=0.5, patience=patience, min_delta=1e-5, min_lr=1e-7
-    )
     lrm = LearningRateMonitor()
     history = model.fit(
         trainX,
-        trainy,
-        validation_data=(valX, valy),
-        batch_size=32,
-        epochs=8000,
-        verbose=1,
-        callbacks=[rlrp, lrm],
+        trainY,
+        validation_data=(valX, valY),
+        batch_size=16,
+        epochs=4000,
+        verbose=0,
+        callbacks=[lrm],
     )
 
     return (
@@ -340,6 +254,7 @@ def plotting_results(model, testX, testy):
             s.format(*dtest[ii]) + '\n'
         )
     ctest.close()
+    return MAE_PROP
 
 
 # save model and architecture to single file
@@ -385,53 +300,86 @@ def save_plot(n_train):
     plt.close()
 
 
-def compute(prop):
-    # fit model and plot learning curves for a patience
-    patience = 100
+op = sys.argv[1]
+df, iY = prepare_data(op)
 
-    current_dir = "/scratch/ws/1/medranos-DFTB/raghav/code"
-    chdir(current_dir + '/rfe/')
-    print('Prop number= {:}'.format(prop))
-    try:
-        os.mkdir(str(prop))
-    except FileExistsError:
-        pass
-    os.chdir(current_dir + '/rfe/' + str(prop))
+properties = [
+    'TBdip',
+    'FermiEne',
+    'BandEne',
+    'NumElec',
+    'h0Ene',
+    'sccEne',
+    '3rdEne',
+    'RepEne',
+    'mbdEne',
+    'TBeig',
+    'TBchg',
+]
 
-    n_train = 10000
-    n_val = 1000
-    n_test = 10000
-    patience = 100
+iX = []
+n = len(iY)
+idx = np.arange(n)
+for i in idx:
+    iX.append(np.concatenate([df[prop][i] for prop in properties], axis=None))
 
-    print(int(n_train))
-    print(int(n_val))
-    print(int(n_test))
-    print(prop)
+n_train = 4000
+n_val = 1000
+n_test = 10000
 
-    model, lr, loss, acc, testX, testy = fit_model_dense(
-        int(n_train), int(n_val), int(n_test), iX, iY, patience, prop
+trainX, trainY, valX, valY, testX, testY, x_scaler, y_scaler = split_data(
+    n_train, n_val, n_test, iX, iY, -1
+)
+
+model, lr, loss, acc, testX, testy = fit_model_dense(
+    trainX, trainY, valX, valY
+)
+
+
+mae = plotting_results(model, testX, testy)
+
+mae_min = mae
+delta = 0.1
+
+for prop in properties:
+    # current_dir = "/scratch/ws/1/medranos-DFTB/raghav/code"
+    # chdir(current_dir + '/rfe/')
+    # try:
+    #     os.mkdir(str(prop))
+    # except FileExistsError:
+    #     pass
+    # chdir(current_dir + '/rfe/' + str(prop))
+
+    logging.log(10, "Removing property: " + prop)
+
+    df_modified = df.drop([prop], axis=1)
+    iX = []
+    for i in idx:
+        iX.append(np.concatenate([df[prop][i]
+                                  for prop in properties], axis=None))
+    iX = np.array(iX)
+
+    trainX, trainy, valX, valy, testX, testy, x_scaler, y_scaler = split_data(
+        n_train, n_val, n_test, iX, iY
     )
 
-    lhis = open('learning-history.dat', 'w')
-    for ii in range(0, len(lr)):
-        lhis.write(
-            '{:8d}'.format(ii)
-            + '{:16.8f}'.format(lr[ii])
-            + '{:16f}'.format(loss[ii])
-            + '{:16f}'.format(acc[ii])
-            + '\n'
-        )
-    lhis.close()
+    model, lr, loss, acc, testX, testy = fit_model_dense(
+        trainX, trainY, valX, valY
+    )
 
-    save_nnmodel(model)
+    mae = plotting_results(model, testX, testy)
+    logging.log(10, "MAE obtained: " + mae)
 
-    # Saving results
-    plotting_results(model, testX, testy)
-    save_plot(prop)
-
-
-op = sys.argv[1]
-iX, iY = prepare_data(op)
-
-for prop in range(-1, 11):
-    compute(prop)
+    if mae_min - mae > delta:
+        # Removing the property improved the model. Keep the property removed
+        logging.log(
+            10, "Keeping the property removed. Modifying the min mae: " + mae)
+        mae_min = mae
+        df = df_modified
+        logging.log(10, "Properties remaining:")
+        print(df.columns)
+        continue
+    else:
+        # Removing the property did not improve the model, don't remove the prop
+        logging.log(10, "No improve in mae, don't remove the property.")
+        continue
