@@ -339,7 +339,7 @@ model, lr, loss, acc, testX, testy = fit_model_dense(
 mae = plotting_results(model, testX, testy)
 
 mae_min = mae
-delta = 0.1
+delta = 0.04
 
 for prop in properties:
     # current_dir = "/scratch/ws/1/medranos-DFTB/raghav/code"
