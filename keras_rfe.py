@@ -94,14 +94,18 @@ def prepare_data(op):
     AE, xyz, Z = [], [], []
     EGAP, KSE, TPROP = [], [], []
     for i in idx2[:n]:
-        atoms, props = dataset.get_properties(i)
+        try:
+            atoms, props = dataset.get_properties(int(i))
+        except:
+            print(i)
+            pdb.set_trace()
         for prop in properties:
             if prop not in ['TBchg', 'TBeig', 'TBdip']:
                 input_data[prop].append(float(props[prop]))
             elif prop == 'TBdip':
                 input_data[prop].append(np.linalg.norm(props[prop]))
             else:
-                input_data[prop].append(props[prop].numpy())
+                input_data[prop].append(np.array(props[prop]))
         TPROP.append(float(props[op]))
         xyz.append(atoms.get_positions())
         Z.append(atoms.get_atomic_numbers())
@@ -119,28 +123,17 @@ def prepare_data(op):
     df = pd.DataFrame.from_dict(input_data)
     # Standardize the data property wise
 
-    df = (df-df.mean())/df.std()
+    standard_df = (df-df.mean())/df.std()
+    standard_df['TBeig'] = df['TBeig']
+    standard_df['TBchg'] = df['TBchg']
 
     return df, TPROP
 
 
-def split_data(n_train, n_val, n_test, Repre, Target, delete_prop):
+def split_data(n_train, n_val, n_test, Repre, Target):
     # Training
     print("Perfoming training")
     Target = np.array(Target)
-
-    if delete_prop == -1:
-        pass
-    elif delete_prop in range(0, 9):
-        np.delete(Repre, (delete_prop), axis=1)
-    elif delete_prop == 9:
-        # Delete 8 columns for Eigen Values
-        for i in range(8):
-            np.delete(Repre, (delete_prop), axis=1)
-    else:
-        # Delete 23 columns for Charge
-        for i in range(23):
-            np.delete(Repre, (delete_prop), axis=1)
 
     X_train, X_val, X_test = (
         np.array(Repre[:n_train]),
@@ -328,8 +321,9 @@ n_val = 1000
 n_test = 10000
 
 trainX, trainY, valX, valY, testX, testY, x_scaler, y_scaler = split_data(
-    n_train, n_val, n_test, iX, iY, -1
+    n_train, n_val, n_test, iX, iY
 )
+pdb.set_trace()
 
 model, lr, loss, acc, testX, testy = fit_model_dense(
     trainX, trainY, valX, valY
