@@ -98,7 +98,6 @@ def prepare_data(op):
             atoms, props = dataset.get_properties(int(i))
         except:
             print(i)
-            pdb.set_trace()
         for prop in properties:
             if prop not in ['TBchg', 'TBeig', 'TBdip']:
                 input_data[prop].append(float(props[prop]))
@@ -323,7 +322,6 @@ n_test = 10000
 trainX, trainY, valX, valY, testX, testY, x_scaler, y_scaler = split_data(
     n_train, n_val, n_test, iX, iY
 )
-pdb.set_trace()
 
 model, lr, loss, acc, testX, testy = fit_model_dense(
     trainX, trainY, valX, valY
