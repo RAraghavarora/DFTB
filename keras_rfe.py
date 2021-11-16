@@ -361,12 +361,11 @@ for prop in properties:
     )
 
     mae = plotting_results(model, testX, testy)
-    logging.info("MAE obtained: " + mae)
+    logging.info("MAE obtained: " + str(mae))
 
     if mae_min - mae > delta:
         # Removing the property improved the model. Keep the property removed
-        logging.log(
-            10, "Keeping the property removed. Modifying the min mae: " + mae)
+        logging.info("Keeping the property removed. Modifying the min mae: " + str(mae))
         mae_min = mae
         df = df_modified
         logging.info("Properties remaining:")
