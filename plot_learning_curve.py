@@ -16,10 +16,10 @@ y5 = []
 for i in train_set:
     try:
         f1 = open("only_CM/%s/errors_test.dat" % i, 'r')
-        f2 = open("withdft/%s/errors_test.dat" % i, 'r')
-        f3 = open("normalize/%s/errors_test.dat" % i, 'r')
-        f4 = open("standard/%s/errors_test.dat" % i, 'r')
-        f5 = open("normalize/only_bob/%s/errors_test.dat"%i,'r')
+        f2 = open("standard/%s/errors_test.dat" % i, 'r')
+        f3 = open("only_CM/new/%s/errors_test.dat" % i, 'r')
+        f4 = open("withdft/new/%s/errors_test.dat" % i, 'r')
+        f5 = open("only_CM/new/%s/errors_test.dat"%i,'r')
     except Exception as e:
         print("*******\n")
         print(e)
@@ -53,11 +53,11 @@ print(y5)
 
 # plt.yscale("log") 
 plt.grid(True, which="both")
-# plt.loglog(train_set, y1, 's-', label='Architecture 1')
-# plt.loglog(train_set, y2, 's-', label='Architecture 2')
-# plt.loglog(train_set, y4, 'o:', label='Architecture 2 With Data Standardization')
-plt.loglog(train_set, y5, 's-', label='BOB')
-plt.loglog(train_set, y3, 'o-', label='BOB+DFTB')
+plt.loglog(train_set, y1, 's-', label='Architecture 1')
+plt.loglog(train_set, y2, 's-', label='Architecture 2')
+plt.loglog(train_set, y3, 'o:', label='Architecture 2 With Data Standardization')
+plt.loglog(train_set, y4, 's-', label='Arch 2')
+plt.loglog(train_set, y5, 'o-', label='new arch- only CM')
 
 
 # plt.annotate('(%s, %s)' % (30000, y1[-1]), xy=(30000, y1[-1]), textcoords='data')
