@@ -344,7 +344,7 @@ for prop in properties:
     #     pass
     # chdir(current_dir + '/rfe/' + str(prop))
 
-    logging.log(10, "Removing property: " + prop)
+    logging.info("Removing property: " + prop)
 
     df_modified = df.drop([prop], axis=1)
     iX = []
@@ -362,7 +362,7 @@ for prop in properties:
     )
 
     mae = plotting_results(model, testX, testy)
-    logging.log(10, "MAE obtained: " + mae)
+    logging.info("MAE obtained: " + mae)
 
     if mae_min - mae > delta:
         # Removing the property improved the model. Keep the property removed
@@ -370,10 +370,10 @@ for prop in properties:
             10, "Keeping the property removed. Modifying the min mae: " + mae)
         mae_min = mae
         df = df_modified
-        logging.log(10, "Properties remaining:")
+        logging.info("Properties remaining:")
         print(df.columns)
         continue
     else:
         # Removing the property did not improve the model, don't remove the prop
-        logging.log(10, "No improve in mae, don't remove the property.")
+        logging.info("No improve in mae, don't remove the property.")
         continue
