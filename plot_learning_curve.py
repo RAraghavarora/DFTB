@@ -24,40 +24,52 @@ for i in train_set:
         print("*******\n")
         print(e)
         print(i)
-        continue
-    lines1 = f1.readlines()
-    a, b, c = lines1[0].split()
-    y1.append(round(float(b), 3))  # Rounded upto 3 decimal places
 
-    lines2 = f2.readlines()
-    a, b, c = lines2[0].split()
-    y2.append(round(float(b), 3))  # Rounded upto 3 decimal places
+    try:
+        lines1 = f1.readlines()
+        a, b, c = lines1[0].split()
+        y1.append(round(float(b), 3))  # Rounded upto 3 decimal places
+    except:
+        pass
 
-    lines3 = f3.readlines()
-    a, b, c = lines3[0].split()
-    y3.append(round(float(b), 3))  # Rounded upto 3 decimal places
+    try:
+        lines2 = f2.readlines()
+        a, b, c = lines2[0].split()
+        y2.append(round(float(b), 3))  # Rounded upto 3 decimal places
+    except:
+        pass
 
-    lines4 = f4.readlines()
-    a, b, c = lines4[0].split()
-    y4.append(round(float(b), 3))  # Rounded upto 3 decimal places
+    try:
+        lines3 = f3.readlines()
+        a, b, c = lines3[0].split()
+        y3.append(round(float(b), 3))  # Rounded upto 3 decimal places
+    except:
+        pass
 
-    lines5 = f5.readlines()
-    a, b, c = lines5[0].split()
-    y5.append(round(float(b), 3))  # Rounded upto 3 decimal places
+    try:    
+        lines4 = f4.readlines()
+        a, b, c = lines4[0].split()
+        y4.append(round(float(b), 3))  # Rounded upto 3 decimal places
+    except:
+        pass
+
+    # lines5 = f5.readlines()
+    # a, b, c = lines5[0].split()
+    # y5.append(round(float(b), 3))  # Rounded upto 3 decimal places
 
 print(y1)
 print(y2)
 print(y3)
 print(y4)
-print(y5)
+# print(y5)
 
 # plt.yscale("log") 
 plt.grid(True, which="both")
 plt.loglog(train_set, y1, 's-', label='Architecture 1')
 plt.loglog(train_set, y2, 's-', label='Architecture 2')
 plt.loglog(train_set, y3, 'o:', label='Architecture 2 With Data Standardization')
-plt.loglog(train_set, y4, 's-', label='Arch 2')
-plt.loglog(train_set, y5, 'o-', label='new arch- only CM')
+plt.loglog(train_set[:5], y4, 's-', label='Arch 2')
+# plt.loglog(train_set, y5, 'o-', label='new arch- only CM')
 
 
 # plt.annotate('(%s, %s)' % (30000, y1[-1]), xy=(30000, y1[-1]), textcoords='data')
