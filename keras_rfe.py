@@ -19,6 +19,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.initializers import HeNormal
 
 import logging
+logging.basicConfig(level = logging.INFO)
 import schnetpack as spk
 import pandas as pd
 
