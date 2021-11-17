@@ -372,13 +372,13 @@ for prop in properties:
         mae_min = mae
         df = df_modified
         logging.info("Properties remaining:")
-        logging.info("Min mae = " + mae_min)
+        logging.info("Min mae = " + str(mae_min))
         props.remove(prop)
         print(df.columns)
         continue
     else:
         # Removing the property did not improve the model, don't remove the prop
         logging.info("No improve in mae, don't remove the property.")
-        logging.info("Min mae = " + mae_min)
+        logging.info("Min mae = " + str(mae_min))
         
         continue
