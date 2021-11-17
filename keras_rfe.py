@@ -310,11 +310,13 @@ properties = [
     'TBchg',
 ]
 
+props = properties.copy()
+
 iX = []
 n = len(iY)
 idx = np.arange(n)
 for i in idx:
-    iX.append(np.concatenate([df[prop][i] for prop in properties], axis=None))
+    iX.append(np.concatenate([df[prop][i] for prop in props], axis=None))
 
 n_train = 4000
 n_val = 1000
@@ -332,6 +334,7 @@ model, lr, loss, acc, testX, testy = fit_model_dense(
 mae = plotting_results(model, testX, testy)
 
 mae_min = mae
+logging.info("Min mae = "+str(mae_min))
 delta = 0.04
 
 for prop in properties:
@@ -369,9 +372,13 @@ for prop in properties:
         mae_min = mae
         df = df_modified
         logging.info("Properties remaining:")
+        logging.info("Min mae = " + mae_min)
+        props.remove(prop)
         print(df.columns)
         continue
     else:
         # Removing the property did not improve the model, don't remove the prop
         logging.info("No improve in mae, don't remove the property.")
+        logging.info("Min mae = " + mae_min)
+        
         continue
