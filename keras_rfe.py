@@ -352,7 +352,7 @@ for prop in properties:
     iX = []
     for i in idx:
         iX.append(np.concatenate([df[prop][i]
-                                  for prop in properties], axis=None))
+                                  for prop in props], axis=None))
     iX = np.array(iX)
 
     trainX, trainy, valX, valy, testX, testy, x_scaler, y_scaler = split_data(
