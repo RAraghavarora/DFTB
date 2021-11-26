@@ -4,14 +4,66 @@ The following modules were not unloaded:
   1) modenv/scs5
 Module Python/3.6.4-intel-2018a and 18 dependencies loaded.
 Module cuDNN/8.0.4.30-CUDA-11.1.1 and 1 dependency loaded.
-2021-11-09 06:43:52.438124: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
-To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
-2021-11-09 06:43:59.651919: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 10800 MB memory:  -> device: 0, name: Tesla K80, pci bus id: 0000:04:00.0, compute capability: 3.7
-2021-11-09 06:43:59.730649: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:1 with 10800 MB memory:  -> device: 1, name: Tesla K80, pci bus id: 0000:05:00.0, compute capability: 3.7
-2021-11-09 06:43:59.731892: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:2 with 10800 MB memory:  -> device: 2, name: Tesla K80, pci bus id: 0000:84:00.0, compute capability: 3.7
-2021-11-09 06:43:59.733118: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:3 with 10800 MB memory:  -> device: 3, name: Tesla K80, pci bus id: 0000:85:00.0, compute capability: 3.7
-2021-11-09 06:44:07.542297: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:185] None of the MLIR Optimization Passes are enabled (registered 2)
 /home/h3/medranos/vdftb20/lib/python3.6/site-packages/schnetpack/data/atoms.py:327: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /pytorch/torch/csrc/utils/tensor_numpy.cpp:143.)
   properties[pname] = torch.FloatTensor(prop)
 /home/h3/medranos/vdftb20/lib/python3.6/site-packages/ase/atoms.py:968: VisibleDeprecationWarning: Use get_global_number_of_atoms() instead
   np.VisibleDeprecationWarning)
+2021-11-11 13:56:33.945523: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-11-11 13:56:49.052118: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 10800 MB memory:  -> device: 0, name: Tesla K80, pci bus id: 0000:04:00.0, compute capability: 3.7
+2021-11-11 13:56:49.107270: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:1 with 10800 MB memory:  -> device: 1, name: Tesla K80, pci bus id: 0000:05:00.0, compute capability: 3.7
+2021-11-11 13:56:49.108447: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:2 with 10800 MB memory:  -> device: 2, name: Tesla K80, pci bus id: 0000:84:00.0, compute capability: 3.7
+2021-11-11 13:56:49.109648: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:3 with 10800 MB memory:  -> device: 3, name: Tesla K80, pci bus id: 0000:85:00.0, compute capability: 3.7
+2021-11-11 13:56:54.740651: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:185] None of the MLIR Optimization Passes are enabled (registered 2)
+/home/h3/medranos/vdftb20/lib/python3.6/site-packages/schnetpack/data/atoms.py:327: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /pytorch/torch/csrc/utils/tensor_numpy.cpp:143.)
+  properties[pname] = torch.FloatTensor(prop)
+/home/h3/medranos/vdftb20/lib/python3.6/site-packages/ase/atoms.py:968: VisibleDeprecationWarning: Use get_global_number_of_atoms() instead
+  np.VisibleDeprecationWarning)
+Traceback (most recent call last):
+  File "/scratch/ws/1/medranos-DFTB/raghav/code/train_eq.py", line 433, in <module>
+    n_train, int(n_val), int(n_test), iX, iY, patience=100
+  File "/scratch/ws/1/medranos-DFTB/raghav/code/train_eq.py", line 289, in fit_model_dense
+    callbacks=[rlrp, lrm],
+  File "/home/h3/medranos/vdftb20/lib/python3.6/site-packages/keras/engine/training.py", line 1184, in fit
+    tmp_logs = self.train_function(iterator)
+  File "/home/h3/medranos/vdftb20/lib/python3.6/site-packages/tensorflow/python/eager/def_function.py", line 885, in __call__
+    result = self._call(*args, **kwds)
+  File "/home/h3/medranos/vdftb20/lib/python3.6/site-packages/tensorflow/python/eager/def_function.py", line 933, in _call
+    self._initialize(args, kwds, add_initializers_to=initializers)
+  File "/home/h3/medranos/vdftb20/lib/python3.6/site-packages/tensorflow/python/eager/def_function.py", line 760, in _initialize
+    *args, **kwds))
+  File "/home/h3/medranos/vdftb20/lib/python3.6/site-packages/tensorflow/python/eager/function.py", line 3066, in _get_concrete_function_internal_garbage_collected
+    graph_function, _ = self._maybe_define_function(args, kwargs)
+  File "/home/h3/medranos/vdftb20/lib/python3.6/site-packages/tensorflow/python/eager/function.py", line 3463, in _maybe_define_function
+    graph_function = self._create_graph_function(args, kwargs)
+  File "/home/h3/medranos/vdftb20/lib/python3.6/site-packages/tensorflow/python/eager/function.py", line 3308, in _create_graph_function
+    capture_by_value=self._capture_by_value),
+  File "/home/h3/medranos/vdftb20/lib/python3.6/site-packages/tensorflow/python/framework/func_graph.py", line 1007, in func_graph_from_py_func
+    func_outputs = python_func(*func_args, **func_kwargs)
+  File "/home/h3/medranos/vdftb20/lib/python3.6/site-packages/tensorflow/python/eager/def_function.py", line 668, in wrapped_fn
+    out = weak_wrapped_fn().__wrapped__(*args, **kwds)
+  File "/home/h3/medranos/vdftb20/lib/python3.6/site-packages/tensorflow/python/framework/func_graph.py", line 994, in wrapper
+    raise e.ag_error_metadata.to_exception(e)
+ValueError: in user code:
+
+    /home/h3/medranos/vdftb20/lib/python3.6/site-packages/keras/engine/training.py:853 train_function  *
+        return step_function(self, iterator)
+    /home/h3/medranos/vdftb20/lib/python3.6/site-packages/keras/engine/training.py:842 step_function  **
+        outputs = model.distribute_strategy.run(run_step, args=(data,))
+    /home/h3/medranos/vdftb20/lib/python3.6/site-packages/tensorflow/python/distribute/distribute_lib.py:1286 run
+        return self._extended.call_for_each_replica(fn, args=args, kwargs=kwargs)
+    /home/h3/medranos/vdftb20/lib/python3.6/site-packages/tensorflow/python/distribute/distribute_lib.py:2849 call_for_each_replica
+        return self._call_for_each_replica(fn, args, kwargs)
+    /home/h3/medranos/vdftb20/lib/python3.6/site-packages/tensorflow/python/distribute/distribute_lib.py:3632 _call_for_each_replica
+        return fn(*args, **kwargs)
+    /home/h3/medranos/vdftb20/lib/python3.6/site-packages/keras/engine/training.py:835 run_step  **
+        outputs = model.train_step(data)
+    /home/h3/medranos/vdftb20/lib/python3.6/site-packages/keras/engine/training.py:787 train_step
+        y_pred = self(x, training=True)
+    /home/h3/medranos/vdftb20/lib/python3.6/site-packages/keras/engine/base_layer.py:1020 __call__
+        input_spec.assert_input_compatibility(self.input_spec, inputs, self.name)
+    /home/h3/medranos/vdftb20/lib/python3.6/site-packages/keras/engine/input_spec.py:254 assert_input_compatibility
+        ' but received input with shape ' + display_shape(x.shape))
+
+    ValueError: Input 0 of layer sequential is incompatible with the layer: expected axis -1 of input shape to have value 316 but received input with shape (16, 568)
+

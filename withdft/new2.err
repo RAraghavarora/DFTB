@@ -4,11 +4,13 @@ The following modules were not unloaded:
   1) modenv/scs5
 Module Python/3.6.4-intel-2018a and 18 dependencies loaded.
 Module cuDNN/8.0.4.30-CUDA-11.1.1 and 1 dependency loaded.
-2021-11-08 16:11:27.083476: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+2021-11-15 13:06:41.464868: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
 To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
-2021-11-08 16:11:34.204831: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 10800 MB memory:  -> device: 0, name: Tesla K80, pci bus id: 0000:05:00.0, compute capability: 3.7
-2021-11-08 16:11:34.214534: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:1 with 10800 MB memory:  -> device: 1, name: Tesla K80, pci bus id: 0000:85:00.0, compute capability: 3.7
-2021-11-08 16:11:38.254635: W tensorflow/core/grappler/optimizers/data/auto_shard.cc:695] AUTO sharding policy will apply DATA sharding policy as it failed to apply FILE sharding policy because of the following reason: Did not find a shardable source, walked to a node which is not a dataset: name: "FlatMapDataset/_9"
+2021-11-15 13:06:50.508741: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 10800 MB memory:  -> device: 0, name: Tesla K80, pci bus id: 0000:04:00.0, compute capability: 3.7
+2021-11-15 13:06:50.578632: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:1 with 10800 MB memory:  -> device: 1, name: Tesla K80, pci bus id: 0000:05:00.0, compute capability: 3.7
+2021-11-15 13:06:50.580837: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:2 with 10800 MB memory:  -> device: 2, name: Tesla K80, pci bus id: 0000:84:00.0, compute capability: 3.7
+2021-11-15 13:06:50.583298: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:3 with 10800 MB memory:  -> device: 3, name: Tesla K80, pci bus id: 0000:85:00.0, compute capability: 3.7
+2021-11-15 13:07:01.233123: W tensorflow/core/grappler/optimizers/data/auto_shard.cc:695] AUTO sharding policy will apply DATA sharding policy as it failed to apply FILE sharding policy because of the following reason: Did not find a shardable source, walked to a node which is not a dataset: name: "FlatMapDataset/_9"
 op: "FlatMapDataset"
 input: "PrefetchDataset/_8"
 attr {
@@ -22,7 +24,7 @@ attr {
   key: "f"
   value {
     func {
-      name: "__inference_Dataset_flat_map_slice_batch_indices_273"
+      name: "__inference_Dataset_flat_map_slice_batch_indices_399"
     }
   }
 }
@@ -47,8 +49,8 @@ attr {
   }
 }
 . Consider either turning off auto-sharding or switching the auto_shard_policy to DATA to shard this dataset. You can do this by creating a new `tf.data.Options()` object then setting `options.experimental_distribute.auto_shard_policy = AutoShardPolicy.DATA` before applying the options object to the dataset via `dataset.with_options(options)`.
-2021-11-08 16:11:38.310570: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:185] None of the MLIR Optimization Passes are enabled (registered 2)
-2021-11-08 16:11:52.306213: W tensorflow/core/grappler/optimizers/data/auto_shard.cc:695] AUTO sharding policy will apply DATA sharding policy as it failed to apply FILE sharding policy because of the following reason: Did not find a shardable source, walked to a node which is not a dataset: name: "FlatMapDataset/_9"
+2021-11-15 13:07:01.364777: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:185] None of the MLIR Optimization Passes are enabled (registered 2)
+2021-11-15 13:07:21.378933: W tensorflow/core/grappler/optimizers/data/auto_shard.cc:695] AUTO sharding policy will apply DATA sharding policy as it failed to apply FILE sharding policy because of the following reason: Did not find a shardable source, walked to a node which is not a dataset: name: "FlatMapDataset/_9"
 op: "FlatMapDataset"
 input: "PrefetchDataset/_8"
 attr {
@@ -62,7 +64,7 @@ attr {
   key: "f"
   value {
     func {
-      name: "__inference_Dataset_flat_map_slice_batch_indices_5731"
+      name: "__inference_Dataset_flat_map_slice_batch_indices_6545"
     }
   }
 }
@@ -87,7 +89,7 @@ attr {
   }
 }
 . Consider either turning off auto-sharding or switching the auto_shard_policy to DATA to shard this dataset. You can do this by creating a new `tf.data.Options()` object then setting `options.experimental_distribute.auto_shard_policy = AutoShardPolicy.DATA` before applying the options object to the dataset via `dataset.with_options(options)`.
-2021-11-10 13:26:34.314161: W tensorflow/core/grappler/optimizers/data/auto_shard.cc:695] AUTO sharding policy will apply DATA sharding policy as it failed to apply FILE sharding policy because of the following reason: Did not find a shardable source, walked to a node which is not a dataset: name: "FlatMapDataset/_9"
+2021-11-17 11:19:04.039749: W tensorflow/core/grappler/optimizers/data/auto_shard.cc:695] AUTO sharding policy will apply DATA sharding policy as it failed to apply FILE sharding policy because of the following reason: Did not find a shardable source, walked to a node which is not a dataset: name: "FlatMapDataset/_9"
 op: "FlatMapDataset"
 input: "PrefetchDataset/_8"
 attr {
@@ -101,7 +103,7 @@ attr {
   key: "f"
   value {
     func {
-      name: "__inference_Dataset_flat_map_slice_batch_indices_90942484"
+      name: "__inference_Dataset_flat_map_slice_batch_indices_68323863"
     }
   }
 }
