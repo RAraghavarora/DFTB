@@ -5,8 +5,8 @@
 #SBATCH --nodes=1                        # request 1 node
 #SBATCH --ntasks=8
 #SBATCH -J withdft-new
-#SBATCH --output=only_dftb/dip.out
-#SBATCH --error=only_dftb/dip.err
+#SBATCH --output=only_dftb/dip_egap.out
+#SBATCH --error=only_dftb/dip_egap.err
 #SBATCH -A p_biomolecules
 #SBATCH --mail-type=all
 #SBATCH        --mail-user=leonardo.medrano@nano.tu-dresden.de
@@ -49,7 +49,8 @@ echo "training starts"
 #export DFTB_PREFIX='/home/medranos/SK-files/3ob-3-1/'
 
 work=/scratch/ws/1/medranos-DFTB/raghav/code
-python3 $work/train_dftb_standard.py EAT fit
+mkdir only_dftb/egap/
+python3 $work/train_dftb_standard.py EGAP fit
 
 echo "training is over :-)"
 EXTSTAT=$?

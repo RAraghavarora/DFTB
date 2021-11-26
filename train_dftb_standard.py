@@ -405,8 +405,8 @@ def save_plot(n_train):
     plt.plot(x, y, '.')
     temp = np.arange(mini, maxi, 0.1)
     plt.plot(temp, temp)
-    plt.xlabel("True EAT")
-    plt.ylabel("Predicted EAT")
+    plt.xlabel("True EGAP")
+    plt.ylabel("Predicted EGAP")
     plt.title('Results for training size of %s' % n_train)
     plt.savefig('Results.png')
     plt.close()
@@ -427,14 +427,14 @@ current_dir = os.getcwd()
 
 for ii in range(len(train_set)):
     print('Trainset= {:}'.format(train_set[ii]))
-    chdir(current_dir + '/only_dftb/')
+    chdir(current_dir + '/only_dftb/egap/')
     n_train = train_set[ii]
-    os.chdir(current_dir + '/only_dftb/')
+    os.chdir(current_dir + '/only_dftb/egap/')
     try:
         os.mkdir(str(train_set[ii]))
     except FileExistsError:
         pass
-    os.chdir(current_dir + '/only_dftb/' + str(train_set[ii]))
+    os.chdir(current_dir + '/only_dftb/egap/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
 
