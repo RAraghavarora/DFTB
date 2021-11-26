@@ -396,7 +396,7 @@ def save_plot(n_val):
 
 
 # prepare dataset
-train_set = ['10000','20000']
+train_set = ['10000']
 n_val = 5000
 n_test = 20000  # Test on the entire dataset
 op = sys.argv[1]
@@ -415,7 +415,7 @@ for ii in range(len(train_set)):
     try:
         os.mkdir(str(train_set[ii]))
     except:
-        continue
+        pass
     os.chdir(current_dir + '/withdft/new/' + str(train_set[ii]))
 
     if sys.argv[2] == 'fit':
